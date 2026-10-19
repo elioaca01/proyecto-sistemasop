@@ -5,6 +5,8 @@ public final class AllTests {
 
     public static void main(String[] args) {
         LinkedListTest.run();
+        LinkedQueueTest.run();
+        RingBufferTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
