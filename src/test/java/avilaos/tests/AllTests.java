@@ -8,6 +8,7 @@ public final class AllTests {
         LinkedQueueTest.run();
         RingBufferTest.run();
         ProcessDefinitionTest.run();
+        ProcessControlBlockTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
