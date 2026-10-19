@@ -7,6 +7,7 @@ public final class AllTests {
         LinkedListTest.run();
         LinkedQueueTest.run();
         RingBufferTest.run();
+        ProcessDefinitionTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
