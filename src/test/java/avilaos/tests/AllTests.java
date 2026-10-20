@@ -14,6 +14,7 @@ public final class AllTests {
         MemoryAdmissionTest.run();
         CpuTest.run();
         IoControllerTest.run();
+        ComputerTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
