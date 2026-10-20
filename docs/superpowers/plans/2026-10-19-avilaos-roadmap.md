@@ -22,9 +22,10 @@ El proyecto se divide en módulos. Cada módulo tendrá un plan ejecutable con a
 
 La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 completa la GUI, no marca su primer día de trabajo.
 
-## Plan disponible
+## Planes disponibles
 
 - [Módulo 1: base, estructuras y procesos](2026-10-19-avilaos-foundation.md): código implementado y 212 comprobaciones satisfactorias. El estudiante confirmó el arranque visual desde NetBeans mediante una captura; cierre, recompilación limpia en el IDE y Debug permanecen pendientes.
+- [Módulo 2: un computador](2026-10-19-avilaos-single-computer.md): CPU, RAM, admisión, FCFS, E/S y deadlines implementados; 509 comprobaciones acumuladas y construcción limpia satisfactorias. [Guía de defensa](../../defensa/modulo-2-computador.md). La GUI conserva la ventana inicial.
 
 ## Reglas de avance
 

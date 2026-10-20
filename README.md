@@ -35,8 +35,17 @@ Las pruebas son ejecutables Java con comprobaciones propias; no requieren JUnit 
 - Lista enlazada con ordenamiento estable, cola FIFO y buffer circular propios.
 - Definiciones validadas de CPU bound, I/O bound, productores y consumidores.
 - PCB con estados, PC/MAR, contexto, memoria asignada, contadores de servicio y reglas de deadline.
-- Ventana inicial de Swing. El motor de simulación, planificadores, memoria real del clúster, E/S y semáforos simulados pertenecen a los siguientes módulos.
+- Computador reutilizable con CPU, RAM acotada, núcleo y controlador de E/S.
+- Admisión según memoria, FCFS por interfaz, ejecución de CPU bound/I/O bound y terminación automática por deadline.
+- Ciclos lógicos consecutivos, una instrucción por CPU y ciclo, cancelación de E/S y liberación segura de RAM.
+- Ventana inicial de Swing. Las pruebas ejercitan el motor; las demás políticas, los hilos del clúster, buffers, semáforos e interfaz completa siguen en la hoja de ruta.
 
-`ProcessDefinition` conserva los atributos iniciales inmutables; `ProcessControlBlock` mantiene el estado vivo del proceso. Apropiar o bloquear conserva PC/MAR y la RAM asignada; ejecutar una instrucción avanza PC/MAR. El núcleo del siguiente módulo decidirá cuándo invocar estas operaciones y controlará la RAM real.
+`ProcessDefinition` conserva los atributos iniciales inmutables; `ProcessControlBlock` mantiene el estado vivo del proceso. Apropiar o bloquear conserva PC/MAR y la RAM asignada; ejecutar una instrucción avanza PC/MAR. El núcleo invoca estas operaciones y MemoryAdmission controla las reservas de RAM simulada.
 
 El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permite ejecutar en ciclo 5 y vence al cierre de ese ciclo si el proceso no termina. Los bloqueos no detienen el avance del plazo global.
+
+## Explicación y evidencia por módulo
+
+- [Guía de defensa del módulo 2 y repaso del módulo 1](docs/defensa/modulo-2-computador.md): responsabilidades, conceptos, traza de E/S y preguntas frecuentes.
+- [Verificación del módulo 1](docs/verification/2026-10-19-foundation.md).
+- [Verificación del módulo 2](docs/verification/2026-10-20-single-computer.md).

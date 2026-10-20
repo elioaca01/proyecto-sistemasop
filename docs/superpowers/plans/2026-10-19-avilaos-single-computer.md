@@ -64,10 +64,10 @@ Cada tarea añade su prueba a `src/test/java/avilaos/tests/AllTests.java`. Los f
 
 **Interfaces:** `Ram(int capacity)`; `int capacity()`, `int used()`, `int free()`; `Ram.Reservation reserve(int units)` devuelve una reserva o null si falta RAM libre; `void release(Ram.Reservation reservation)`; `Reservation.units()`. La reserva guarda privadamente su RAM de origen y si sigue activa.
 
-- [ ] Escribir RamTest: capacidad 10, reservar 7 deja usada/libre 7/3; intentar 4 devuelve null sin variar contadores; liberar deja 0/10. Rechazar capacidad y unidades no positivas, unidades mayores que capacidad, reserva nula, reserva de otra RAM y doble liberación, sin alterar otras reservas.
-- [ ] Ejecutar BUILD y observar fallo por Ram ausente.
-- [ ] Implementar los contratos con contadores; usar `units <= free()` para no desbordar sumas. No usar particiones ni direcciones físicas.
-- [ ] Ejecutar BUILD completo y registrar `feat: agrega RAM con reservas verificables`.
+- [x] Escribir RamTest: capacidad 10, reservar 7 deja usada/libre 7/3; intentar 4 devuelve null sin variar contadores; liberar deja 0/10. Rechazar capacidad y unidades no positivas, unidades mayores que capacidad, reserva nula, reserva de otra RAM y doble liberación, sin alterar otras reservas.
+- [x] Ejecutar BUILD y observar fallo por Ram ausente.
+- [x] Implementar los contratos con contadores; usar `units <= free()` para no desbordar sumas. No usar particiones ni direcciones físicas.
+- [x] Ejecutar BUILD completo y registrar `feat: agrega RAM con reservas verificables`.
 
 ```java
 Ram ram = new Ram(10);
@@ -89,11 +89,11 @@ TestSupport.equal(10, ram.free());
 
 `FcfsPolicy` retira la cabeza, nunca apropia y conserva el orden restante. `Scheduler(OrderedProcessQueue ready, SchedulingPolicy policy)` expone `ProcessControlBlock select()` que llama select y luego reorder. No cambia el estado del PCB.
 
-- [ ] Escribir SchedulingTest con tres PCB READY: selección A,B,C; vacía devuelve null; retirar B por ID mantiene A,C; reinsertar B después de un bloqueo simulado lo deja al final; rechazar nulo, NEW e ID duplicado. Verificar estabilidad de sort con dos prioridades iguales.
-- [ ] Añadir una política de prueba que use los mismos contratos y seleccione el último elemento: Scheduler debe usarla sin modificar su código y llamar reorder después de cada selección.
-- [ ] Ejecutar BUILD y observar fallo por clases ausentes.
-- [ ] Implementar cola sobre LinkedList propia e interfaz/FCFS/Scheduler. No introducir las otras políticas todavía.
-- [ ] Ejecutar BUILD completo y registrar `feat: agrega FCFS mediante interfaz de planificacion`.
+- [x] Escribir SchedulingTest con tres PCB READY: selección A,B,C; vacía devuelve null; retirar B por ID mantiene A,C; reinsertar B después de un bloqueo simulado lo deja al final; rechazar nulo, NEW e ID duplicado. Verificar estabilidad de sort con dos prioridades iguales.
+- [x] Añadir una política de prueba que use los mismos contratos y seleccione el último elemento: Scheduler debe usarla sin modificar su código y llamar reorder después de cada selección.
+- [x] Ejecutar BUILD y observar fallo por clases ausentes.
+- [x] Implementar cola sobre LinkedList propia e interfaz/FCFS/Scheduler. No introducir las otras políticas todavía.
+- [x] Ejecutar BUILD completo y registrar `feat: agrega FCFS mediante interfaz de planificacion`.
 
 ## Task 3: admisión y propiedad de reservas
 
@@ -101,10 +101,10 @@ TestSupport.equal(10, ram.free());
 
 **Interfaces:** `MemoryAdmission(Ram ram)`, `boolean admit(ProcessControlBlock process)`, `boolean releaseIfAllocated(ProcessControlBlock process)`. Una lista propia relaciona PCB y reserva. admit requiere NEW y rechaza un ID con reserva activa; solo cambia PCB a READY después de reservar RAM. La liberación solo afecta a ese mismo objeto PCB; devuelve false si no tiene reserva y, si tiene una, exige que el PCB ya esté TERMINATED. Los argumentos nulos se rechazan.
 
-- [ ] Escribir MemoryAdmissionTest: RAM 10, A requiere 8 y B 4; A pasa a READY, B sigue NEW sin asignación. Liberar A antes de terminar falla sin alterar RAM; terminar A por deadline en el ciclo 9 (plazo relativo 10, llegada 0) y liberar permite admitir B. Liberar un NEW sin reserva devuelve false y no cambia RAM. Un PCB ajeno con el mismo ID no puede liberar la reserva del original. Un intento de doble admisión falla sin reservar dos veces.
-- [ ] Ejecutar BUILD, esperando fallo por MemoryAdmission ausente.
-- [ ] Implementar con reservas de tarea 1 y lista propia; no ordenar ni decidir la cola de nuevos aquí.
-- [ ] Ejecutar BUILD completo y registrar `feat: administra admision y reservas por proceso`.
+- [x] Escribir MemoryAdmissionTest: RAM 10, A requiere 8 y B 4; A pasa a READY, B sigue NEW sin asignación. Liberar A antes de terminar falla sin alterar RAM; terminar A por deadline en el ciclo 9 (plazo relativo 10, llegada 0) y liberar permite admitir B. Liberar un NEW sin reserva devuelve false y no cambia RAM. Un PCB ajeno con el mismo ID no puede liberar la reserva del original. Un intento de doble admisión falla sin reservar dos veces.
+- [x] Ejecutar BUILD, esperando fallo por MemoryAdmission ausente.
+- [x] Implementar con reservas de tarea 1 y lista propia; no ordenar ni decidir la cola de nuevos aquí.
+- [x] Ejecutar BUILD completo y registrar `feat: administra admision y reservas por proceso`.
 
 ## Task 4: CPU y programa lineal
 
@@ -114,11 +114,11 @@ TestSupport.equal(10, ram.free());
 
 `Cpu implements Tickable`: `void load(ProcessControlBlock process)` exige RUNNING, trabajo pendiente y CPU libre; `ProcessControlBlock current()`, `void clear()`, `CpuMode mode()`, `InstructionKind lastInstruction()`, `long lastProcessId()`. Cada tick válido ejecuta una sola instrucción a través del PCB. Un tick inactivo deja IDLE, lastInstruction=null y lastProcessId=-1. clear retira el PCB y conserva la información de la última instrucción hasta el próximo tick.
 
-- [ ] Escribir CpuTest: tick vacío no ejecuta nada; CPU bound de 3 instrucciones avanza PC/MAR 1 por tick y cuenta USER; rechazar carga NEW, nula, CPU ocupada, programa productor o proceso agotado. Repetir, retroceder o saltar ticks falla sin mover PC.
-- [ ] Para I/O bound con ráfaga 1, verificar secuencia COMPUTE, IO_REQUEST, COMPUTE y modos USER,KERNEL,USER. CPU no decide por sí misma poner el PCB en bloqueados ni terminarlo.
-- [ ] Ejecutar BUILD y observar fallo por las nuevas clases ausentes.
-- [ ] Implementar Tickable, selector lineal y CPU respetando esos límites de hardware.
-- [ ] Ejecutar BUILD completo y registrar `feat: ejecuta instrucciones por ciclo en CPU simulada`.
+- [x] Escribir CpuTest: tick vacío no ejecuta nada; CPU bound de 3 instrucciones avanza PC/MAR 1 por tick y cuenta USER; rechazar carga NEW, nula, CPU ocupada, programa productor o proceso agotado. Repetir, retroceder o saltar ticks falla sin mover PC.
+- [x] Para I/O bound con ráfaga 1, verificar secuencia COMPUTE, IO_REQUEST, COMPUTE y modos USER,KERNEL,USER. CPU no decide por sí misma poner el PCB en bloqueados ni terminarlo.
+- [x] Ejecutar BUILD y observar fallo por las nuevas clases ausentes.
+- [x] Implementar Tickable, selector lineal y CPU respetando esos límites de hardware.
+- [x] Ejecutar BUILD completo y registrar `feat: ejecuta instrucciones por ciclo en CPU simulada`.
 
 ## Task 5: controlador de E/S y cancelación
 
@@ -128,11 +128,11 @@ TestSupport.equal(10, ram.free());
 
 `IoRequest(ProcessControlBlock process, long issuedCycle, int duration)` es el ticket inmutable de hardware que crea request; expone `ProcessControlBlock process()` y `long completesAt()`. Valida proceso no nulo, issuedCycle no negativo y duración positiva; calcula `issuedCycle + 1 + duration` con suma exacta. Su constructor permite verificar desbordamientos sin introducir ciclos iniciales artificiales en el controlador.
 
-- [ ] Escribir IoControllerTest: emitir tras tick 1, duración 2; no completa en ticks 2/3 y entrega el PCB una vez en 4. Varias solicitudes completan independientemente y conservan orden de solicitud cuando empatan. Cancelar impide una entrega posterior; cancelar ya completada también la retira.
-- [ ] Rechazar duración 0, nulo y doble solicitud en el controlador. Comprobar en IoRequest la suma extrema con issuedCycle=Long.MAX_VALUE y duración 1, esperando IllegalArgumentException. No añadir hooks exclusivos de pruebas a producción.
-- [ ] Ejecutar BUILD y observar fallo por controlador ausente.
-- [ ] Implementar solicitudes y completadas con listas propias y suma mediante Math.addExact, convirtiendo overflow a IllegalArgumentException.
-- [ ] Ejecutar BUILD completo y registrar `feat: completa y cancela E/S por ciclos logicos`.
+- [x] Escribir IoControllerTest: emitir tras tick 1, duración 2; no completa en ticks 2/3 y entrega el PCB una vez en 4. Varias solicitudes completan independientemente y conservan orden de solicitud cuando empatan. Cancelar impide una entrega posterior; cancelar ya completada también la retira.
+- [x] Rechazar duración 0, nulo y doble solicitud en el controlador. Comprobar en IoRequest la suma extrema con issuedCycle=Long.MAX_VALUE y duración 1, esperando IllegalArgumentException. No añadir hooks exclusivos de pruebas a producción.
+- [x] Ejecutar BUILD y observar fallo por controlador ausente.
+- [x] Implementar solicitudes y completadas con listas propias y suma mediante Math.addExact, convirtiendo overflow a IllegalArgumentException.
+- [x] Ejecutar BUILD completo y registrar `feat: completa y cancela E/S por ciclos logicos`.
 
 ## Task 6: núcleo y computador reutilizable
 
@@ -144,22 +144,22 @@ TestSupport.equal(10, ram.free());
 
 El núcleo es dueño de las transiciones. Su finalización llama primero a PCB.terminate para validar y marcar el estado; después retira de CPU y colas, cancela E/S y libera la reserva si existe antes de añadir a terminados. Recorre todos los procesos no terminados al revisar deadlines, incluidos NEW y BLOCKED. No altera el estado al rechazar un tick o submit inválido.
 
-- [ ] Escribir ComputerTest: A de 2 instrucciones y B de 1, RAM suficiente; ejecutar ciclos 0,1,2 y comprobar orden A,A,B, PC, primera respuesta y terminación. Queda la RAM completa libre al terminar.
-- [ ] Caso de memoria: RAM 10; A pide 8 y tiene 2 instrucciones, B pide 4 y tiene 1, C pide 2 y tiene 1; todos llegan en 0 con plazo 10. B espera y C se admite sin saltar a CPU delante de A. Al terminar A en 1 se admite B detrás de C en listos. C ejecuta en 2 y B en 3; al final queda toda la RAM libre. No ejecutar una segunda instrucción al liberar RAM.
-- [ ] Caso de E/S: A llega en 0, memoria 8, 3 instrucciones, ráfaga 1 y duración 2; B llega en 0, memoria 2 y 2 instrucciones de CPU; RAM 10 y plazo 10 para ambos. A ejecuta en 0 y solicita en 1; B ejecuta en 2 y 3; A espera 2/3, vuelve a listos en 4 y termina ese ciclo. PC de A se mantiene en 2 mientras espera y RAM sigue reservada.
-- [ ] Caso última instrucción: A tiene 2 instrucciones, ráfaga 1, duración 2 y plazo 10; está BLOCKED con restante 0 tras ciclo 1 y termina normalmente al inicio del 4 sin otra instrucción.
-- [ ] Casos de deadline: una instrucción/plazo 1 completa en 0; dos instrucciones/plazo 1 vence en 0. Un NEW vence sin liberar RAM ajena. La E/S final anterior con plazo 4 vence en 3 y nunca reaparece al avanzar a 4 y 5. Comprobar cancelación y ausencia de duplicados en terminados.
-- [ ] Rechazar computador ajeno, ID repetido, llegada fuera de límite actual, memoria imposible y tipos aún no soportados sin cambiar contadores. Repetir o saltar tick deja PC, RAM y colas intactos. Dos instancias Computer conservan RAM/colas independientes.
-- [ ] Ejecutar BUILD y observar fallo por núcleo/computador ausentes.
-- [ ] Implementar exactamente el orden de ciclo acordado. En E/S completada con restante 0 finalizar; con trabajo pendiente, desbloquear y encolar. Admitir recorriendo toda la cola de nuevos para permitir que quepan procesos pequeños.
-- [ ] Ejecutar BUILD completo y `clean package`, revisar que las 212 comprobaciones del módulo 1 siguen pasando y registrar `feat: integra computador con FCFS memoria y E/S`.
+- [x] Escribir ComputerTest: A de 2 instrucciones y B de 1, RAM suficiente; ejecutar ciclos 0,1,2 y comprobar orden A,A,B, PC, primera respuesta y terminación. Queda la RAM completa libre al terminar.
+- [x] Caso de memoria: RAM 10; A pide 8 y tiene 2 instrucciones, B pide 4 y tiene 1, C pide 2 y tiene 1; todos llegan en 0 con plazo 10. B espera y C se admite sin saltar a CPU delante de A. Al terminar A en 1 se admite B detrás de C en listos. C ejecuta en 2 y B en 3; al final queda toda la RAM libre. No ejecutar una segunda instrucción al liberar RAM.
+- [x] Caso de E/S: A llega en 0, memoria 8, 3 instrucciones, ráfaga 1 y duración 2; B llega en 0, memoria 2 y 2 instrucciones de CPU; RAM 10 y plazo 10 para ambos. A ejecuta en 0 y solicita en 1; B ejecuta en 2 y 3; A espera 2/3, vuelve a listos en 4 y termina ese ciclo. PC de A se mantiene en 2 mientras espera y RAM sigue reservada.
+- [x] Caso última instrucción: A tiene 2 instrucciones, ráfaga 1, duración 2 y plazo 10; está BLOCKED con restante 0 tras ciclo 1 y termina normalmente al inicio del 4 sin otra instrucción.
+- [x] Casos de deadline: una instrucción/plazo 1 completa en 0; dos instrucciones/plazo 1 vence en 0. Un NEW vence sin liberar RAM ajena. La E/S final anterior con plazo 4 vence en 3 y nunca reaparece al avanzar a 4 y 5. Comprobar cancelación y ausencia de duplicados en terminados.
+- [x] Rechazar computador ajeno, ID repetido, llegada fuera de límite actual, memoria imposible y tipos aún no soportados sin cambiar contadores. Repetir o saltar tick deja PC, RAM y colas intactos. Dos instancias Computer conservan RAM/colas independientes.
+- [x] Ejecutar BUILD y observar fallo por núcleo/computador ausentes.
+- [x] Implementar exactamente el orden de ciclo acordado. En E/S completada con restante 0 finalizar; con trabajo pendiente, desbloquear y encolar. Admitir recorriendo toda la cola de nuevos para permitir que quepan procesos pequeños.
+- [x] Ejecutar BUILD completo y `clean package`, revisar que las 212 comprobaciones del módulo 1 siguen pasando y registrar `feat: integra computador con FCFS memoria y E/S`.
 
 ## Cierre
 
-- [ ] Actualizar README y hoja de ruta con las capacidades reales, sin afirmar que existe ya un clúster con hilos.
-- [ ] Registrar trazas de ComputerTest, resultados de pruebas y revisión propia en `docs/verification/2026-10-19-single-computer.md` usando la fecha real si cambia.
-- [ ] Conservar una rama funcional y commits separados; PR hacia develop cuando se conecte GitHub. No fusionar para simular un PR.
-- [ ] Revisar fugas de RAM, tickets de E/S y referencias duplicadas, además de los cinco casos de Review Focus.
+- [x] Actualizar README y hoja de ruta con las capacidades reales, sin afirmar que existe ya un clúster con hilos.
+- [x] Registrar trazas de ComputerTest, resultados y revisión independiente en `docs/verification/2026-10-20-single-computer.md`; guía en `docs/defensa/modulo-2-computador.md`.
+- [x] Conservar una rama funcional y commits separados; PR hacia develop cuando se conecte GitHub. No fusionar para simular un PR.
+- [x] Revisar fugas de RAM, tickets de E/S y referencias duplicadas, además de los cinco casos de Review Focus.
 - [ ] Continuar después con las otras políticas y el reloj distribuido de la hoja de ruta.
 
-Estado: plan aprobado; implementación en curso.
+Estado: módulo 2 implementado y verificado; siguiente módulo pendiente.
