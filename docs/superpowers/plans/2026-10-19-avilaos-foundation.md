@@ -188,6 +188,7 @@ TestSupport.throwsType(IllegalStateException.class, () -> pcb.executeInstruction
 - [x] **Step 3:** actualizar README con capacidades reales del módulo, comandos de pruebas/arranque y pasos para abrir esta misma carpeta como proyecto Maven en NetBeans. Documentar selección de JDK 25 en propiedades del proyecto y cómo comprobarlo en la salida de construcción. No cambiar el Java global del estudiante.
 - [x] **Step 4:** ejecutar `BUILD` y `mvn package` con el JDK explícito de este plan; exigir pruebas satisfactorias y JAR generado. No afirmar que el JAR es autónomo por compilar: el arranque acordado es NetBeans/Maven hasta configurar distribución en otro módulo.
 - [ ] **Step 5:** abrir el proyecto en NetBeans, seleccionar plataforma 25, ejecutar Clean and Build y Run. Comprobar visualmente título/texto y cierre; conservar evidencia de ejecución. Si no es posible controlar la ventana desde las herramientas disponibles, pedir al estudiante que ejecute esas acciones y registre el resultado; la verificación GUI permanece pendiente hasta observarlo.
+  - Confirmado: Run Project abre la ventana esperada, según la captura del estudiante. No se infiere de esa captura Clean and Build, selección de JDK 25, cierre o Debug; ver registro de verificación.
 - [x] **Step 6:** revisar imports y uso de colecciones en fuentes/pruebas; confirmar ausencia de dependencias de simulación en Swing y que solo existen cambios del módulo. Registrar `feat: agrega arranque Swing compatible con NetBeans`.
 
 ## Cierre del módulo y continuación
@@ -197,6 +198,6 @@ TestSupport.throwsType(IllegalStateException.class, () -> pcb.executeInstruction
 - [x] Explicar al estudiante: diferencia entre definición y PCB, por qué las colas son propias, cuándo avanza PC/MAR y cómo se mide el deadline.
 - [ ] Marcar el módulo 1 completo solo cuando pasen pruebas y ejecución en NetBeans; entonces diseñar el plan del módulo 2 contra estas interfaces ya implementadas.
 
-Estado: tareas 1–4 completas y registradas en commits; tarea 5 implementada y verificada por construcción, pendiente de comprobación visual desde NetBeans. Ejecución nativa aprobada por el estudiante. Evidencia: [registro de verificación](../../verification/2026-10-19-foundation.md).
+Estado: tareas 1–4 completas y registradas en commits; tarea 5 implementada, verificada por construcción y con arranque visual confirmado desde NetBeans. Siguen pendientes los detalles de comprobación del IDE indicados en Step 5. Ejecución nativa aprobada por el estudiante. Evidencia: [registro de verificación](../../verification/2026-10-19-foundation.md).
 
 Referencias de construcción verificadas al preparar el plan: [Compiler Plugin](https://maven.apache.org/plugins/maven-compiler-plugin/usage.html) y [Exec Plugin](https://www.mojohaus.org/exec-maven-plugin/usage.html).

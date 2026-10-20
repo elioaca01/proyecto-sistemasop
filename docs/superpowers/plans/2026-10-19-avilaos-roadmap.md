@@ -24,7 +24,7 @@ La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 compl
 
 ## Plan disponible
 
-- [Módulo 1: base, estructuras y procesos](2026-10-19-avilaos-foundation.md): cinco tareas aprobadas; código implementado y 212 comprobaciones satisfactorias. Falta confirmar la ejecución visual desde NetBeans.
+- [Módulo 1: base, estructuras y procesos](2026-10-19-avilaos-foundation.md): código implementado y 212 comprobaciones satisfactorias. El estudiante confirmó el arranque visual desde NetBeans mediante una captura; cierre, recompilación limpia en el IDE y Debug permanecen pendientes.
 
 ## Reglas de avance
 

@@ -1,6 +1,6 @@
 # Verificación del módulo 1 — 19 de octubre de 2026
 
-Estado: código implementado, construcción y pruebas verificadas; comprobación visual en NetBeans pendiente de respuesta del estudiante. El módulo no se declara cerrado mientras falte esa comprobación.
+Estado: código implementado, construcción y pruebas verificadas; arranque visual desde NetBeans confirmado mediante la captura del estudiante. Permanecen pendientes las comprobaciones específicas del IDE indicadas al final.
 
 ## Entorno
 
@@ -27,7 +27,7 @@ Resultado: `javac [debug release 25]`, `OK: 212 comprobaciones` y `BUILD SUCCESS
 | 2. Cola y buffer circular | LinkedQueue y RingBuffer no existían | 71 comprobaciones acumuladas; BUILD SUCCESS |
 | 3. Definición | ProcessDefinition y ProcessType no existían | 103 comprobaciones acumuladas; BUILD SUCCESS |
 | 4. PCB | ProcessControlBlock no existía | 212 comprobaciones acumuladas; BUILD SUCCESS |
-| 5. Arranque | ClassNotFoundException: avilaos.App | App y ventana compiladas y empaquetadas; comprobación visual pendiente |
+| 5. Arranque | ClassNotFoundException: avilaos.App | App y ventana compiladas y empaquetadas; arranque visual desde NetBeans confirmado |
 
 Comprobaciones adicionales:
 
@@ -46,14 +46,20 @@ Revisión propia del implementador, sin un revisor independiente: se conservó l
 
 Decisión de ejecución: se mantuvo la carpeta compartida con NetBeans y se aisló el trabajo en una rama funcional. Una rama conserva el mismo árbol de archivos; no ofrece el aislamiento físico de otra carpeta, pero en este repositorio inicialmente limpio mantiene el flujo acordado sin duplicar el proyecto.
 
+## Confirmación visual del estudiante
+
+La [captura aportada](</Users/eliocolmenares/Desktop/Screenshot 2026-10-19 at 23.49.56.png>) muestra Apache NetBeans IDE 31, la salida `Output - Run (ÁvilaOS)` con la acción `exec:3.6.4:exec (run-app)` y la ventana «ÁvilaOS» con la descripción esperada. Esto confirma el arranque integrado desde el IDE.
+
+La captura muestra `JDK 26 (Default)`. Es una versión posterior a Java 21, admitida por el enunciado; no prueba que se haya seleccionado JDK 25 en las propiedades. El objetivo del proyecto sigue siendo `release=25` y la construcción limpia con Temurin 25 está verificada por separado. La salida visible dice «Nothing to compile»; no se atribuye a esta imagen una recompilación limpia ni una prueba de cierre.
+
 ## Comprobaciones pendientes
 
-- Abrir la carpeta como proyecto Maven en NetBeans y seleccionar JDK 25.
-- Ejecutar Clean and Build y Run Project desde el IDE; observar título «ÁvilaOS», descripción y cierre normal.
+- Ejecutar Clean and Build desde NetBeans para comprobar una recompilación sin archivos previos; el arranque Run y su ventana ya están confirmados.
+- Comprobar el cierre normal de la ventana y el fin del proceso hijo.
 - Probar Debug Project desde NetBeans. La acción está configurada, pero no se declara verificada.
 - Conectar GitHub y registrar Issue/PR hacia develop. Aún no hay remoto configurado; no se ha realizado ninguna fusión local para sustituir ese PR.
 
-Se pidió al estudiante la comprobación en NetBeans porque las herramientas reconocen el proceso Java del IDE pero no permiten vincular su ventana para operarla. El código y README ya están preparados para realizarla.
+Se pidió al estudiante la comprobación en NetBeans porque las herramientas reconocen el proceso Java del IDE pero no permiten vincular su ventana para operarla. La captura resuelve la comprobación del arranque visual; no sustituye las otras comprobaciones del listado.
 
 ## Próximo módulo
 

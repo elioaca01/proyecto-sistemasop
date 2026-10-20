@@ -1,6 +1,6 @@
 # ÁvilaOS — diseño del Proyecto 1
 
-Estado: diseño aprobado por el estudiante el 19 de octubre de 2026, mediante la instrucción «hazlo» para preparar las tareas de implementación. La implementación del primer módulo comenzó el 19 de octubre; su comprobación visual en NetBeans sigue pendiente.
+Estado: diseño aprobado por el estudiante el 19 de octubre de 2026, mediante la instrucción «hazlo» para preparar las tareas de implementación. La implementación del primer módulo comenzó el 19 de octubre; su arranque visual desde NetBeans fue confirmado por una captura del estudiante.
 
 ## 1. Objetivo y alcance
 
