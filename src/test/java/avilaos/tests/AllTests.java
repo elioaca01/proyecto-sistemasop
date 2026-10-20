@@ -16,6 +16,7 @@ public final class AllTests {
         IoControllerTest.run();
         ComputerTest.run();
         ReadyOrderTest.run();
+        PolicyTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }

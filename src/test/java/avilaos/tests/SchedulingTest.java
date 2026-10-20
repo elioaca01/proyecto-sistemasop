@@ -47,6 +47,7 @@ public final class SchedulingTest {
         TestSupport.equal(c, q.poll());
         final int[] reordered = {0};
         SchedulingPolicy last = new SchedulingPolicy() {
+            public SchedulingPolicyType type() { return SchedulingPolicyType.FCFS; }
             public ProcessControlBlock select(OrderedProcessQueue queue) {
                 return queue.isEmpty() ? null : queue.remove(queue.get(queue.size() - 1).id());
             }
