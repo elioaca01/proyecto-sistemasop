@@ -13,6 +13,7 @@ public final class AllTests {
         SchedulingTest.run();
         MemoryAdmissionTest.run();
         CpuTest.run();
+        IoControllerTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
