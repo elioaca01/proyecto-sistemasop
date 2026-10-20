@@ -46,6 +46,6 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 
 ## Explicación y evidencia por módulo
 
-- [Guía de defensa del módulo 2 y repaso del módulo 1](docs/defensa/modulo-2-computador.md): responsabilidades, conceptos, traza de E/S y preguntas frecuentes.
+- [Guías de defensa por módulo](docs/defensa/README.md): explicaciones breves de los módulos 1 y 2; al completar el proyecto se reunirán en un resumen final.
 - [Verificación del módulo 1](docs/verification/2026-10-19-foundation.md).
 - [Verificación del módulo 2](docs/verification/2026-10-20-single-computer.md).

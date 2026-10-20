@@ -31,7 +31,7 @@ La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 compl
 
 1. Escribir la prueba de comportamiento, comprobar el fallo esperado, implementar y comprobar el resultado.
 2. Usar una rama por funcionalidad y commits descriptivos; integrar por PR cuando esté conectado GitHub.
-3. Al cerrar cada módulo, conservar evidencia de pruebas y una explicación breve para la defensa.
+3. Al cerrar cada módulo, conservar evidencia de pruebas y una guía breve de defensa independiente en `docs/defensa/`, con conceptos, ejemplo y preguntas. Al terminar todos, sintetizarlas en un resumen unificado de aproximadamente dos páginas, según la preferencia del estudiante.
 4. Si aparece una contradicción del enunciado, registrarla en el diseño con la interpretación elegida antes de aplicarla.
 5. No marcar un requisito como cumplido por tener una clase vacía, una ventana decorativa o una prueba que no lo ejercita.
 
