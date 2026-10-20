@@ -12,6 +12,7 @@ public final class AllTests {
         RamTest.run();
         SchedulingTest.run();
         MemoryAdmissionTest.run();
+        CpuTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
