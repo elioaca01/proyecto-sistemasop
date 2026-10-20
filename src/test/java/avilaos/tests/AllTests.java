@@ -17,6 +17,7 @@ public final class AllTests {
         ComputerTest.run();
         ReadyOrderTest.run();
         PolicyTest.run();
+        PreemptiveKernelTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }

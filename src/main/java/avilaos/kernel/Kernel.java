@@ -3,6 +3,7 @@ package avilaos.kernel;
 import avilaos.hardware.*;
 import avilaos.process.*;
 import avilaos.scheduling.SchedulingPolicy;
+import avilaos.scheduling.SchedulingPolicyType;
 import avilaos.simulation.Tickable;
 import avilaos.structures.LinkedList;
 import avilaos.structures.OrderedProcessQueue;
@@ -21,15 +22,21 @@ public final class Kernel implements Tickable {
     private final LinkedList<ProcessControlBlock> terminated = new LinkedList<>();
     private final LinkedList<ProcessControlBlock> registry = new LinkedList<>();
     private long nextCycle;
+    private int quantum;
+    private int sliceUsed;
 
     public Kernel(int computerId, Cpu cpu, Ram ram, IoController io, SchedulingPolicy policy) {
-        if (computerId <= 0 || cpu == null || ram == null || io == null || policy == null) {
+        this(computerId, cpu, ram, io, policy, 2);
+    }
+    public Kernel(int computerId, Cpu cpu, Ram ram, IoController io, SchedulingPolicy policy, int quantum) {
+        if (computerId <= 0 || cpu == null || ram == null || io == null || policy == null || quantum <= 0) {
             throw new IllegalArgumentException("Computador y componentes requeridos");
         }
         this.computerId = computerId;
         this.cpu = cpu;
         this.ram = ram;
         this.io = io;
+        this.quantum = quantum;
         admission = new MemoryAdmission(ram);
         scheduler = new Scheduler(ready, policy);
     }
@@ -64,18 +71,29 @@ public final class Kernel implements Tickable {
             }
         }
         admitWaiting();
+        scheduler.reorder();
+        if (scheduler.shouldPreempt(cpu.current(), sliceUsed, quantum)) {
+            ProcessControlBlock preempted = cpu.current();
+            preempted.preempt();
+            ready.addLast(preempted);
+            cpu.clear();
+            sliceUsed = 0;
+            scheduler.reorder();
+        }
         if (cpu.current() == null) {
             ProcessControlBlock selected = scheduler.select();
-            if (selected != null) { selected.dispatch(cycle); cpu.load(selected); }
+            if (selected != null) { selected.dispatch(cycle); cpu.load(selected); sliceUsed = 0; }
         }
         cpu.onTick(cycle);
         ProcessControlBlock running = cpu.current();
         if (running != null) {
+            sliceUsed++;
             if (cpu.lastInstruction() == InstructionKind.IO_REQUEST) {
                 io.request(running, cycle, running.definition().ioCycles());
                 running.block(BlockReason.IO);
                 blocked.addLast(running);
                 cpu.clear();
+                sliceUsed = 0;
             } else if (running.remainingInstructions() == 0) {
                 finish(running, TerminationReason.COMPLETED, cycle);
             }
@@ -88,6 +106,7 @@ public final class Kernel implements Tickable {
         }
         // La admisión al cierre no concede una segunda instrucción en el mismo ciclo.
         admitWaiting();
+        scheduler.reorder();
         nextCycle++;
     }
     private void admitWaiting() {
@@ -101,7 +120,7 @@ public final class Kernel implements Tickable {
     }
     private void finish(ProcessControlBlock process, TerminationReason reason, long cycle) {
         process.terminate(reason, cycle);
-        if (cpu.current() == process) { cpu.clear(); }
+        if (cpu.current() == process) { cpu.clear(); sliceUsed = 0; }
         removeIdentity(incoming, process);
         ready.remove(process.id());
         removeIdentity(blocked, process);
@@ -114,6 +133,9 @@ public final class Kernel implements Tickable {
             if (queue.get(i) == process) { queue.removeAt(i); return; }
         }
     }
+    public int quantum() { return quantum; }
+    public int sliceUsed() { return sliceUsed; }
+    public SchedulingPolicyType policyType() { return scheduler.policyType(); }
     public long nextCycle() { return nextCycle; }
     public int newCount() { return incoming.size(); }
     public int readyCount() { return ready.size(); }
