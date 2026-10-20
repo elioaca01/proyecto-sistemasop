@@ -27,6 +27,8 @@ La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 compl
 - [Módulo 1: base, estructuras y procesos](2026-10-19-avilaos-foundation.md): código implementado y 212 comprobaciones satisfactorias. El estudiante confirmó el arranque visual desde NetBeans mediante una captura; cierre, recompilación limpia en el IDE y Debug permanecen pendientes.
 - [Módulo 2: un computador](2026-10-19-avilaos-single-computer.md): CPU, RAM, admisión, FCFS, E/S y deadlines implementados; 509 comprobaciones acumuladas y construcción limpia satisfactorias. [Guía de defensa](../../defensa/modulo-2-computador.md). La GUI conserva la ventana inicial.
 
+- [Módulo 3: políticas](2026-10-20-avilaos-scheduling.md): cuatro políticas, apropiación, quantum y cambios entre ciclos implementados; 916 comprobaciones y construcción limpia satisfactorias. Revisión independiente satisfactoria, sin hallazgos. [Guía de defensa](../../defensa/modulo-3-planificacion.md).
+
 ## Reglas de avance
 
 1. Escribir la prueba de comportamiento, comprobar el fallo esperado, implementar y comprobar el resultado.
