@@ -10,6 +10,7 @@ public final class AllTests {
         ProcessDefinitionTest.run();
         ProcessControlBlockTest.run();
         RamTest.run();
+        SchedulingTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
