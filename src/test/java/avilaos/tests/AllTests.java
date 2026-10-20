@@ -11,6 +11,7 @@ public final class AllTests {
         ProcessControlBlockTest.run();
         RamTest.run();
         SchedulingTest.run();
+        MemoryAdmissionTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
