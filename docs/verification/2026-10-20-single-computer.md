@@ -60,3 +60,7 @@ No hay hallazgos menores diferidos. Se conserva la rama funcional; no hay remoto
 La [guía de defensa](../defensa/modulo-2-computador.md) describe qué se construyó, la responsabilidad de cada clase, conceptos base, el orden de ciclo y preguntas probables. El módulo 1 tiene su [guía separada](../defensa/modulo-1-base-y-procesos.md); el [índice](../defensa/README.md) organiza las guías y el futuro resumen final.
 
 No se atribuye a este módulo una simulación visual interactiva, un clúster sincronizado ni políticas apropiativas. Tampoco se dan por probados Clean and Build, cierre y Debug dentro de NetBeans: permanecen las comprobaciones específicas del IDE registradas en el módulo 1. El siguiente módulo incorpora EDF, RR y prioridades apropiativas.
+
+## Construcción desde NetBeans confirmada por el estudiante
+
+El estudiante compartió la salida de su construcción finalizada el 20 de octubre de 2026 a las 13:13:32, hora de Venezuela: `OK: 509 comprobaciones`, generación del JAR, instalación en el repositorio Maven local y `BUILD SUCCESS`. Confirma construcción y pruebas desde su IDE. El fragmento comienza durante las pruebas, por lo que no acredita por sí solo la fase Clean ni una recompilación sin artefactos previos. Cierre y Debug siguen pendientes de comprobación específica.
