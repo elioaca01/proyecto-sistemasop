@@ -4,6 +4,7 @@ import avilaos.hardware.*;
 import avilaos.process.*;
 import avilaos.scheduling.SchedulingPolicy;
 import avilaos.scheduling.SchedulingPolicyType;
+import avilaos.scheduling.SchedulingPolicies;
 import avilaos.simulation.Tickable;
 import avilaos.structures.LinkedList;
 import avilaos.structures.OrderedProcessQueue;
@@ -24,6 +25,8 @@ public final class Kernel implements Tickable {
     private long nextCycle;
     private int quantum;
     private int sliceUsed;
+    private record SchedulingChange(SchedulingPolicy policy, int quantum) { }
+    private SchedulingChange pendingScheduling;
 
     public Kernel(int computerId, Cpu cpu, Ram ram, IoController io, SchedulingPolicy policy) {
         this(computerId, cpu, ram, io, policy, 2);
@@ -55,9 +58,21 @@ public final class Kernel implements Tickable {
         registry.addLast(process);
         incoming.addLast(process);
     }
+    /** Solicita un cambio atómico para el próximo tick válido de este núcleo. */
+    public void configureScheduling(SchedulingPolicyType type, int quantum) {
+        if (quantum <= 0) { throw new IllegalArgumentException("Quantum positivo requerido"); }
+        SchedulingPolicy policy = SchedulingPolicies.create(type);
+        pendingScheduling = new SchedulingChange(policy, quantum);
+    }
     @Override public void onTick(long cycle) {
         if (cycle < 0 || cycle != nextCycle || cycle == Long.MAX_VALUE) {
             throw new IllegalArgumentException("Ciclo del núcleo fuera de secuencia");
+        }
+        if (pendingScheduling != null) {
+            scheduler.setPolicy(pendingScheduling.policy());
+            quantum = pendingScheduling.quantum();
+            sliceUsed = 0;
+            pendingScheduling = null;
         }
         io.onTick(cycle);
         ProcessControlBlock completed;
