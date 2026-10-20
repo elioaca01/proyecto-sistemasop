@@ -9,6 +9,7 @@ public final class AllTests {
         RingBufferTest.run();
         ProcessDefinitionTest.run();
         ProcessControlBlockTest.run();
+        RamTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
