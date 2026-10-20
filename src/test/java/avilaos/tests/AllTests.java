@@ -15,6 +15,7 @@ public final class AllTests {
         CpuTest.run();
         IoControllerTest.run();
         ComputerTest.run();
+        ReadyOrderTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
