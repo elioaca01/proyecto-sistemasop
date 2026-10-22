@@ -7,6 +7,7 @@ Una guía breve por módulo, con el mismo formato: qué hicimos, conceptos esenc
 1. [Base y procesos](modulo-1-base-y-procesos.md).
 2. [Un computador: CPU, RAM, FCFS y E/S](modulo-2-computador.md).
 3. [Políticas de planificación](modulo-3-planificacion.md).
+4. [Clúster y reloj](modulo-4-cluster-y-reloj.md).
 
 Las siguientes guías se incorporarán al completar cada módulo. Los conceptos ya explicados se referenciarán para evitar repeticiones. Los resultados detallados de pruebas permanecen en [verificación](../verification/).
 

@@ -40,7 +40,10 @@ Las pruebas son ejecutables Java con comprobaciones propias; no requieren JUnit 
 - FCFS, EDF, Round Robin y prioridades apropiativas por interfaz; política/quantum configurables por computador con aplicación en el próximo ciclo válido.
 - Orden de entrada a listos conservado al cambiar de política, empates estables y contexto/RAM preservados al apropiar.
 - Ciclos lógicos consecutivos, una instrucción por CPU y ciclo, cancelación de E/S y liberación segura de RAM.
-- Ventana inicial de Swing. Las pruebas ejercitan el motor; los hilos del clúster, buffers, semáforos e interfaz completa siguen en la hoja de ruta.
+- Clúster de al menos dos computadores con hilo por máquina y reloj coordinador mediante semáforos Java.
+- Pausa, paso y ejecución continua por API, comandos entre ciclos, IDs globales e instantáneas inmutables para lectores concurrentes.
+- Cierre ordenado y propagación de fallos; un ciclo parcial fallido no se confirma como completado.
+- Ventana inicial de Swing. Las pruebas ejercitan el motor; buffers, red, semáforos simulados y controles gráficos completos siguen en la hoja de ruta.
 
 `ProcessDefinition` conserva los atributos iniciales inmutables; `ProcessControlBlock` mantiene el estado vivo del proceso. Apropiar o bloquear conserva PC/MAR y la RAM asignada; ejecutar una instrucción avanza PC/MAR. El núcleo invoca estas operaciones y MemoryAdmission controla las reservas de RAM simulada.
 
@@ -48,7 +51,8 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 
 ## Explicación y evidencia por módulo
 
-- [Guías de defensa por módulo](docs/defensa/README.md): explicaciones breves de los módulos 1, 2 y 3; al completar el proyecto se reunirán en un resumen final.
+- [Guías de defensa por módulo](docs/defensa/README.md): explicaciones breves de los módulos 1, 2, 3 y 4; al completar el proyecto se reunirán en un resumen final.
 - [Verificación del módulo 1](docs/verification/2026-10-19-foundation.md).
 - [Verificación del módulo 2](docs/verification/2026-10-20-single-computer.md).
 - [Verificación del módulo 3](docs/verification/2026-10-20-scheduling.md).
+- [Verificación del módulo 4](docs/verification/2026-10-22-cluster.md).

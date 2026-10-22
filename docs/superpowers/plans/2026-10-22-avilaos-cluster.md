@@ -1,6 +1,6 @@
 # ÁvilaOS Cluster and Clock Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** ejecutar al menos dos computadores con hilos reales, un reloj coordinador, comandos seguros e instantáneas inmutables, con pausa/paso/cierre y propagación de fallos comprobados.
 
@@ -10,7 +10,7 @@
 
 **Spec:** [diseño aprobado](../specs/2026-10-18-avilaos-design.md), secciones 3, 5 y 6; módulo 4 de la [hoja de ruta](2026-10-19-avilaos-roadmap.md). Continúa las 916 comprobaciones de los módulos 1–3.
 
-**Execution:** mantener ejecución nativa, revisión independiente final y carpeta compartida con NetBeans. El estudiante solicitó comenzar el módulo; este plan concreto queda pendiente de su revisión antes de implementar.
+**Execution:** mantener ejecución nativa, revisión independiente final y carpeta compartida con NetBeans. El estudiante aprobó este plan el 22 de octubre de 2026 («aplicalo»).
 
 ## Global Constraints
 
@@ -67,10 +67,10 @@ Esperado: `OK: N comprobaciones`, N >= 916, y `BUILD SUCCESS`. Registrar cada nu
 
 **Interfaces:** ComputerConfig es record `(int id, int ramCapacity, SchedulingPolicyType policy, int quantum)` con validaciones del motor. ProcessSnapshot es record con copia de todos los campos públicos de PCB y su ProcessDefinition inmutable, con `static capture(ProcessControlBlock)`. ComputerSnapshot es clase final con `static capture(Computer)`, accesores `id()`, `nextCycle()`, `ramCapacity()`, `ramUsed()`, `ramFree()`, `mode()`, `lastInstruction()`, `lastProcessId()`, `policyType()`, `quantum()`, `sliceUsed()`, `running()` nullable y `newCount/newAt`, `readyCount/readyAt`, `blockedCount/blockedAt`, `terminatedCount/terminatedAt` devolviendo solo ProcessSnapshot. SimulationSnapshot es clase final con constructor `(long version, long nextCycle, SimulationState state, long cycleMillis, String error, ComputerSnapshot[] computers, CommandResult[] results)`, accesores escalares homónimos y arreglos privados copiados de ComputerSnapshot/CommandResult; `computerCount()/computerAt(int)`, `resultCount()/resultAt(int)`. CommandResult es record `(long requestId, long appliedCycle, boolean accepted, long processId, String message)`; processId=-1 si no crea proceso y appliedCycle=-1 si se descarta antes de aplicar por cierre. Ningún accessor entrega arreglos ni PCB/Computer vivos.
 
-- [ ] Escribir SnapshotTest: capturar una Computer con A RUNNING y B READY, retener copia, avanzar hasta terminar y verificar que la copia conserva PC/estados/RAM originales. Comprobar campos de una IO bloqueada y una terminada por deadline.
-- [ ] Probar copia defensiva de arreglos de SimulationSnapshot, validaciones de ComputerConfig, IDs/orden y accesos indexados; los datos de ProcessDefinition no se modifican.
-- [ ] BUILD: esperado fallo por clases ausentes. Implementar capturas por campos, no envoltorios del objeto mutable; construir orden de colas igual al núcleo.
-- [ ] BUILD: esperado éxito; commit `feat: captura estado inmutable de computadores y procesos`.
+- [x] Escribir SnapshotTest: capturar una Computer con A RUNNING y B READY, retener copia, avanzar hasta terminar y verificar que la copia conserva PC/estados/RAM originales. Comprobar campos de una IO bloqueada y una terminada por deadline.
+- [x] Probar copia defensiva de arreglos de SimulationSnapshot, validaciones de ComputerConfig, IDs/orden y accesos indexados; los datos de ProcessDefinition no se modifican.
+- [x] BUILD: esperado fallo por clases ausentes. Implementar capturas por campos, no envoltorios del objeto mutable; construir orden de colas igual al núcleo.
+- [x] BUILD: esperado éxito; commit `feat: captura estado inmutable de computadores y procesos`.
 
 ## Task 2: publicación y espera de instantáneas con semáforos
 
@@ -78,10 +78,10 @@ Esperado: `OK: N comprobaciones`, N >= 916, y `BUILD SUCCESS`. Registrar cada nu
 
 **Interfaces:** `SnapshotStore(SimulationSnapshot initial)`, `SimulationSnapshot get()`, `void publish(SimulationSnapshot next)`, `SimulationSnapshot awaitNewer(long version, long timeoutMillis) throws InterruptedException`. publish exige versión estrictamente mayor y no-null; await exige versión >= 0 y timeout > 0, devuelve copia ya disponible o espera una versión mayor; devuelve null si vence el tiempo. Un Semaphore(1) protege referencia y registro de lectores; cada lector pendiente usa su propio semáforo de aviso en lista propia para despertar a todos. Registrar/comprobar versión bajo el mismo mutex evita despertares perdidos; timeout/interrupción retira al lector.
 
-- [ ] Pruebas: get inicial, publicación válida, rechazo atómico de versión vieja/nulo, lectura de una versión ya publicada y timeout acotado sin publicación.
-- [ ] Dos lectores registrados esperan la misma versión, publish los libera a ambos; interrupción/timeout de uno no consume el aviso del otro ni bloquea publicaciones futuras. Coordinar inicio con semáforos, y limitar joins a 2 segundos.
-- [ ] BUILD: esperado fallo por SnapshotStore ausente. Implementar acquire/release con finally y limpieza de lectores.
-- [ ] BUILD: esperado éxito; commit `feat: publica instantaneas protegidas por semaforos`.
+- [x] Pruebas: get inicial, publicación válida, rechazo atómico de versión vieja/nulo, lectura de una versión ya publicada y timeout acotado sin publicación.
+- [x] Dos lectores registrados esperan la misma versión, publish los libera a ambos; interrupción/timeout de uno no consume el aviso del otro ni bloquea publicaciones futuras. Coordinar inicio con semáforos, y limitar joins a 2 segundos.
+- [x] BUILD: esperado fallo por SnapshotStore ausente. Implementar acquire/release con finally y limpieza de lectores.
+- [x] BUILD: esperado éxito; commit `feat: publica instantaneas protegidas por semaforos`.
 
 ## Task 3: hilo de computador con relevo inicio/fin
 
@@ -89,10 +89,10 @@ Esperado: `OK: N comprobaciones`, N >= 916, y `BUILD SUCCESS`. Registrar cada nu
 
 **Interfaces:** `ComputerWorker(int computerId, Tickable target)`, `void start()`, `void executeCycle(long cycle) throws InterruptedException`, `int computerId()`, `boolean isAlive()`, `void close()` (AutoCloseable). Tiene Thread propio y Semaphore de inicio/fin; executeCycle es una llamada del coordinador que entrega un ciclo y espera su resultado. Una exclusión de peticiones impide dos entregas simultáneas. Validar secuencia 0.. y Long.MAX_VALUE antes de entregar; antes de start, tras fallo o tras cierre no se aceptan ciclos. start no es repetible. Publicar el resultado y liberar fin en finally, también ante Throwable del target; propagar IllegalStateException con causa al coordinador. close señala cierre, interrumpe la espera de inicio y hace join acotado a 2 segundos; no depende del mutex retenido por executeCycle.
 
-- [ ] Target registra ciclo y nombre/identidad de Thread: ejecutar 0/1 ocurre en el worker, no en quien llama; cada petición ejecuta una sola vez. Rechazos de repetición/salto no invocan target ni rompen el siguiente ciclo válido.
-- [ ] Target lanza IllegalStateException en 0: el coordinador recibe causa sin quedar esperando fin; el worker termina y no acepta otro ciclo. Verificar close sin trabajo, close repetido y cierre tras fallo, sin hilos propios vivos.
-- [ ] BUILD: esperado fallo por worker ausente. Implementar el protocolo con resultado visible por relevo de semáforos, sin bucle de sondeo.
-- [ ] BUILD: esperado éxito; commit `feat: ejecuta cada computador en su hilo coordinado`.
+- [x] Target registra ciclo y nombre/identidad de Thread: ejecutar 0/1 ocurre en el worker, no en quien llama; cada petición ejecuta una sola vez. Rechazos de repetición/salto no invocan target ni rompen el siguiente ciclo válido.
+- [x] Target lanza IllegalStateException en 0: el coordinador recibe causa sin quedar esperando fin; el worker termina y no acepta otro ciclo. Verificar close sin trabajo, close repetido y cierre tras fallo, sin hilos propios vivos.
+- [x] BUILD: esperado fallo por worker ausente. Implementar el protocolo con resultado visible por relevo de semáforos, sin bucle de sondeo.
+- [x] BUILD: esperado éxito; commit `feat: ejecuta cada computador en su hilo coordinado`.
 
 ## Task 4: reloj, controles y propagación de fallo
 
@@ -100,11 +100,11 @@ Esperado: `OK: N comprobaciones`, N >= 916, y `BUILD SUCCESS`. Registrar cada nu
 
 **Interfaces:** ClockDriver define `long advanceCycle(long cycle)` (devuelve duración activa tras aplicar comandos), `void publishState(long nextCycle, SimulationState state, long cycleMillis, String error)` y `void shutdown()`. GlobalClock recibe `(ClockDriver driver, long cycleMillis)` positivo; ofrece `start()`, `resume()`, `pause()`, `step()`, `stop()`, `state()`, `boolean isAlive()`, `boolean awaitStopped(long timeoutMillis) throws InterruptedException`, `close()`. Control protegido por Semaphore(1), aviso con otro Semaphore y confirmación de cierre; no retener mutex de control al ejecutar driver, esperar ritmo, publicar o cerrar. Los callbacks son del hilo del reloj. Una espera de ritmo interruptible por aviso permite pausa/cierre inmediatos aunque duración sea grande. No aceptar controles de avance antes de start ni tras solicitud terminal.
 
-- [ ] Driver registra llamadas usando semáforos: start queda PAUSED sin ticks; un step produce solo ciclo 0 y vuelve PAUSED; dos pasos producen 1/2. resume produce ciclos consecutivos; pause confirma un límite estable. No aceptar step cuando RUNNING.
-- [ ] Con duración 60 000 ms, pause/stop despiertan la espera sin esperar un minuto. Pausa solicitada dentro de un ciclo permite terminarlo y no concede otro. No usar sleeps como barreras.
-- [ ] Driver falla en advance: state FAILED, error legible, nextCycle sin confirmar ese ciclo, shutdown invocado una vez y cierre anunciado. Stop en PAUSED y en RUNNING cierra una vez; resume tras STOPPED/FAILED se rechaza. Preservar interrupciones, publicar estado terminal también si falla shutdown.
-- [ ] BUILD: esperado fallo por reloj/driver ausentes. Implementar ciclo/control de vida con try/finally y cierre garantizado para trabajo finito; callbacks fallidos producen error terminal, no reinicio automático.
-- [ ] BUILD: esperado éxito; commit `feat: coordina ciclos pausa paso y cierre del reloj`.
+- [x] Driver registra llamadas usando semáforos: start queda PAUSED sin ticks; un step produce solo ciclo 0 y vuelve PAUSED; dos pasos producen 1/2. resume produce ciclos consecutivos; pause confirma un límite estable. No aceptar step cuando RUNNING.
+- [x] Con duración 60 000 ms, pause/stop despiertan la espera sin esperar un minuto. Pausa solicitada dentro de un ciclo permite terminarlo y no concede otro. No usar sleeps como barreras.
+- [x] Driver falla en advance: state FAILED, error legible, nextCycle sin confirmar ese ciclo, shutdown invocado una vez y cierre anunciado. Stop en PAUSED y en RUNNING cierra una vez; resume tras STOPPED/FAILED se rechaza. Preservar interrupciones, publicar estado terminal también si falla shutdown.
+- [x] BUILD: esperado fallo por reloj/driver ausentes. Implementar ciclo/control de vida con try/finally y cierre garantizado para trabajo finito; callbacks fallidos producen error terminal, no reinicio automático.
+- [x] BUILD: esperado éxito; commit `feat: coordina ciclos pausa paso y cierre del reloj`.
 
 ## Task 5: clúster, comandos e IDs globales
 
@@ -114,32 +114,32 @@ Esperado: `OK: N comprobaciones`, N >= 916, y `BUILD SUCCESS`. Registrar cada nu
 
 **Propiedad:** cola de solicitudes/results con IDs bajo semáforo propio; registro global de PCB y siguiente ID de proceso bajo otro; publicación mediante SnapshotStore. Solo el reloj aplica comandos cuando no hay worker activo. Al iniciar ciclo extrae un lote completo y suelta el mutex antes de aplicarlo. Cada resultado queda conservado en el historial de instantáneas, indexado por orden de solicitud. Una cola cerrada rechaza enqueue atómicamente; shutdown convierte pendientes no aplicadas en resultados rechazados antes de publicar estado terminal.
 
-- [ ] Configuración: rechazar null, menos de dos máquinas, IDs duplicados/datos inválidos sin dejar hilos vivos. Arreglo [ID 2,ID 1] se publica ordenado 1,2 y cambios al arreglo original no afectan al clúster.
-- [ ] En PAUSED encolar A para máquina 2, B para máquina 1 y máquina desconocida: no ejecutar hasta step. Primer ciclo aplica en FIFO, asigna IDs globales 1/2 a A/B, rechaza la tercera sin consumir ID y ambas máquinas avanzan una vez. En siguiente lote, otro proceso recibe 3 y llegada igual al ciclo de aplicación. No hay migración ni reutilización de IDs terminados.
-- [ ] Capturar una instantánea antes de más pasos: conserva PC, colas, memoria y resultados. Cambiar política/quantum de máquina 1 y duración en el mismo lote afecta al siguiente avance, sin cambiar la máquina 2.
-- [ ] stop con comandos todavía en cola los publica rechazados; enqueue posterior falla y close repetido no crea duplicados. Rechazos de comandos no detienen el clúster ni cambian RAM/PC/colas de máquinas ajenas.
-- [ ] BUILD: esperado fallo por Simulation/comandos ausentes. Implementar ensamblado y callbacks del reloj, capturar solo después de que todos los workers terminaron o después de cerrarlos por fallo.
-- [ ] BUILD: esperado éxito; commit `feat: integra cluster comandos seguros e IDs globales`.
+- [x] Configuración: rechazar null, menos de dos máquinas, IDs duplicados/datos inválidos sin dejar hilos vivos. Arreglo [ID 2,ID 1] se publica ordenado 1,2 y cambios al arreglo original no afectan al clúster.
+- [x] En PAUSED encolar A para máquina 2, B para máquina 1 y máquina desconocida: no ejecutar hasta step. Primer ciclo aplica en FIFO, asigna IDs globales 1/2 a A/B, rechaza la tercera sin consumir ID y ambas máquinas avanzan una vez. En siguiente lote, otro proceso recibe 3 y llegada igual al ciclo de aplicación. No hay migración ni reutilización de IDs terminados.
+- [x] Capturar una instantánea antes de más pasos: conserva PC, colas, memoria y resultados. Cambiar política/quantum de máquina 1 y duración en el mismo lote afecta al siguiente avance, sin cambiar la máquina 2.
+- [x] stop con comandos todavía en cola los publica rechazados; enqueue posterior falla y close repetido no crea duplicados. Rechazos de comandos no detienen el clúster ni cambian RAM/PC/colas de máquinas ajenas.
+- [x] BUILD: esperado fallo por Simulation/comandos ausentes. Implementar ensamblado y callbacks del reloj, capturar solo después de que todos los workers terminaron o después de cerrarlos por fallo.
+- [x] BUILD: esperado éxito; commit `feat: integra cluster comandos seguros e IDs globales`.
 
 ## Task 6: concurrencia integrada y trazas repetibles
 
 **Files:** crear `tests/ClusterIntegrationTest.java`; modificar producción solo para corregir comportamientos reproducidos por las pruebas. Registrar en AllTests.
 
-- [ ] Dos máquinas con CPU/E/S: avanzar pasos y comprobar nextCycle iguales al global, una instrucción máxima por máquina/ciclo, deadlines globales aunque una esté bloqueada e independencia de RAM/políticas. Repetir escenario con duraciones 1 y 1000 ms usando pasos: mismas trazas/resultados por ciclo.
-- [ ] Driver de prueba compone workers ID 1 y 2; registra orden 1,2 y hilos diferentes del coordinador. El segundo falla después del primero: snapshot/error indica ciclo parcial, nextCycle global no avanza, no se solicita otro tick, todos los hilos terminan. Usar el mismo protocolo ClockDriver/ComputerWorker que producción, sin hooks exclusivos.
-- [ ] Productores reales de comandos, sincronizados con semáforos: verificar IDs de solicitud únicos y resultados en orden de solicitud; rechazos no consumen IDs de proceso. Un comando entregado después de cerrar el lote queda para el siguiente ciclo. Pausa/cierre concurrentes no pierden una solicitud aceptada: tendrá resultado aplicado o rechazado.
-- [ ] Lectores simultáneos retienen instantáneas mientras avanza el reloj: cada publicación no fallida es completa, las copias no cambian y el lector no puede modificar el motor. Esperas de versión despiertan también con publicación terminal.
-- [ ] Ejecutar BUILD. Si falla comportamiento, registrar causa y corregir bajo TDD; si todas pasan inicialmente, registrar que esta tarea añade verificación integrada sobre las piezas ya implementadas, sin inventar un fallo.
-- [ ] Ejecutar clean package y verificar que las 916 comprobaciones originales siguen en el runner. Commit `test: verifica coordinacion y cierre del cluster`.
+- [x] Dos máquinas con CPU/E/S: avanzar pasos y comprobar nextCycle iguales al global, una instrucción máxima por máquina/ciclo, deadlines globales aunque una esté bloqueada e independencia de RAM/políticas. Repetir escenario con duraciones 1 y 1000 ms usando pasos: mismas trazas/resultados por ciclo.
+- [x] Driver de prueba compone workers ID 1 y 2; registra orden 1,2 y hilos diferentes del coordinador. El segundo falla después del primero: snapshot/error indica ciclo parcial, nextCycle global no avanza, no se solicita otro tick, todos los hilos terminan. Usar el mismo protocolo ClockDriver/ComputerWorker que producción, sin hooks exclusivos.
+- [x] Productores reales de comandos, sincronizados con semáforos: verificar IDs de solicitud únicos y resultados en orden de solicitud; rechazos no consumen IDs de proceso. Un comando entregado después de cerrar el lote queda para el siguiente ciclo. Pausa/cierre concurrentes no pierden una solicitud aceptada: tendrá resultado aplicado o rechazado.
+- [x] Lectores simultáneos retienen instantáneas mientras avanza el reloj: cada publicación no fallida es completa, las copias no cambian y el lector no puede modificar el motor. Esperas de versión despiertan también con publicación terminal.
+- [x] Ejecutar BUILD. Si falla comportamiento, registrar causa y corregir bajo TDD; si todas pasan inicialmente, registrar que esta tarea añade verificación integrada sobre las piezas ya implementadas, sin inventar un fallo.
+- [x] Ejecutar clean package y verificar que las 916 comprobaciones originales siguen en el runner. Commit `test: verifica coordinacion y cierre del cluster`.
 
 ## Task 7: explicación breve, evidencia y revisión
 
 **Files:** README, hoja de ruta, índice de defensa; crear `docs/defensa/modulo-4-cluster-y-reloj.md` y `docs/verification/2026-10-22-cluster.md` (usar fecha real de ejecución).
 
-- [ ] Guía breve con el formato acordado: qué hicimos, conceptos, clases, ejemplo de dos máquinas, tres preguntas y explicación oral. Distinguir concurrencia real, orden determinista y paralelismo; semáforos Java de coordinación frente a semáforos simulados futuros.
-- [ ] Registrar trazas, número real de comprobaciones, construcción limpia, cierre de hilos y resultado de revisión. Incorporar la salida de NetBeans del módulo 3 aportada por el estudiante: 916 comprobaciones, JAR/install y BUILD SUCCESS, terminada el 21 de octubre a las 23:37:07 de Venezuela; no atribuir al fragmento Clean, cierre ni Debug.
-- [ ] Ejecutar BUILD y git diff --check; revisar imports, defensas de arreglos, permisos liberados con finally y ausencia de hilos propios vivos al finalizar pruebas.
-- [ ] Solicitar una única revisión independiente del rango completo según executing-plans. Corregir hallazgos importantes con reproducción que falle primero; registrar decisiones y menores diferidos si existen.
-- [ ] Guardar rama funcional y commits sin inventar PR ni fusionar localmente por falta de remoto; commit `docs: explica y verifica cluster para la defensa`. El siguiente módulo es productor-consumidor local/remoto.
+- [x] Guía breve con el formato acordado: qué hicimos, conceptos, clases, ejemplo de dos máquinas, tres preguntas y explicación oral. Distinguir concurrencia real, orden determinista y paralelismo; semáforos Java de coordinación frente a semáforos simulados futuros.
+- [x] Registrar trazas, número real de comprobaciones, construcción limpia, cierre de hilos y resultado de revisión. Incorporar la salida de NetBeans del módulo 3 aportada por el estudiante: 916 comprobaciones, JAR/install y BUILD SUCCESS, terminada el 21 de octubre a las 23:37:07 de Venezuela; no atribuir al fragmento Clean, cierre ni Debug.
+- [x] Ejecutar BUILD y git diff --check; revisar imports, defensas de arreglos, permisos liberados con finally y ausencia de hilos propios vivos al finalizar pruebas.
+- [x] Solicitar una única revisión independiente del rango completo según executing-plans. Corregir hallazgos importantes con reproducción que falle primero; registrar decisiones y menores diferidos si existen.
+- [x] Guardar rama funcional y commits sin inventar PR ni fusionar localmente por falta de remoto; commit `docs: explica y verifica cluster para la defensa`. El siguiente módulo es productor-consumidor local/remoto.
 
-Estado: plan preparado y revisado contra el diseño; pendiente de aprobación para implementar.
+Estado: módulo 4 implementado y verificado; revisión independiente realizada y hallazgo de cobertura corregido. Siguiente módulo pendiente.

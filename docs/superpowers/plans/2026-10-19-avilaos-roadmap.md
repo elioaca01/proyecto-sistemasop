@@ -29,6 +29,8 @@ La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 compl
 
 - [Módulo 3: políticas](2026-10-20-avilaos-scheduling.md): cuatro políticas, apropiación, quantum y cambios entre ciclos implementados; 916 comprobaciones y construcción limpia satisfactorias. Revisión independiente satisfactoria, sin hallazgos. [Guía de defensa](../../defensa/modulo-3-planificacion.md).
 
+- [Módulo 4: clúster y reloj](2026-10-22-avilaos-cluster.md): hilos, semáforos Java, controles por API, comandos e instantáneas implementados; 1246 comprobaciones y construcción limpia satisfactorias. Revisión independiente realizada; hallazgo de cobertura corregido. [Guía de defensa](../../defensa/modulo-4-cluster-y-reloj.md).
+
 ## Reglas de avance
 
 1. Escribir la prueba de comportamiento, comprobar el fallo esperado, implementar y comprobar el resultado.
