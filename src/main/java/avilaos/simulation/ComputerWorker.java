@@ -37,7 +37,14 @@ public final class ComputerWorker implements AutoCloseable {
                 if (cycle < 0 || cycle != nextCycle || cycle == Long.MAX_VALUE) { throw new IllegalArgumentException("Ciclo fuera de secuencia"); }
                 requestedCycle = cycle; pending = true; begin.release();
             } finally { lifecycle.release(); }
-            finished.acquire();
+            try { finished.acquire(); }
+            catch (InterruptedException cancelled) {
+                // La petición entregada puede seguir en vuelo: impedir reutilizar su confirmación.
+                lifecycle.acquireUninterruptibly();
+                try { closing = true; failure = cancelled; thread.interrupt(); }
+                finally { lifecycle.release(); }
+                throw cancelled;
+            }
             if (failure != null || closing) { throw new IllegalStateException("Worker falló o fue cerrado", failure); }
             nextCycle++;
         } finally { requests.release(); }

@@ -24,6 +24,7 @@ public final class AllTests {
         ComputerWorkerTest.run();
         GlobalClockTest.run();
         SimulationTest.run();
+        ClusterIntegrationTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
