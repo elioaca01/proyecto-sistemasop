@@ -21,6 +21,7 @@ public final class AllTests {
         SchedulingChangeTest.run();
         SnapshotTest.run();
         SnapshotStoreTest.run();
+        ComputerWorkerTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
