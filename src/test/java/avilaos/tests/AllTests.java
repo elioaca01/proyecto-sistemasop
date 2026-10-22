@@ -23,6 +23,7 @@ public final class AllTests {
         SnapshotStoreTest.run();
         ComputerWorkerTest.run();
         GlobalClockTest.run();
+        SimulationTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }

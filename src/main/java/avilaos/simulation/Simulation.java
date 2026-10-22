@@ -1,0 +1,168 @@
+package avilaos.simulation;
+
+import avilaos.process.ProcessControlBlock;
+import avilaos.process.ProcessDefinition;
+import avilaos.scheduling.SchedulingPolicyType;
+import avilaos.structures.LinkedList;
+import avilaos.structures.LinkedQueue;
+import java.util.concurrent.Semaphore;
+
+/** Propietario del clúster. La API externa solo entrega órdenes o lee valores inmutables. */
+public final class Simulation implements ClockDriver, AutoCloseable {
+    private record Request(long id, SimulationCommand command) { }
+    private final Computer[] computers;
+    private final ComputerWorker[] workers;
+    private final GlobalClock clock;
+    private final SnapshotStore snapshots;
+    private final Semaphore commandsMutex = new Semaphore(1), registryMutex = new Semaphore(1);
+    private LinkedQueue<Request> pending = new LinkedQueue<>();
+    private LinkedQueue<Request> batch = new LinkedQueue<>();
+    private final LinkedList<CommandResult> results = new LinkedList<>();
+    private final LinkedList<ProcessControlBlock> registry = new LinkedList<>();
+    private boolean accepting = true;
+    private long nextRequestId = 1, nextProcessId = 1, version, applyingCycle, cycleMillis;
+
+    public Simulation(ComputerConfig[] configs, long cycleMillis) {
+        if (configs == null || configs.length < 2 || cycleMillis <= 0) { throw new IllegalArgumentException("Se requieren dos computadores y duración positiva"); }
+        ComputerConfig[] ordered = configs.clone();
+        for (int i = 0; i < ordered.length; i++) {
+            if (ordered[i] == null) { throw new IllegalArgumentException("Configuración nula"); }
+            for (int j = 0; j < i; j++) {
+                if (ordered[i].id() == ordered[j].id()) { throw new IllegalArgumentException("ID de computador duplicado"); }
+            }
+        }
+        // Inserción propia por ID; no modificar el arreglo del llamador.
+        for (int i = 1; i < ordered.length; i++) {
+            ComputerConfig value = ordered[i]; int j = i;
+            while (j > 0 && ordered[j - 1].id() > value.id()) { ordered[j] = ordered[j - 1]; j--; }
+            ordered[j] = value;
+        }
+        this.cycleMillis = cycleMillis;
+        computers = new Computer[ordered.length]; workers = new ComputerWorker[ordered.length];
+        for (int i = 0; i < ordered.length; i++) {
+            ComputerConfig c = ordered[i];
+            computers[i] = new Computer(c.id(), c.ramCapacity(), c.policy(), c.quantum());
+            workers[i] = new ComputerWorker(c.id(), computers[i]);
+        }
+        snapshots = new SnapshotStore(capture(0, 0, SimulationState.PAUSED, null));
+        clock = new GlobalClock(this, cycleMillis);
+        try { for (ComputerWorker worker : workers) { worker.start(); } clock.start(); }
+        catch (Throwable failure) {
+            for (ComputerWorker worker : workers) {
+                try { worker.close(); } catch (Throwable cleanup) { failure.addSuppressed(cleanup); }
+            }
+            throw failure;
+        }
+    }
+    public long enqueue(SimulationCommand command) {
+        if (command == null) { throw new IllegalArgumentException("Orden requerida"); }
+        commandsMutex.acquireUninterruptibly();
+        try {
+            if (!accepting) { throw new IllegalStateException("Simulación cerrada"); }
+            long id = nextRequestId, following = Math.incrementExact(id);
+            pending.enqueue(new Request(id, command)); nextRequestId = following; return id;
+        } finally { commandsMutex.release(); }
+    }
+    private void requireCoordinator() {
+        if (!clock.ownsCurrentThread()) { throw new IllegalStateException("Solo el coordinador modifica la simulación"); }
+    }
+    private Computer computer(int id) {
+        for (Computer c : computers) { if (c.id() == id) { return c; } }
+        throw new IllegalArgumentException("Computador inexistente: " + id);
+    }
+    long applyProcess(ProcessDefinition definition) {
+        requireCoordinator(); Computer target = computer(definition.computerId());
+        registryMutex.acquireUninterruptibly();
+        try {
+            long following = Math.incrementExact(nextProcessId);
+            ProcessControlBlock process = new ProcessControlBlock(nextProcessId, definition, applyingCycle);
+            target.submit(process); registry.addLast(process); nextProcessId = following; return process.id();
+        } finally { registryMutex.release(); }
+    }
+    long applyScheduling(int id, SchedulingPolicyType policy, int quantum) {
+        requireCoordinator(); computer(id).configureScheduling(policy, quantum); return -1;
+    }
+    long applyDuration(long millis) { requireCoordinator(); cycleMillis = millis; return -1; }
+    @Override public long advanceCycle(long cycle) {
+        requireCoordinator(); applyingCycle = cycle;
+        commandsMutex.acquireUninterruptibly();
+        try { batch = pending; pending = new LinkedQueue<>(); }
+        finally { commandsMutex.release(); }
+        Request request;
+        while ((request = batch.dequeue()) != null) {
+            try {
+                long id = request.command().apply(this);
+                result(new CommandResult(request.id(), cycle, true, id, "Aplicada"));
+            } catch (IllegalArgumentException | IllegalStateException rejected) {
+                result(new CommandResult(request.id(), cycle, false, -1, rejected.getMessage()));
+            } catch (Throwable unexpected) {
+                result(new CommandResult(request.id(), cycle, false, -1, unexpected.toString()));
+                throw unexpected;
+            }
+        }
+        for (ComputerWorker worker : workers) {
+            try { worker.executeCycle(cycle); }
+            catch (InterruptedException e) { Thread.currentThread().interrupt(); throw new IllegalStateException("Coordinación interrumpida", e); }
+            catch (IllegalStateException e) { throw new IllegalStateException("Fallo del computador " + worker.computerId(), e); }
+        }
+        return cycleMillis;
+    }
+    private void result(CommandResult result) {
+        commandsMutex.acquireUninterruptibly();
+        try { results.addLast(result); } finally { commandsMutex.release(); }
+    }
+    private SimulationSnapshot capture(long version, long nextCycle, SimulationState state, String error) {
+        CommandResult[] copies;
+        commandsMutex.acquireUninterruptibly();
+        try {
+            copies = new CommandResult[results.size()];
+            for (int i = 0; i < copies.length; i++) { copies[i] = results.get(i); }
+        } finally { commandsMutex.release(); }
+        ComputerSnapshot[] machineCopies = new ComputerSnapshot[computers.length];
+        registryMutex.acquireUninterruptibly();
+        try { for (int i = 0; i < computers.length; i++) { machineCopies[i] = ComputerSnapshot.capture(computers[i]); } }
+        finally { registryMutex.release(); }
+        return new SimulationSnapshot(version, nextCycle, state, cycleMillis, error, machineCopies, copies);
+    }
+    @Override public void publishState(long nextCycle, SimulationState state, long duration, String error) {
+        requireCoordinator();
+        long following = Math.incrementExact(version);
+        snapshots.publish(capture(following, nextCycle, state, error)); version = following;
+    }
+    @Override public void shutdown() {
+        requireCoordinator();
+        commandsMutex.acquireUninterruptibly();
+        try { accepting = false; } finally { commandsMutex.release(); }
+        cancelBatch(batch); cancelBatch(pending);
+        RuntimeException failure = null;
+        for (ComputerWorker worker : workers) {
+            try { worker.close(); }
+            catch (RuntimeException e) { if (failure == null) { failure = e; } else { failure.addSuppressed(e); } }
+        }
+        if (failure != null) { throw failure; }
+    }
+    private void cancelBatch(LinkedQueue<Request> queue) {
+        Request request;
+        while ((request = queue.dequeue()) != null) {
+            result(new CommandResult(request.id(), -1, false, -1, "Cerrada antes de aplicar"));
+        }
+    }
+    public SimulationSnapshot snapshot() { return snapshots.get(); }
+    public SimulationSnapshot awaitNextSnapshot(long afterVersion, long timeoutMillis) throws InterruptedException {
+        return snapshots.awaitNewer(afterVersion, timeoutMillis);
+    }
+    private void control(Runnable action) {
+        commandsMutex.acquireUninterruptibly();
+        try { if (!accepting) { throw new IllegalStateException("Simulación cerrada"); } action.run(); }
+        finally { commandsMutex.release(); }
+    }
+    public void resume() { control(clock::resume); }
+    public void pause() { control(clock::pause); }
+    public void step() { control(clock::step); }
+    public void stop() {
+        commandsMutex.acquireUninterruptibly();
+        try { accepting = false; clock.stop(); } finally { commandsMutex.release(); }
+    }
+    public boolean awaitStopped(long timeoutMillis) throws InterruptedException { return clock.awaitStopped(timeoutMillis); }
+    @Override public void close() { stop(); clock.close(); }
+}
