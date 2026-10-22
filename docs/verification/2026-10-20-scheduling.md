@@ -56,3 +56,7 @@ El estudiante ya compartió una construcción satisfactoria del módulo 2 desde 
 Se conserva la rama funcional y los commits. Sin remoto GitHub, no se ha creado PR ni realizado fusión para sustituirlo.
 
 La [guía breve de defensa](../defensa/modulo-3-planificacion.md) resume conceptos, clases, ejemplo y tres preguntas, conforme a la preferencia del estudiante.
+
+## Construcción desde NetBeans confirmada por el estudiante
+
+El estudiante compartió la salida finalizada el 21 de octubre de 2026 a las 23:37:07, hora de Venezuela: `OK: 916 comprobaciones`, generación del JAR, instalación local y `BUILD SUCCESS`. Confirma construcción y pruebas del módulo 3 desde su IDE. El fragmento comienza en Results y no demuestra por sí solo Clean, cierre de ventana ni Debug.
