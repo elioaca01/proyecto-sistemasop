@@ -20,6 +20,7 @@ public final class AllTests {
         PreemptiveKernelTest.run();
         SchedulingChangeTest.run();
         SnapshotTest.run();
+        SnapshotStoreTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
