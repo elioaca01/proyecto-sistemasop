@@ -25,6 +25,7 @@ public final class AllTests {
         GlobalClockTest.run();
         SimulationTest.run();
         ClusterIntegrationTest.run();
+        SimulatedSemaphoreTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
