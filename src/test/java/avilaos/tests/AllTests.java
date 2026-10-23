@@ -28,6 +28,7 @@ public final class AllTests {
         SimulatedSemaphoreTest.run();
         BoundedBufferTest.run();
         BufferProgramTest.run();
+        BufferOperationTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
