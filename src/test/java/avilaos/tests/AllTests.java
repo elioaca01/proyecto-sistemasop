@@ -42,6 +42,7 @@ public final class AllTests {
         UiSessionLifecycleTest.run();
         UiTableModelTest.run();
         UiFormTest.run();
+        ComputerPanelTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
