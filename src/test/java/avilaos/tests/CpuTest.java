@@ -59,7 +59,8 @@ public final class CpuTest {
         ProcessControlBlock producer = new ProcessControlBlock(3, new ProcessDefinition("Prod", 1,
                 ProcessType.PRODUCER, 6, 1, 0, 10, 0, 0, 1, 1, 1), 0);
         producer.admit(); producer.dispatch(0);
-        TestSupport.throwsType(IllegalArgumentException.class, () -> new Cpu().load(producer));
+        Cpu producerCpu = new Cpu(); producerCpu.load(producer); producerCpu.onTick(0);
+        TestSupport.equal(1, producer.pc());
         ProcessControlBlock maxBurst = io(4, 2, Integer.MAX_VALUE, 1);
         TestSupport.equal(InstructionKind.COMPUTE, LinearProgram.nextInstruction(maxBurst));
     }

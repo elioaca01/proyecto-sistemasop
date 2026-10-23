@@ -16,7 +16,7 @@ public final class Cpu implements Tickable {
         if (process == null || process.state() != ProcessState.RUNNING) {
             throw new IllegalArgumentException("La carga requiere un proceso RUNNING");
         }
-        LinearProgram.nextInstruction(process);
+        ProcessProgram.nextInstruction(process);
         current = process;
     }
     @Override public void onTick(long cycle) {
@@ -28,8 +28,8 @@ public final class Cpu implements Tickable {
             lastInstruction = null;
             lastProcessId = -1;
         } else {
-            InstructionKind instruction = LinearProgram.nextInstruction(current);
-            CpuMode executionMode = instruction == InstructionKind.IO_REQUEST ? CpuMode.KERNEL : CpuMode.USER;
+            InstructionKind instruction = ProcessProgram.nextInstruction(current);
+            CpuMode executionMode = instruction == InstructionKind.COMPUTE ? CpuMode.USER : CpuMode.KERNEL;
             current.executeInstruction(executionMode);
             lastInstruction = instruction;
             mode = executionMode;
