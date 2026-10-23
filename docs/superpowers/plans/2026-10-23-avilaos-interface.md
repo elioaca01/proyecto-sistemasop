@@ -1,6 +1,6 @@
 # ÁvilaOS Swing Interface Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** sustituir la ventana inicial por una interfaz Swing desde la que configurar, ejecutar, observar y defender el motor de los módulos 1–5.
 
@@ -10,7 +10,7 @@
 
 **Spec:** [diseño aprobado](../specs/2026-10-18-avilaos-design.md), secciones 5 y 8; [hoja de ruta](2026-10-19-avilaos-roadmap.md), módulo 6. Contrastado con las páginas 6–7 del enunciado original. Base actual `e000710`, 24463 comprobaciones. JSON y fórmulas/gráfico de métricas corresponden a los módulos 7 y 8.
 
-**Execution:** método nativo de los módulos anteriores, en la misma carpeta NetBeans, rama `feat/swing-interface` al implementar y una revisión independiente final. Este plan queda pendiente de revisión del estudiante; no se ha modificado código de producto.
+**Execution:** método nativo de los módulos anteriores, en la misma carpeta NetBeans, rama `feat/swing-interface` al implementar y una revisión independiente final. Aprobado por el estudiante el 23 de octubre mediante «si lo apruebo»; ejecución nativa en curso.
 
 ## Global Constraints
 
@@ -85,9 +85,9 @@ Esperado: `OK: N comprobaciones`, N >= 24463, y BUILD SUCCESS. Empaquetado: sust
 
 **Interfaces:** constructor y métodos de copia de SimulationConfig descritos arriba; consume ComputerConfig, ProcessDefinition y BufferDefinition existentes.
 
-- [ ] Escribir pruebas: dos máquinas RAM 10, buffer anfitrión 1/capacidad 3 y proceso memoria 8 son válidos (podrá permanecer NEW); dos buffers capacidades 6+5 del mismo anfitrión se rechazan. Rechazar menos de 2, null, máquinas/IDs de buffer duplicados, referencias inexistentes, proceso memoria > RAM total, ms <= 0 y latencia < 0. No exigir que toda la carga de procesos quepa simultáneamente.
-- [ ] Comprobar copias: alterar arreglos de entrada no cambia el escenario; withAddedProcess no cambia el original; withoutBuffer rechaza quitar uno referenciado y withoutProcess usa índice validado. withComputers no borra referencias inválidas silenciosamente. BUILD debe fallar por clase ausente.
-- [ ] Implementar validación con arreglos/bucles propios, sumando reservas de buffers en long. BUILD debe pasar. Commit `feat: modela el escenario inicial para la interfaz`.
+- [x] Escribir pruebas: dos máquinas RAM 10, buffer anfitrión 1/capacidad 3 y proceso memoria 8 son válidos (podrá permanecer NEW); dos buffers capacidades 6+5 del mismo anfitrión se rechazan. Rechazar menos de 2, null, máquinas/IDs de buffer duplicados, referencias inexistentes, proceso memoria > RAM total, ms <= 0 y latencia < 0. No exigir que toda la carga de procesos quepa simultáneamente.
+- [x] Comprobar copias: alterar arreglos de entrada no cambia el escenario; withAddedProcess no cambia el original; withoutBuffer rechaza quitar uno referenciado y withoutProcess usa índice validado. withComputers no borra referencias inválidas silenciosamente. BUILD debe fallar por clase ausente.
+- [x] Implementar validación con arreglos/bucles propios, sumando reservas de buffers en long. BUILD debe pasar. Commit `feat: modela el escenario inicial para la interfaz`.
 
 ## Task 2: registro completo de decisiones en el motor
 
@@ -95,9 +95,9 @@ Esperado: `OK: N comprobaciones`, N >= 24463, y BUILD SUCCESS. Empaquetado: sust
 
 **Interfaces:** EventLog `void append(SimulationEvent event)`, `int size()`, `SimulationEvent at(int)`, `SimulationEvent[] copy()`; copia defensiva de valores. Kernel añade constructor con EventLog después de BufferService, Computer equivalente; anteriores delegan sin registro. BufferService añade constructor `(BufferRegistry,int,EventLog)` y conserva sus consultas locales de mantenimiento. Simulation es dueña del registro compartido y captura sus copias en SimulationSnapshot.
 
-- [ ] Escribir pruebas de copia estable, append nulo rechazado y varios escritores con barreras. En Simulation real observar eventos de alta/rechazo, admisión, selección, apropiación/cambio de política, bloqueo E/S/semáforo/red, desbloqueo, inserción/extracción y terminación con IDs/ciclos correctos; BUILD debe fallar por API/eventos ausentes.
-- [ ] Implementar emisión donde ocurre la decisión. Desbloqueo externo usa Kernel.nextCycle antes del tick; el cierre de deadline y la limpieza conservan el ciclo real. No reconstruir eventos comparando snapshots en Swing ni añadir instrucciones por log. Un rechazo sin computador/proceso usa 0/-1 y el texto de causa.
-- [ ] Probar que avanzar varios ciclos sin leer snapshots conserva todas las selecciones/bloqueos intermedios. Ajustar BufferSimulationTest para localizar su evento de limpieza, no exigir que sea el único evento global; mantener sus pruebas de copia y contenido. BUILD pasa y trazas/PC/RAM previos no cambian. Commit `feat: registra decisiones del motor para la interfaz`.
+- [x] Escribir pruebas de copia estable, append nulo rechazado y varios escritores con barreras. En Simulation real observar eventos de alta/rechazo, admisión, selección, apropiación/cambio de política, bloqueo E/S/semáforo/red, desbloqueo, inserción/extracción y terminación con IDs/ciclos correctos; BUILD debe fallar por API/eventos ausentes.
+- [x] Implementar emisión donde ocurre la decisión. Desbloqueo externo usa Kernel.nextCycle antes del tick; el cierre de deadline y la limpieza conservan el ciclo real. No reconstruir eventos comparando snapshots en Swing ni añadir instrucciones por log. Un rechazo sin computador/proceso usa 0/-1 y el texto de causa.
+- [x] Probar que avanzar varios ciclos sin leer snapshots conserva todas las selecciones/bloqueos intermedios. Ajustar BufferSimulationTest para localizar su evento de limpieza, no exigir que sea el único evento global; mantener sus pruebas de copia y contenido. BUILD pasa y trazas/PC/RAM previos no cambian. Commit `feat: registra decisiones del motor para la interfaz`.
 
 ## Task 3: sesión y ciclo de vida fuera del EDT
 
@@ -105,9 +105,9 @@ Esperado: `OK: N comprobaciones`, N >= 24463, y BUILD SUCCESS. Empaquetado: sust
 
 **Interfaces:** API de UiSession y valores descritos en el mapa. Configuración/cargas antes del primer resume/step actualizan el escenario inicial y encolan órdenes para ciclo 0. Después, altas/política/duración solo envían comandos al estado vivo. replaceScenario se rechaza después de empezar; restart siempre reconstruye initialConfig. No realizar ticks ocultos para confirmar cargas.
 
-- [ ] Pruebas reales: preparar deja nextCycle=0/PAUSED, las altas iniciales aparecen en config antes de su aplicación; step crea sus PCB en 0. Alta durante ejecución aparece en resultados/snapshot y no en initialConfig. Cambiar política/duración y reiniciar conserva valores iniciales, generación mayor, ciclo 0 y nuevas IDs desde 1 al ejecutar.
-- [ ] Probar sustitución inválida sin perder configuración/motor, rechazo de edición estructural después de empezar, orden FIFO de acciones, cierre durante preparación/reinicio y cinco reinicios sin acumular hilos. Los avisos distinguen encolado y resultado del motor. BUILD debe fallar por API ausente.
-- [ ] Implementar Thread/cola/semáforos y contextos publicados; no invocar Swing ni cerrar bajo el mutex de cola. Sellar/cancelar al cerrar, confirmar salida del Thread y del motor con espera acotada; una vista retenida sigue estable. BUILD pasa. Commit `feat: controla sesiones y reinicios sin bloquear la interfaz`.
+- [x] Pruebas reales: preparar deja nextCycle=0/PAUSED, las altas iniciales aparecen en config antes de su aplicación; step crea sus PCB en 0. Alta durante ejecución aparece en resultados/snapshot y no en initialConfig. Cambiar política/duración y reiniciar conserva valores iniciales, generación mayor, ciclo 0 y nuevas IDs desde 1 al ejecutar.
+- [x] Probar sustitución inválida sin perder configuración/motor, rechazo de edición estructural después de empezar, orden FIFO de acciones, cierre durante preparación/reinicio y cinco reinicios sin acumular hilos. Los avisos distinguen encolado y resultado del motor. BUILD debe fallar por API ausente.
+- [x] Implementar Thread/cola/semáforos y contextos publicados; no invocar Swing ni cerrar bajo el mutex de cola. Sellar/cancelar al cerrar, confirmar salida del Thread y del motor con espera acotada; una vista retenida sigue estable. BUILD pasa. Commit `feat: controla sesiones y reinicios sin bloquear la interfaz`.
 
 ## Task 4: modelos de tablas y presentación por identidad
 
@@ -115,9 +115,9 @@ Esperado: `OK: N comprobaciones`, N >= 24463, y BUILD SUCCESS. Empaquetado: sust
 
 **Interfaces:** ProcessTableModel `setRows(ProcessSnapshot[])`, `processAt(int)`, `rowOf(long id)`; copia array, solo lectura. Modelos de buffer `setBuffer(BufferSnapshot)` y de registro `setSnapshot(SimulationSnapshot)` admiten null como vacío. ComputerConfigTableModel usa ComputerConfig[] copiados y edición solo de atributos iniciales con validación; `configs()` retorna copia. UiText ofrece etiquetas de enums y `deadlineRemaining(ProcessSnapshot,long boundaryCycle)`.
 
-- [ ] Pruebas en EDT mediante invokeAndWait: filas READY [A,B] pasan a [B,A], rowOf(A) cambia y processAt sigue siendo A; no editar PCB. Tokens conservan ID/productor/computador; cada semáforo muestra valor y esperas FIFO. Eventos repetidos del mismo snapshot no se duplican. Capacidad Integer.MAX_VALUE vacía produce cero filas de tokens.
-- [ ] Comprobar deadline al límite después del ciclo: vivo usa nextCycle; terminado usa terminationCycle+1 para mostrar restante al finalizar. CPU/cola vacía y sentinel -1 se muestran de forma comprensible. BUILD debe fallar por modelos ausentes.
-- [ ] Implementar AbstractTableModel, sin sorters ni DefaultTableModel. Conservar tipos numéricos para columnas y separar etiquetas de lógica. BUILD pasa. Commit `feat: presenta PCB buffers y eventos en tablas propias`.
+- [x] Pruebas en EDT mediante invokeAndWait: filas READY [A,B] pasan a [B,A], rowOf(A) cambia y processAt sigue siendo A; no editar PCB. Tokens conservan ID/productor/computador; cada semáforo muestra valor y esperas FIFO. Eventos repetidos del mismo snapshot no se duplican. Capacidad Integer.MAX_VALUE vacía produce cero filas de tokens.
+- [x] Comprobar deadline al límite después del ciclo: vivo usa nextCycle; terminado usa terminationCycle+1 para mostrar restante al finalizar. CPU/cola vacía y sentinel -1 se muestran de forma comprensible. BUILD debe fallar por modelos ausentes.
+- [x] Implementar AbstractTableModel, sin sorters ni DefaultTableModel. Conservar tipos numéricos para columnas y separar etiquetas de lógica. BUILD pasa. Commit `feat: presenta PCB buffers y eventos en tablas propias`.
 
 ## Task 5: configuración y formularios validados
 
@@ -125,9 +125,9 @@ Esperado: `OK: N comprobaciones`, N >= 24463, y BUILD SUCCESS. Empaquetado: sust
 
 **Interfaces:** InputParser `integer(String text,String field,int minimum)`, `longInteger(String text,String field,long minimum)` rechazan fracciones/overflow y retornan valores tipados. ConfigurationPanel `load(SimulationConfig)`, `readConfiguration()` y `setEditable(boolean)`; ProcessFormPanel `setChoices(ComputerConfig[],BufferDefinition[])`, `readDefinition()`; BufferFormPanel `setComputers(ComputerConfig[])`, `readDefinition()`.
 
-- [ ] Pruebas EDT de formularios sin JFrame: CPU/IO/productor/consumidor generan definiciones correctas; cambiar de productor a CPU ignora y pone en cero auxiliares ocultos. Vacío, 1.5, negativos donde no proceden, prioridad negativa, overflow int/long, buffer no elegido y presupuesto insuficiente muestran campo/causa y no envían solicitudes. BUILD debe fallar por API ausente.
-- [ ] Implementar controles Swing, campos específicos por tipo, IDs/computadores por selectores, mensajes junto al formulario. Configuración permite cantidad >= 2, RAM/política/quantum por fila y duración/latencia; muestra cargas iniciales y permite quitar antes de empezar validando referencias mediante SimulationConfig. Las altas en vivo se etiquetan como de esta ejecución.
-- [ ] BUILD pasa. Probar valores con espacios y deadline long; aplicar una configuración inválida conserva el escenario vigente. Commit `feat: agrega formularios de configuracion procesos y buffers`.
+- [x] Pruebas EDT de formularios sin JFrame: CPU/IO/productor/consumidor generan definiciones correctas; cambiar de productor a CPU ignora y pone en cero auxiliares ocultos. Vacío, 1.5, negativos donde no proceden, prioridad negativa, overflow int/long, buffer no elegido y presupuesto insuficiente muestran campo/causa y no envían solicitudes. BUILD debe fallar por API ausente.
+- [x] Implementar controles Swing, campos específicos por tipo, IDs/computadores por selectores, mensajes junto al formulario. Configuración permite cantidad >= 2, RAM/política/quantum por fila y duración/latencia; muestra cargas iniciales y permite quitar antes de empezar validando referencias mediante SimulationConfig. Las altas en vivo se etiquetan como de esta ejecución.
+- [x] BUILD pasa. Probar valores con espacios y deadline long; aplicar una configuración inválida conserva el escenario vigente. Commit `feat: agrega formularios de configuracion procesos y buffers`.
 
 ## Task 6: panel por computador y detalle del PCB
 
@@ -135,9 +135,9 @@ Esperado: `OK: N comprobaciones`, N >= 24463, y BUILD SUCCESS. Empaquetado: sust
 
 **Interfaces:** ComputerPanel `render(ComputerSnapshot,long boundaryCycle)`, `setSchedulingHandler(ComputerPanel.SchedulingHandler)` con interfaz funcional pública anidada `apply(int computerId,SchedulingPolicyType,int quantum)`; ProcessDetailsPanel `render(ProcessSnapshot,long boundaryCycle)` admite null. Acciones solo comunican valores al controlador.
 
-- [ ] Escribir pruebas EDT: CPU bound, E/S, semáforo, NEW sin RAM y TERMINATED aparecen en sus colas con motivos correctos; selección por ID se conserva al reordenar/mover de cola y se limpia al sustituir escenario. Detalle accesible también desde CPU y muestra todos los campos de ProcessDefinition/ProcessSnapshot y operación de buffer. BUILD debe fallar por paneles ausentes.
-- [ ] Implementar resumen de CPU actual separado de «último ciclo»: proceso/instrucción/modo, PC/MAR, prioridad/deadline; RAM con barra/valores; cuatro colas contadas y detalle. Modo IDLE se distingue de USER/KERNEL; una CPU liberada después de terminar no se presenta como si siguiera ejecutando el PCB terminado.
-- [ ] Selector política/quantum envía un solo cambio con validación y conserva valores en edición mientras llegan snapshots. El valor aplicado se actualiza al confirmarse el cambio. El detalle muestra también deadline inicial/absoluto y, para terminados, el restante al finalizar con etiqueta explícita. BUILD pasa. Commit `feat: visualiza CPU RAM colas y contexto por computador`.
+- [x] Escribir pruebas EDT: CPU bound, E/S, semáforo, NEW sin RAM y TERMINATED aparecen en sus colas con motivos correctos; selección por ID se conserva al reordenar/mover de cola y se limpia al sustituir escenario. Detalle accesible también desde CPU y muestra todos los campos de ProcessDefinition/ProcessSnapshot y operación de buffer. BUILD debe fallar por paneles ausentes.
+- [x] Implementar resumen de CPU actual separado de «último ciclo»: proceso/instrucción/modo, PC/MAR, prioridad/deadline; RAM con barra/valores; cuatro colas contadas y detalle. Modo IDLE se distingue de USER/KERNEL; una CPU liberada después de terminar no se presenta como si siguiera ejecutando el PCB terminado.
+- [x] Selector política/quantum envía un solo cambio con validación y conserva valores en edición mientras llegan snapshots. El valor aplicado se actualiza al confirmarse el cambio. El detalle muestra también deadline inicial/absoluto y, para terminados, el restante al finalizar con etiqueta explícita. BUILD pasa. Commit `feat: visualiza CPU RAM colas y contexto por computador`.
 
 ## Task 7: buffers, semáforos y registro
 
@@ -145,9 +145,9 @@ Esperado: `OK: N comprobaciones`, N >= 24463, y BUILD SUCCESS. Empaquetado: sust
 
 **Interfaces:** BufferPanel `render(SimulationSnapshot)` conserva buffer seleccionado por ID; EventPanel `render(SimulationSnapshot)` muestra el registro y resultados pendientes/rechazados con su ciclo/causa. Consume únicamente snapshots/modelos de tareas 2 y 4.
 
-- [ ] Pruebas EDT: capacidad 1 muestra inserción, token de origen, dueño y concesión pendiente; sus tres colas/valores y fases cambian al avanzar. Buffer vacío inicial y selección eliminada por reinicio no dejan datos antiguos. Capacidad grande no crea componentes por posición. BUILD debe fallar por paneles ausentes.
-- [ ] Implementar resumen, tabla FIFO de tokens, tres semáforos y operaciones activas. Registro conserva eventos en orden de emisión e ID/ciclo, sin rehacerlos desde la GUI; permite scroll sin saltar al final si el usuario inspecciona filas anteriores.
-- [ ] Verificar que leer solo tras varios ciclos conserva todos los eventos y que render repetido no duplica filas ni cambia la selección del buffer. BUILD pasa. Commit `feat: muestra buffers semaforos y decisiones del sistema`.
+- [x] Pruebas EDT: capacidad 1 muestra inserción, token de origen, dueño y concesión pendiente; sus tres colas/valores y fases cambian al avanzar. Buffer vacío inicial y selección eliminada por reinicio no dejan datos antiguos. Capacidad grande no crea componentes por posición. BUILD debe fallar por paneles ausentes.
+- [x] Implementar resumen, tabla FIFO de tokens, tres semáforos y operaciones activas. Registro conserva eventos en orden de emisión e ID/ciclo, sin rehacerlos desde la GUI; permite scroll sin saltar al final si el usuario inspecciona filas anteriores.
+- [x] Verificar que leer solo tras varios ciclos conserva todos los eventos y que render repetido no duplica filas ni cambia la selección del buffer. BUILD pasa. Commit `feat: muestra buffers semaforos y decisiones del sistema`.
 
 ## Task 8: ventana completa, controles y actualización segura
 
@@ -177,4 +177,4 @@ Esperado: `OK: N comprobaciones`, N >= 24463, y BUILD SUCCESS. Empaquetado: sust
 - [ ] Una revisión independiente final del rango completo y las cinco condiciones de Review Focus; corregir importantes en un pase mediante RED→GREEN y suite completa; documentar decisiones/menores si existen. No revisores por tarea ni implementadores paralelos.
 - [ ] BUILD, clean package y git diff --check satisfactorios; commit `docs: explica y verifica la interfaz para la defensa`. Conservar rama/carpeta NetBeans, sin PR/fusión inventados. Siguiente módulo: escenarios JSON.
 
-Estado: plan escrito y revisado contra el diseño/código actuales; pendiente de revisión del estudiante antes de implementar. Mantiene el método nativo de los módulos anteriores.
+Estado: código implementado y 24753 comprobaciones satisfactorias. Pendientes la inspección visual real (Mac bloqueado) y la revisión independiente final; no se da por completada la aceptación del módulo.
