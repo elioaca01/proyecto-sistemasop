@@ -6,6 +6,20 @@ public final class RingBufferTest {
     private RingBufferTest() { }
 
     public static void run() {
+        // Capacidad lógica independiente del almacenamiento ocupado, incluso tras crecer envuelto.
+        RingBuffer<Integer> growing = new RingBuffer<>(Integer.MAX_VALUE);
+        TestSupport.equal(Integer.MAX_VALUE, growing.capacity());
+        for (int i = 0; i < 16; i++) { growing.put(i); }
+        TestSupport.isTrue(!growing.isFull());
+        for (int i = 0; i < 10; i++) { TestSupport.equal(i, growing.take()); }
+        for (int i = 16; i < 40; i++) { growing.put(i); }
+        for (int i = 10; i < 40; i++) { TestSupport.equal(i, growing.take()); }
+        TestSupport.isTrue(growing.isEmpty());
+        RingBuffer<Integer> bounded = new RingBuffer<>(17);
+        for (int i = 0; i < 17; i++) { bounded.put(i); }
+        TestSupport.isTrue(bounded.isFull());
+        TestSupport.throwsType(IllegalStateException.class, () -> bounded.put(17));
+        TestSupport.equal(0, bounded.get(0)); TestSupport.equal(16, bounded.get(16));
         rejectsInvalidCapacityAndPreservesFullContents();
         wrapsAroundInFifoOrder();
     }

@@ -44,7 +44,7 @@ Las pruebas son ejecutables Java con comprobaciones propias; no requieren JUnit 
 - Pausa, paso y ejecución continua por API, comandos entre ciclos, IDs globales e instantáneas inmutables para lectores concurrentes.
 - Cierre ordenado y propagación de fallos; un ciclo parcial fallido no se confirma como completado.
 - Productores/consumidores locales y remotos: buffers FIFO en RAM anfitriona, semáforos simulados, latencia por elemento y limpieza por deadline.
-- Comandos e instantáneas de buffers, reservas, fases y eventos; 24401 comprobaciones acumuladas del motor.
+- Comandos e instantáneas de buffers, reservas, fases y eventos; 24463 comprobaciones acumuladas del motor.
 - Ventana inicial de Swing. Los controles gráficos completos, persistencia y métricas siguen en la hoja de ruta.
 
 `ProcessDefinition` conserva los atributos iniciales inmutables; `ProcessControlBlock` mantiene el estado vivo del proceso. Apropiar o bloquear conserva PC/MAR y la RAM asignada; ejecutar una instrucción avanza PC/MAR. El núcleo invoca estas operaciones y MemoryAdmission controla las reservas de RAM simulada.

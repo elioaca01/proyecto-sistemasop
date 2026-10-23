@@ -10,7 +10,7 @@
 
 **Spec:** [diseño aprobado](../specs/2026-10-18-avilaos-design.md), secciones 4–7 y 9; módulo 5 de la [hoja de ruta](2026-10-19-avilaos-roadmap.md). Continúa el clúster y las 1246 comprobaciones previas.
 
-**Execution:** conservar método nativo, carpeta compartida con NetBeans y una revisión independiente final. Aprobado por el estudiante mediante «hazlo» el 23 de octubre de 2026; implementación nativa en curso. Incluir guía breve independiente del módulo 5.
+**Execution:** conservar método nativo, carpeta compartida con NetBeans y una revisión independiente final. Aprobado por el estudiante mediante «hazlo» el 23 de octubre de 2026; implementación nativa completada y verificada. Incluir guía breve independiente del módulo 5.
 
 ## Global Constraints
 
@@ -163,10 +163,10 @@ BufferSnapshot es final e inmutable: definición, size, produced/consumed, mutex
 
 **Files:** README, hoja de ruta, índice de defensa; crear `docs/defensa/modulo-5-productor-consumidor.md` y `docs/verification/2026-10-22-buffers.md` (usar fecha real al ejecutar).
 
-- [ ] Guía breve con conceptos, clases, ejemplo, tres preguntas y explicación oral. Distinguir espera simulada de hilos reales y conservación de permisos frente a ocupación. No repetir las guías anteriores.
-- [ ] Registrar trazas efectivamente comprobadas, número real de pruebas, casos de deadline y revisión. Añadir evidencia NetBeans del módulo 4 aportada por el estudiante: 1246 comprobaciones, JAR/install, BUILD SUCCESS; finalizó el 22 de octubre a las 19:54:55 de Venezuela. El fragmento no acredita Clean, cierre ni Debug.
-- [ ] Ejecutar BUILD, clean package y git diff --check; revisar colecciones prohibidas, referencias retenidas, liberación de mutex Java con finally y cierre de hilos de prueba.
-- [ ] Una revisión independiente final del rango completo; corregir importantes con pruebas que fallen antes, registrar decisiones/menores si existen. Mantener rama funcional y carpeta NetBeans; no inventar PR ni fusionar por falta de remoto.
-- [ ] Commit `docs: explica y verifica productor consumidor para la defensa`. Siguiente módulo: interfaz completa.
+- [x] Guía breve con conceptos, clases, ejemplo, tres preguntas y explicación oral. Distinguir espera simulada de hilos reales y conservación de permisos frente a ocupación. No repetir las guías anteriores.
+- [x] Registrar trazas efectivamente comprobadas, número real de pruebas, casos de deadline y revisión. Añadir evidencia NetBeans del módulo 4 aportada por el estudiante: 1246 comprobaciones, JAR/install, BUILD SUCCESS; finalizó el 22 de octubre a las 19:54:55 de Venezuela. El fragmento no acredita Clean, cierre ni Debug.
+- [x] Ejecutar BUILD, clean package y git diff --check; revisar colecciones prohibidas, referencias retenidas, liberación de mutex Java con finally y cierre de hilos de prueba.
+- [x] Una revisión independiente final del rango completo; corregir importantes con pruebas que fallen antes, registrar decisiones/menores si existen. Mantener rama funcional y carpeta NetBeans; no inventar PR ni fusionar por falta de remoto.
+- [x] Commit `docs: explica y verifica productor consumidor para la defensa`. Siguiente módulo: interfaz completa.
 
-Estado: tareas 1–8 implementadas y probadas; documentación preparada y revisión independiente final en curso.
+Estado: módulo implementado; 24463 comprobaciones, clean package y revisión independiente realizados. Hallazgo importante corregido con regresión; guía y evidencia guardadas.

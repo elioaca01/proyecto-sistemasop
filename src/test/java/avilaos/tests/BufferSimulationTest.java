@@ -14,6 +14,7 @@ public final class BufferSimulationTest {
         return SimulationTest.await(sim, cycle + 1, SimulationState.PAUSED);
     }
     public static void run() {
+        largeLogicalCapacity();
         throwsType(IllegalArgumentException.class, () -> new Simulation(SimulationTest.configs(), 1, -1));
         throwsType(IllegalArgumentException.class, () -> new AddBufferCommand(null));
         try (Simulation sim = new Simulation(SimulationTest.configs(), 100, 2)) {
@@ -61,6 +62,28 @@ public final class BufferSimulationTest {
             equal(BlockReason.SEMAPHORE_FULL, sem.computerAt(1).blockedAt(0).blockReason());
             equal(1, sem.bufferAt(0).fullWaitingCount()); equal(1L, sem.bufferAt(0).fullWaitingAt(0));
             equal(0, blocked.bufferAt(0).fullWaitingCount()); equal(0, blocked.computerAt(1).blockedAt(0).pc());
+        }
+    }
+    private static void largeLogicalCapacity() {
+        ComputerConfig[] configs = {
+            new ComputerConfig(1,Integer.MAX_VALUE,avilaos.scheduling.SchedulingPolicyType.FCFS,1),
+            new ComputerConfig(2,10,avilaos.scheduling.SchedulingPolicyType.FCFS,1)
+        };
+        try (Simulation sim = new Simulation(configs, 100)) {
+            sim.enqueue(new AddBufferCommand(new BufferDefinition(1,1,1)));
+            sim.enqueue(new AddProcessCommand(SimulationTest.cpu(2,3)));
+            step(sim);
+            sim.enqueue(new AddBufferCommand(new BufferDefinition(2,1,Integer.MAX_VALUE-1)));
+            sim.enqueue(new AddBufferCommand(new BufferDefinition(3,1,1)));
+            sim.enqueue(new AddProcessCommand(SimulationTest.cpu(2,1)));
+            SimulationSnapshot next = step(sim);
+            equal(SimulationState.PAUSED,next.state()); equal(2L,next.nextCycle()); equal(2,next.bufferCount());
+            isTrue(next.resultAt(2).accepted()); isTrue(!next.resultAt(3).accepted()); isTrue(next.resultAt(4).accepted());
+            equal(2L,next.resultAt(4).processId()); equal(Integer.MAX_VALUE,next.computerAt(0).ramUsed());
+            equal(0,next.bufferAt(1).size()); equal(Integer.MAX_VALUE-1,next.bufferAt(1).emptyValue()); equal(2,next.computerAt(1).running().pc());
+            step(sim); SimulationSnapshot end = step(sim);
+            equal(2,end.computerAt(1).terminatedCount()); equal(TerminationReason.COMPLETED,end.computerAt(1).terminatedAt(0).terminationReason());
+            equal(3,end.computerAt(1).terminatedAt(0).pc()); equal(1,end.computerAt(1).terminatedAt(1).pc());
         }
     }
 }

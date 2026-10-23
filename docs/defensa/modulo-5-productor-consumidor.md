@@ -2,7 +2,7 @@
 
 ## Qué hicimos
 
-El motor ya ejecuta productores y consumidores que comparten buffers locales o remotos. Cada buffer reserva RAM del anfitrión, conserva tokens FIFO y tiene tres semáforos simulados. Añadimos latencia por elemento, bloqueo sin detener los hilos Java y limpieza al vencer el deadline. La GUI completa sigue para el módulo 6.
+El motor ya ejecuta productores y consumidores que comparten buffers locales o remotos. Cada buffer reserva RAM del anfitrión, conserva tokens FIFO y tiene tres semáforos simulados. Añadimos latencia por elemento, bloqueo sin detener los hilos Java y limpieza al vencer el deadline. La GUI completa sigue para el módulo 6. La RAM simulada se reserva completa; el arreglo Java crece con el contenido sin cambiar el límite del buffer.
 
 ## Conceptos esenciales
 
@@ -46,6 +46,6 @@ El consumidor no repite el wait de 0. Al final hay 0 elementos, vacíos=1, lleno
 
 ## Cómo lo comprobamos y qué puedes decir
 
-La suite acumulada pasa **24401 comprobaciones**. Incluye trazas, cuatro políticas, apropiación entre fases, FIFO, RAM, copias retenidas y deadlines. Son comprobaciones de escenarios e invariantes, no 24401 casos independientes. Consulta la [evidencia](../verification/2026-10-23-buffers.md).
+La suite acumulada pasa **24463 comprobaciones**. Incluye trazas, cuatro políticas, apropiación entre fases, FIFO, RAM, copias retenidas y deadlines. Son comprobaciones de escenarios e invariantes, no 24463 casos independientes. Consulta la [evidencia](../verification/2026-10-23-buffers.md).
 
 **Explicación breve:** «Cada operación reserva un espacio o un elemento, toma el mutex, modifica el buffer y libera los permisos correspondientes. Si debe esperar, guardamos su contexto y otra CPU puede trabajar. La red se espera antes de reservar; un deadline limpia los recursos sin deshacer trabajo confirmado».

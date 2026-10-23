@@ -1,8 +1,9 @@
 package avilaos.structures;
 
-/** Almacenamiento acotado FIFO; todavía no incluye semáforos simulados. */
+/** FIFO con capacidad lógica fija y almacenamiento que crece según el contenido real. */
 public final class RingBuffer<T> {
-    private final Object[] elements;
+    private Object[] elements;
+    private final int capacity;
     private int head;
     private int size;
 
@@ -10,7 +11,8 @@ public final class RingBuffer<T> {
         if (capacity <= 0) {
             throw new IllegalArgumentException("La capacidad debe ser positiva");
         }
-        elements = new Object[capacity];
+        this.capacity = capacity;
+        elements = new Object[Math.min(capacity, 16)];
     }
 
     public void put(T value) {
@@ -20,6 +22,7 @@ public final class RingBuffer<T> {
         if (isFull()) {
             throw new IllegalStateException("El buffer está lleno");
         }
+        if (size == elements.length) { grow(); }
         elements[physicalIndex(size)] = value;
         size++;
     }
@@ -45,11 +48,19 @@ public final class RingBuffer<T> {
 
     public int size() { return size; }
 
-    public int capacity() { return elements.length; }
+    public int capacity() { return capacity; }
 
     public boolean isEmpty() { return size == 0; }
 
-    public boolean isFull() { return size == elements.length; }
+    public boolean isFull() { return size == capacity; }
+
+    private void grow() {
+        int length = (int) Math.min((long) capacity, (long) elements.length * 2);
+        Object[] expanded = new Object[length];
+        for (int i = 0; i < size; i++) { expanded[i] = elements[physicalIndex(i)]; }
+        elements = expanded;
+        head = 0;
+    }
 
     private int physicalIndex(int offset) {
         return (int) (((long) head + offset) % elements.length);
