@@ -49,6 +49,7 @@ public final class AllTests {
         UiIntegrationTest.run();
         ScenarioJsonTest.run();
         ConfigurationStoreTest.run();
+        UiSessionPersistenceTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }

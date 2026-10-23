@@ -1,6 +1,6 @@
 package avilaos.ui.session;
 
-import avilaos.config.SimulationConfig;
+import avilaos.config.*;
 import avilaos.process.ProcessDefinition;
 import avilaos.simulation.*;
 import avilaos.scheduling.SchedulingPolicyType;
@@ -9,16 +9,19 @@ import avilaos.structures.LinkedQueue;
 import avilaos.sync.BufferDefinition;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.io.IOException;
+import java.nio.file.Path;
 
 /** Dueño del motor. Las solicitudes no esperan ciclos, creación ni cierre en el llamador. */
 public final class UiSession {
-    private enum Kind { REPLACE, ADD_PROCESS, ADD_BUFFER, SCHEDULING, DURATION, RESUME, PAUSE, STEP, RESTART }
+    private enum Kind { REPLACE, ADD_PROCESS, ADD_BUFFER, SCHEDULING, DURATION, RESUME, PAUSE, STEP, RESTART, LOAD, SAVE }
     private record Action(long id,Kind kind,Object data) { }
     private record Schedule(int computerId,SchedulingPolicyType policy,int quantum) { }
     private final Semaphore mutex=new Semaphore(1),wake=new Semaphore(0),finished=new Semaphore(0);
     private final LinkedQueue<Action> actions=new LinkedQueue<>();
     private final LinkedList<SessionNotice> notices=new LinkedList<>();
     private final Thread worker;
+    private final ConfigurationStore files;
     private Simulation engine;
     private SimulationSnapshot lastSnapshot;
     private SimulationConfig initial;
@@ -28,7 +31,11 @@ public final class UiSession {
     private boolean started,closing;
 
     public UiSession(SimulationConfig initial){
-        if(initial==null)throw new IllegalArgumentException("Escenario inicial requerido");
+        this(initial,new JsonConfigurationStore());
+    }
+    public UiSession(SimulationConfig initial,ConfigurationStore files){
+        if(initial==null||files==null)throw new IllegalArgumentException("Escenario inicial y almacén requeridos");
+        this.files=files;
         this.initial=initial;actions.enqueue(new Action(0,Kind.REPLACE,initial));
         worker=new Thread(this::run,"avilaos-ui-session");worker.start();wake.release();
     }
@@ -46,6 +53,9 @@ public final class UiSession {
     public long changeCycleDuration(long millis){return submit(Kind.DURATION,millis);}
     public long resume(){return submit(Kind.RESUME,null);} public long pause(){return submit(Kind.PAUSE,null);}
     public long step(){return submit(Kind.STEP,null);} public long restart(){return submit(Kind.RESTART,null);}
+    public long loadScenario(Path file){return fileAction(Kind.LOAD,file);}
+    public long saveScenario(Path file){return fileAction(Kind.SAVE,file);}
+    private long fileAction(Kind kind,Path file){if(file==null)throw new IllegalArgumentException("Selecciona un archivo");return submit(kind,file);}
     private void notice(long id,long request,boolean error,String text){
         mutex.acquireUninterruptibly();try{notices.addLast(new SessionNotice(id,request,error,text));}finally{mutex.release();}
     }
@@ -58,6 +68,7 @@ public final class UiSession {
                 mutex.acquireUninterruptibly();try{if(closing)break;action=actions.dequeue();}finally{mutex.release();}
                 if(action==null)continue;
                 try{execute(action);}
+                catch(IOException rejected){notice(action.id(),-1,true,"No se pudo procesar el archivo: "+rejected.getMessage());}
                 catch(IllegalArgumentException|IllegalStateException rejected){notice(action.id(),-1,true,rejected.getMessage());}
                 catch(Throwable failure){mutex.acquireUninterruptibly();try{phase=SessionPhase.FAILED;}finally{mutex.release();}notice(action.id(),-1,true,"Fallo de sesión: "+failure);}
                 finally{mutex.acquireUninterruptibly();try{pendingActions--;}finally{mutex.release();}}
@@ -85,7 +96,7 @@ public final class UiSession {
             }
         }finally{if(interrupted)Thread.currentThread().interrupt();}
     }
-    private void execute(Action a){
+    private void execute(Action a)throws IOException{
         if(a.kind()==Kind.REPLACE){
             if(a.id()!=0&&started)throw new IllegalStateException("La configuración inicial se edita antes de Iniciar/Paso; usa Reiniciar");
             replace((SimulationConfig)a.data());notice(a.id(),-1,false,"Escenario inicial preparado; ciclo 0");return;
@@ -93,6 +104,14 @@ public final class UiSession {
         if(a.kind()==Kind.RESTART){replace(initial);notice(a.id(),-1,false,"Reinicio del escenario inicial; ciclo 0");return;}
         if(engine==null||phase!=SessionPhase.ACTIVE)throw new IllegalStateException("La sesión no está disponible");
         switch(a.kind()){
+            case LOAD->{
+                if(engine.snapshot().state()!=SimulationState.PAUSED)throw new IllegalStateException("Para cargar, espera que la simulación confirme la pausa");
+                SimulationConfig loaded=files.load((Path)a.data());
+                if(isClosing()){notice(a.id(),-1,true,"Carga cancelada por cierre de la sesión");return;}
+                replace(loaded);
+                if(!isClosing())notice(a.id(),-1,false,"Escenario cargado: "+a.data()+"; pausado en ciclo 0");
+            }
+            case SAVE->{files.save((Path)a.data(),initial);notice(a.id(),-1,false,"Escenario inicial aplicado guardado: "+a.data());}
             case ADD_PROCESS->{ProcessDefinition p=(ProcessDefinition)a.data();SimulationConfig candidate=started?initial:initial.withAddedProcess(p);long req=engine.enqueue(new AddProcessCommand(p));publishInitial(candidate);notice(a.id(),req,false,"Encolada: alta de proceso; se aplica en el próximo ciclo");}
             case ADD_BUFFER->{BufferDefinition b=(BufferDefinition)a.data();SimulationConfig candidate=started?initial:initial.withAddedBuffer(b);long req=engine.enqueue(new AddBufferCommand(b));publishInitial(candidate);notice(a.id(),req,false,"Encolada: alta de buffer; se aplica en el próximo ciclo");}
             case SCHEDULING->{
