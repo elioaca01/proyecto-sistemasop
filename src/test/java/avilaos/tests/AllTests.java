@@ -46,6 +46,7 @@ public final class AllTests {
         BufferPanelTest.run();
         EventPanelTest.run();
         UiControllerTest.run();
+        UiIntegrationTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
