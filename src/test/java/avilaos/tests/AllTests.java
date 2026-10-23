@@ -26,6 +26,7 @@ public final class AllTests {
         SimulationTest.run();
         ClusterIntegrationTest.run();
         SimulatedSemaphoreTest.run();
+        BoundedBufferTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
