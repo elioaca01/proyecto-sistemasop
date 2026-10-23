@@ -6,6 +6,7 @@ import avilaos.sync.BufferDefinition;
 import avilaos.simulation.*;
 import avilaos.ui.session.*;
 import java.util.function.LongSupplier;
+import java.nio.file.Path;
 import javax.swing.*;
 /** Adaptador EDT: entrega solicitudes y presenta valores, nunca espera el cierre del motor. */
 public final class UiController {
@@ -33,5 +34,6 @@ public final class UiController {
     public void resume(){send(session::resume);}public void pause(){send(session::pause);}public void step(){send(session::step);}public void restart(){send(session::restart);}
     public void replaceScenario(SimulationConfig c){send(()->session.replaceScenario(c));}public void addProcess(ProcessDefinition p){send(()->session.addProcess(p));}public void addBuffer(BufferDefinition b){send(()->session.addBuffer(b));}
     public void changeScheduling(int id,SchedulingPolicyType p,int q){send(()->session.changeScheduling(id,p,q));}public void changeCycleDuration(long ms){send(()->session.changeCycleDuration(ms));}
+    public void loadScenario(Path file){send(()->session.loadScenario(file));}public void saveScenario(Path file){send(()->session.saveScenario(file));}
     public void requestClose(){edt();if(closed)return;closing=true;session.requestClose();refresh();}
 }

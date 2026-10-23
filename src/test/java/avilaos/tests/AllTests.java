@@ -50,6 +50,7 @@ public final class AllTests {
         ScenarioJsonTest.run();
         ConfigurationStoreTest.run();
         UiSessionPersistenceTest.run();
+        ScenarioControlsTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
