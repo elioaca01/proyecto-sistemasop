@@ -45,7 +45,7 @@ Las pruebas son ejecutables Java con comprobaciones propias; no requieren JUnit 
 - Cierre ordenado y propagación de fallos; un ciclo parcial fallido no se confirma como completado.
 - Productores/consumidores locales y remotos: buffers FIFO en RAM anfitriona, semáforos simulados, latencia por elemento y limpieza por deadline.
 - Comandos e instantáneas de buffers, reservas, fases y eventos; 24770 comprobaciones acumuladas del motor y la interfaz.
-- Interfaz Swing con configuración, formularios, vistas de CPU/PCB/colas/RAM, buffers/semáforos, registro y controles. Sesiones y cierre asíncronos; inspección visual real pendiente del desbloqueo del Mac.
+- Interfaz Swing con configuración, formularios, vistas de CPU/PCB/colas/RAM, buffers/semáforos, registro y controles. Sesiones y cierre asíncronos; prueba nativa de controles, PCB, reinicio y cierre realizada; aceptación manual completa pendiente.
 - Persistencia JSON y métricas/gráfico siguen en la hoja de ruta.
 
 `ProcessDefinition` conserva los atributos iniciales inmutables; `ProcessControlBlock` mantiene el estado vivo del proceso. Apropiar o bloquear conserva PC/MAR y la RAM asignada; ejecutar una instrucción avanza PC/MAR. El núcleo invoca estas operaciones y MemoryAdmission controla las reservas de RAM simulada.

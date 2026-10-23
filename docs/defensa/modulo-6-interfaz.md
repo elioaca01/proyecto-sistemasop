@@ -4,7 +4,7 @@
 
 Sustituimos la ventana inicial por configuración, formularios y cuatro vistas: computadores, buffers/semáforos, escenario inicial y registro. Los controles permiten iniciar, pausar, avanzar un ciclo y reiniciar. Se pueden agregar procesos/buffers y cambiar política, quantum o duración durante la ejecución.
 
-El motor conserva sus decisiones y la interfaz muestra sus valores; no decide qué proceso ejecuta. La aceptación automatizada pasó; la inspección visual real está pendiente mientras el Mac permanece bloqueado.
+El motor conserva sus decisiones y la interfaz muestra sus valores; no decide qué proceso ejecuta. La aceptación automatizada pasó; se comprobaron en ventana real Paso, Iniciar/Pausar, PCB/scroll, Reiniciar y cierre del proceso. La navegación a Configuración inicial fue confirmada por el estudiante. Falta completar el escenario manual local/remoto.
 
 ## Conceptos esenciales
 
@@ -51,4 +51,4 @@ La [evidencia técnica](../verification/2026-10-23-interface.md) distingue prueb
 5. Probar **Iniciar → Pausar**: el ciclo queda estable al confirmarse la pausa. Seleccionar un PCB y comprobar que su identidad se conserva al cambiar de cola. Revisar eventos con ciclo/ID en Registro y un error de formulario antes de enviarlo.
 6. **Reiniciar:** vuelve a ciclo **0**, conserva la carga inicial y deja sus altas pendientes para el primer ciclo. Cerrar la ventana debe terminar la ejecución sin dejar el proceso Maven esperando.
 
-El escenario remoto y los casos de políticas/deadline también están cubiertos automáticamente. La prueba interactiva completa, incluido el remoto y el tamaño mínimo de ventana, sigue pendiente del desbloqueo del Mac.
+El escenario remoto y los casos de políticas/deadline también están cubiertos automáticamente. La prueba interactiva completa, incluido el remoto y el tamaño mínimo de ventana, sigue pendiente por limitaciones de foco de la automatización Java. Se comprobó el cierre del proceso temporal de prueba; la salida de Maven debe verificarse desde NetBeans.
