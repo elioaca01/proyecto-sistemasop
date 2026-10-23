@@ -4,7 +4,7 @@
 
 Sustituimos la ventana inicial por configuración, formularios y cuatro vistas: computadores, buffers/semáforos, escenario inicial y registro. Los controles permiten iniciar, pausar, avanzar un ciclo y reiniciar. Se pueden agregar procesos/buffers y cambiar política, quantum o duración durante la ejecución.
 
-El motor conserva sus decisiones y la interfaz muestra sus valores; no decide qué proceso ejecuta. La aceptación automatizada pasó; se comprobaron en ventana real Paso, Iniciar/Pausar, PCB/scroll, Reiniciar y cierre del proceso. La navegación a Configuración inicial fue confirmada por el estudiante. Falta completar el escenario manual local/remoto.
+El motor conserva sus decisiones y la interfaz muestra sus valores; no decide qué proceso ejecuta. Las pruebas automatizadas y los ejemplos local/remoto desde los formularios reales pasaron. También se probaron las cuatro pestañas, selección del PCB con Round Robin y cierre normal de Maven.
 
 ## Conceptos esenciales
 
@@ -42,13 +42,13 @@ Al pulsar **Paso**, Swing envía una solicitud a la sesión y sigue atendiendo e
 
 ## Prueba manual en NetBeans
 
-La [evidencia técnica](../verification/2026-10-23-interface.md) distingue pruebas automatizadas, inspección visual y validación del IDE. La suite actual espera **24770 comprobaciones**; no son casos independientes, pues incluye invariantes repetidas.
+La [evidencia técnica](../verification/2026-10-23-interface.md) distingue pruebas automatizadas, inspección visual y validación del IDE. La suite actual espera **24775 comprobaciones**; no son casos independientes, pues incluye invariantes repetidas.
 
-1. **Clean and Build:** buscar `OK: 24770 comprobaciones` y `BUILD SUCCESS`.
+1. **Clean and Build:** buscar `OK: 24775 comprobaciones` y `BUILD SUCCESS`.
 2. **Run:** comprobar las cuatro pestañas y que la ventana permite navegar/editar sin congelarse. No debe avanzar sola al abrir.
 3. Antes de iniciar, agregar buffer **B1**, anfitrión **1**, capacidad **1**. Agregar primero un **consumidor C** y luego un **productor P**, ambos en computador **1**, instrucciones **6**, RAM **2**, prioridad **0**, deadline **100**, buffer **1**, cómputo por elemento **1** y cuota **1**.
 4. Pulsar **Paso** doce veces. Cada click añade un ciclo. Al final: ciclo **12**, dos terminados, producidos **1**, consumidos **1**, ocupación **0**, vacíos **1**, llenos **0**, mutex **1**. En el primer paso el consumidor se bloquea en llenos; al despertar no repite wait.
 5. Probar **Iniciar → Pausar**: el ciclo queda estable al confirmarse la pausa. Seleccionar un PCB y comprobar que su identidad se conserva al cambiar de cola. Revisar eventos con ciclo/ID en Registro y un error de formulario antes de enviarlo.
 6. **Reiniciar:** vuelve a ciclo **0**, conserva la carga inicial y deja sus altas pendientes para el primer ciclo. Cerrar la ventana debe terminar la ejecución sin dejar el proceso Maven esperando.
 
-El escenario remoto y los casos de políticas/deadline también están cubiertos automáticamente. La prueba interactiva completa, incluido el remoto y el tamaño mínimo de ventana, sigue pendiente por limitaciones de foco de la automatización Java. Se comprobó el cierre del proceso temporal de prueba; la salida de Maven debe verificarse desde NetBeans.
+El escenario remoto y los casos de políticas/deadline también están cubiertos automáticamente. La prueba interactiva local/remota, el tamaño mínimo 960×640 y el cierre de Maven ya se realizaron usando una copia temporal del mismo JAR. En ventana pequeña, desplaza el panel del computador para ver las colas y el PCB. Tu comprobación desde NetBeans sigue siendo independiente; los pasos anteriores sirven para repetirla.

@@ -33,7 +33,7 @@ La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 compl
 
 - [Módulo 5: productor-consumidor y red](2026-10-22-avilaos-buffers.md): buffers en RAM, semáforos simulados, programas de núcleo, red por elemento y limpieza implementados; 24463 comprobaciones y construcción limpia satisfactorias. Revisión independiente realizada; hallazgo de capacidad física corregido con regresión. [Guía de defensa](../../defensa/modulo-5-productor-consumidor.md).
 
-- [Módulo 6: interfaz Swing](2026-10-23-avilaos-interface.md): configuración, formularios, vistas y controles implementados; 24770 comprobaciones y construcción limpia satisfactorias. Revisión independiente realizada y tres hallazgos importantes corregidos con regresiones. Controles, PCB, reinicio y cierre probados en ventana real; aceptación manual completa pendiente. [Guía de defensa](../../defensa/modulo-6-interfaz.md).
+- [Módulo 6: interfaz Swing](2026-10-23-avilaos-interface.md): configuración, formularios, vistas y controles implementados; 24775 comprobaciones y construcción limpia satisfactorias. Revisión independiente realizada y tres hallazgos importantes corregidos con regresiones. Aceptación nativa local/remota, tamaño mínimo y cierre de Maven comprobados; defecto de distribución corregido con regresión. [Guía de defensa](../../defensa/modulo-6-interfaz.md).
 
 ## Reglas de avance
 

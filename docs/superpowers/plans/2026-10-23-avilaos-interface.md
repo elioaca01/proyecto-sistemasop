@@ -157,7 +157,7 @@ Esperado: `OK: N comprobaciones`, N >= 24463, y BUILD SUCCESS. Empaquetado: sust
 
 - [x] Pruebas de controlador con paneles reales sin JFrame: estado inicial, un click Paso => un ciclo, Iniciar/Pausar, controles deshabilitados según fase, pendientes y rechazo visibles; refresco viejo tras reinicio no cambia ciclo/tablas. Enviar acciones desde EDT retorna mientras un trabajo de ciclo de vida sigue pendiente; comprobar latido EDT mediante barrera, no duración arbitraria. BUILD debe fallar por controlador ausente.
 - [x] Implementar cuatro pestañas y barra/cabecera descritas, formularios en dialogs, estado de error y cierre. No sobrescribir campos con foco/edición durante refresco. La pantalla diferencia configuración inicial, órdenes pendientes y estado confirmado. Al cerrar con operación de sesión en curso se espera de forma asíncrona su limpieza, sin instalar una generación después de CLOSED.
-- [ ] BUILD pasa; `clean package` pasa. Arranque `compile exec:exec@run-app` abre ventana y puede cerrarse sin retener proceso/hilos. Commit `feat: conecta la interfaz Swing con el simulador completo`.
+- [x] BUILD pasa; `clean package` pasa. Arranque `compile exec:exec@run-app` abre ventana y puede cerrarse sin retener proceso/hilos. Commit `feat: conecta la interfaz Swing con el simulador completo`.
 
 ## Task 9: aceptación visual y regresión integrada
 
@@ -165,7 +165,7 @@ Esperado: `OK: N comprobaciones`, N >= 24463, y BUILD SUCCESS. Empaquetado: sust
 
 - [x] Trazas por sesión/controlador: consumidor local primero, productor después, capacidad 1, intervalo/cuota 1; 12 pasos reproducen los ciclos 0..11 del módulo 5 y los valores finales 0/1/0/1. Remoto L=2 muestra NETWORK sin avance PC durante dos ciclos. RR quantum 1, EDF y prioridades actualizan el orden visible y conservan contexto.
 - [x] Probar escenarios sin carga, buffer pendiente en ciclo 0, formulario inválido, alta con simulación pausada, alta/cambio en ejecución, deadline en semáforo, capacidad grande, cinco reinicios y cierre durante ejecución/reemplazo. BUILD debe pasar si la integración ya es correcta; registrar RED real si aparece un defecto antes de corregirlo.
-- [ ] Abrir la aplicación real e inspeccionar con herramientas UI disponibles: ventana grande y mínimo 960×640, las cuatro pestañas, edición/formularios, PCB, scrolls, seleccionar una fila durante cambios de orden, confirmar que Pausar estabiliza el ciclo y Paso añade exactamente uno. Hacer el ejemplo local desde los controles, revisar el remoto y cerrar. No sustituir esta aceptación por una captura estática o solo tests headless.
+- [x] Abrir la aplicación real e inspeccionar con herramientas UI disponibles: ventana grande y mínimo 960×640, las cuatro pestañas, edición/formularios, PCB, scrolls, seleccionar una fila durante cambios de orden, confirmar que Pausar estabiliza el ciclo y Paso añade exactamente uno. Hacer el ejemplo local desde los controles, revisar el remoto y cerrar. No sustituir esta aceptación por una captura estática o solo tests headless.
 - [x] `clean package`, git diff --check e inspección de colecciones/sorters/EDT. Repetir ciclos de vida en JVM separadas con tiempo límite si aparecen carreras. Commit `test: verifica la interfaz y el ciclo de vida integrado`.
 
 ## Task 10: defensa, evidencia y revisión independiente
@@ -173,8 +173,8 @@ Esperado: `OK: N comprobaciones`, N >= 24463, y BUILD SUCCESS. Empaquetado: sust
 **Files:** crear `docs/defensa/modulo-6-interfaz.md`, `docs/verification/2026-10-23-interface.md` (fecha real al ejecutar); actualizar README, índice de guías y hoja de ruta.
 
 - [x] Guía breve: qué se construyó, EDT, comando/snapshot, estado inicial frente a vivo, ejemplo y tres preguntas. Añadir una lista corta de pruebas manuales para el estudiante en NetBeans, indicando resultado esperado de cada una.
-- [ ] Registrar resultados reales y total acumulado, aceptación visual efectivamente realizada, límites y evidencia del IDE que el estudiante aporte. La comprobación del módulo 5 desde NetBeans sigue pendiente mientras no aporte el resultado; no inferirla de BUILD en terminal.
+- [x] Registrar resultados reales y total acumulado, aceptación visual efectivamente realizada, límites y evidencia del IDE que el estudiante aporte. La comprobación del módulo 5 desde NetBeans sigue pendiente mientras no aporte el resultado; no inferirla de BUILD en terminal.
 - [x] Una revisión independiente final del rango completo y las cinco condiciones de Review Focus; corregir importantes en un pase mediante RED→GREEN y suite completa; documentar decisiones/menores si existen. No revisores por tarea ni implementadores paralelos.
-- [ ] BUILD, clean package y git diff --check satisfactorios; commit `docs: explica y verifica la interfaz para la defensa`. Conservar rama/carpeta NetBeans, sin PR/fusión inventados. Siguiente módulo: escenarios JSON.
+- [x] BUILD, clean package y git diff --check satisfactorios; commit `docs: explica y verifica la interfaz para la defensa`. Conservar rama/carpeta NetBeans, sin PR/fusión inventados. Siguiente módulo: escenarios JSON.
 
-Estado: código implementado y 24770 comprobaciones satisfactorias tras corregir los tres hallazgos importantes de la revisión independiente. Prueba nativa parcial con el JAR corregido: controles, PCB/scroll, reinicio y cierre del proceso; el estudiante confirmó Configuración inicial. Faltan escenario local/remoto manual, otras vistas y tamaño mínimo por limitaciones de foco de la automatización. No se da por completada la aceptación del módulo.
+Estado: implementado y verificado con 24775 comprobaciones, clean package, revisión independiente y correcciones. Aceptación nativa local/remota, cuatro pestañas, tamaño mínimo corregido, selección por ID con RR y cierre normal de Maven realizados. Se usó copia temporal jpackage del mismo JAR para resolver la identidad Java de la herramienta de UI; la prueba del estudiante desde NetBeans sigue separada.
