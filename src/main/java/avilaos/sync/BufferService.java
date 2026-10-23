@@ -14,10 +14,13 @@ public final class BufferService {
     private final LinkedList<BufferWake> wakes = new LinkedList<>();
     private final LinkedList<SimulationEvent> events = new LinkedList<>();
     private long nextCycle, nextItemId = 1;
+    private final int latency;
+    private final LinkedList<NetworkTransfer> transfers = new LinkedList<>();
 
-    public BufferService(BufferRegistry registry) {
-        if (registry == null) { throw new IllegalArgumentException("Registro requerido"); }
-        this.registry = registry;
+    public BufferService(BufferRegistry registry) { this(registry, 0); }
+    public BufferService(BufferRegistry registry, int latency) {
+        if (registry == null || latency < 0) { throw new IllegalArgumentException("Registro requerido"); }
+        this.registry = registry; this.latency = latency;
     }
     private void validateDefinition(ProcessDefinition definition) {
         if (definition == null || (definition.type() != ProcessType.PRODUCER && definition.type() != ProcessType.CONSUMER)) {
@@ -54,7 +57,19 @@ public final class BufferService {
     }
     public BlockReason prepare(ProcessControlBlock p, long cycle) {
         mutex.acquireUninterruptibly();
-        try { requireCycle(cycle); require(p); return BlockReason.NONE; }
+        try {
+            requireCycle(cycle); BufferOperation op = require(p);
+            if (p.state() != ProcessState.READY && p.state() != ProcessState.RUNNING) { throw new IllegalStateException("Proceso no preparado para ejecutar"); }
+            BufferPhase phase = BufferProgram.phaseAt(p.definition(), p.pc());
+            if (!op.networkStarted && (phase == BufferPhase.WAIT_EMPTY || phase == BufferPhase.WAIT_FULL)
+                    && latency > 0 && p.definition().computerId() != op.buffer.definition().hostId()) {
+                if (op.countingPermit || op.mutexHeld || op.modified) { throw new IllegalStateException("Red con permisos retenidos"); }
+                NetworkTransfer transfer = new NetworkTransfer(p, op.buffer.definition().id(), cycle, latency);
+                transfers.addLast(transfer); op.networkStarted = true; op.networkAvailableAt = transfer.availableCycle();
+                op.waiting = BlockReason.NETWORK; return BlockReason.NETWORK;
+            }
+            return BlockReason.NONE;
+        }
         finally { mutex.release(); }
     }
     public BlockReason afterInstruction(ProcessControlBlock p, long cycle) {
@@ -122,6 +137,14 @@ public final class BufferService {
         try {
             if (cycle < 0 || cycle != nextCycle || cycle == Long.MAX_VALUE) { throw new IllegalArgumentException("Ciclo global fuera de secuencia"); }
             LinkedQueue<BufferWake> due = new LinkedQueue<>();
+            for (int i = 0; i < transfers.size();) {
+                NetworkTransfer transfer = transfers.get(i);
+                if (transfer.availableCycle() <= cycle) {
+                    transfers.removeAt(i); BufferOperation op = require(transfer.process());
+                    op.waiting = BlockReason.NONE; op.networkAvailableAt = -1;
+                    due.enqueue(new BufferWake(op.process, BlockReason.NETWORK, cycle));
+                } else { i++; }
+            }
             for (int i = 0; i < wakes.size();) {
                 if (wakes.get(i).availableCycle() <= cycle) { due.enqueue(wakes.removeAt(i)); } else { i++; }
             }
@@ -136,6 +159,7 @@ public final class BufferService {
             BufferOperation op = find(p); if (op == null) { return; }
             op.buffer.empty().cancelWaiting(p); op.buffer.full().cancelWaiting(p); op.buffer.mutex().cancelWaiting(p);
             for (int i = 0; i < wakes.size();) { if (wakes.get(i).process() == p) { wakes.removeAt(i); } else { i++; } }
+            for (int i = 0; i < transfers.size();) { if (transfers.get(i).process() == p) { transfers.removeAt(i); } else { i++; } }
             if (op.mutexHeld) { releaseMutex(op, cycle); }
             if (op.countingPermit) {
                 op.countingPermit = false; grantCount((op.producer() ? op.buffer.empty() : op.buffer.full()).signal(), cycle);
@@ -153,6 +177,7 @@ public final class BufferService {
         try { BufferOperation op = find(p); return op == null ? null : op.snapshot(); }
         finally { mutex.release(); }
     }
+    public int latency() { return latency; }
     public int eventCount() { mutex.acquireUninterruptibly(); try { return events.size(); } finally { mutex.release(); } }
     public SimulationEvent eventAt(int index) { mutex.acquireUninterruptibly(); try { return events.get(index); } finally { mutex.release(); } }
 }

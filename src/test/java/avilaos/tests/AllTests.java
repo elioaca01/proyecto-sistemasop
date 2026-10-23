@@ -29,6 +29,7 @@ public final class AllTests {
         BoundedBufferTest.run();
         BufferProgramTest.run();
         BufferOperationTest.run();
+        BufferNetworkTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
