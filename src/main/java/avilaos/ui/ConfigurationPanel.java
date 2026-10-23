@@ -16,7 +16,7 @@ public final class ConfigurationPanel extends JPanel {
     private final InitialLoadModel processRows=new InitialLoadModel(false),bufferRows=new InitialLoadModel(true);
     private final JTable processes=new JTable(processRows),buffers=new JTable(bufferRows);
     private final JButton apply=new JButton("Aplicar configuración"),resize=new JButton("Actualizar computadores"),removeProcess=new JButton("Quitar proceso inicial"),removeBuffer=new JButton("Quitar buffer inicial");
-    private final JLabel error=FormGrid.error();private SimulationConfig initial;private Consumer<SimulationConfig> handler=c->{};
+    private final JLabel error=FormGrid.error();private SimulationConfig initial;private boolean dirty,loading;private Consumer<SimulationConfig> handler=c->{};
     public ConfigurationPanel(){
         super(new BorderLayout(0,14));JPanel top=FormGrid.panel();FormGrid.row(top,0,"Cantidad de computadores",count,"config.computerCount");FormGrid.row(top,1,"Duración inicial del ciclo (ms)",duration,"config.cycleMillis");FormGrid.row(top,2,"Latencia de red (ciclos)",latency,"config.latency");
         JPanel header=new JPanel(new BorderLayout(0,8));header.add(new JLabel("Escenario inicial · Reiniciar vuelve a estos parámetros y cargas."),BorderLayout.NORTH);header.add(top,BorderLayout.CENTER);header.add(resize,BorderLayout.SOUTH);add(header,BorderLayout.NORTH);
@@ -30,15 +30,19 @@ public final class ConfigurationPanel extends JPanel {
         resize.addActionListener(e->guard(this::resizeComputers));apply.addActionListener(e->guard(()->handler.accept(readConfiguration())));
         removeProcess.addActionListener(e->guard(()->{int i=processes.getSelectedRow();if(i<0)throw new IllegalArgumentException("Selecciona un proceso inicial");handler.accept(readConfiguration().withoutProcess(i));}));
         removeBuffer.addActionListener(e->guard(()->{int i=buffers.getSelectedRow();if(i<0)throw new IllegalArgumentException("Selecciona un buffer inicial");handler.accept(readConfiguration().withoutBuffer(initial.bufferAt(i).id()));}));
-        computers.addTableModelListener(e->{if(!computers.validationError().isEmpty())error.setText(computers.validationError());});
+        computers.addTableModelListener(e->{if(!loading&&e.getColumn()>0)dirty=true;if(!computers.validationError().isEmpty())error.setText(computers.validationError());});
+        javax.swing.event.DocumentListener changes=new javax.swing.event.DocumentListener(){public void insertUpdate(javax.swing.event.DocumentEvent e){changed();}public void removeUpdate(javax.swing.event.DocumentEvent e){changed();}public void changedUpdate(javax.swing.event.DocumentEvent e){changed();}private void changed(){if(!loading)dirty=true;}};
+        count.getDocument().addDocumentListener(changes);duration.getDocument().addDocumentListener(changes);latency.getDocument().addDocumentListener(changes);
     }
     public void setApplyHandler(Consumer<SimulationConfig> handler){this.handler=handler;}
     private void guard(Runnable action){try{action.run();error.setText(" ");}catch(IllegalArgumentException|IndexOutOfBoundsException e){error.setText(e.getMessage());}}
-    public void load(SimulationConfig c){initial=c;count.setText(Integer.toString(c.computerCount()));duration.setText(Long.toString(c.cycleMillis()));latency.setText(Integer.toString(c.networkLatency()));ComputerConfig[] cs=new ComputerConfig[c.computerCount()];for(int i=0;i<cs.length;i++)cs[i]=c.computerAt(i);computers.setConfigs(cs);processRows.setConfig(c);bufferRows.setConfig(c);error.setText(" ");}
+    public void load(SimulationConfig c){loading=true;initial=c;count.setText(Integer.toString(c.computerCount()));duration.setText(Long.toString(c.cycleMillis()));latency.setText(Integer.toString(c.networkLatency()));ComputerConfig[] cs=new ComputerConfig[c.computerCount()];for(int i=0;i<cs.length;i++)cs[i]=c.computerAt(i);computers.setConfigs(cs);processRows.setConfig(c);bufferRows.setConfig(c);error.setText(" ");loading=false;dirty=false;}
+    public boolean hasDraftChanges(){return dirty;}
+    public void updateInitialLoads(SimulationConfig c){initial=c;processRows.setConfig(c);bufferRows.setConfig(c);}
     private void resizeComputers(){
         if(table.isEditing()&&!table.getCellEditor().stopCellEditing())throw new IllegalArgumentException("Termina de editar los computadores");
         int n=InputParser.integer(count.getText(),"Cantidad de computadores",2);ComputerConfig[] old=computers.configs();if(n==old.length)return;ComputerConfig[] cs=new ComputerConfig[n];
-        for(int i=0;i<n;i++){if(i<old.length)cs[i]=old[i];else{int id=1;boolean used;do{used=false;for(int j=0;j<i;j++)if(cs[j].id()==id){used=true;id++;break;}}while(used);cs[i]=new ComputerConfig(id,64,SchedulingPolicyType.FCFS,2);}}computers.setConfigs(cs);
+        for(int i=0;i<n;i++){if(i<old.length)cs[i]=old[i];else{int id=1;boolean used;do{used=false;for(int j=0;j<i;j++)if(cs[j].id()==id){used=true;id++;break;}}while(used);cs[i]=new ComputerConfig(id,64,SchedulingPolicyType.FCFS,2);}}computers.setConfigs(cs);dirty=true;
     }
     public SimulationConfig readConfiguration(){if(initial==null)throw new IllegalArgumentException("Escenario inicial requerido");resizeComputers();if(!computers.validationError().isEmpty())throw new IllegalArgumentException(computers.validationError());return initial.withComputers(computers.configs()).withTiming(InputParser.longInteger(duration.getText(),"Duración del ciclo",1),InputParser.integer(latency.getText(),"Latencia",0));}
     public void setEditable(boolean enabled){count.setEnabled(enabled);duration.setEnabled(enabled);latency.setEnabled(enabled);computers.setEditable(enabled);apply.setEnabled(enabled);resize.setEnabled(enabled);removeProcess.setEnabled(enabled);removeBuffer.setEnabled(enabled);}

@@ -1,36 +1,21 @@
 package avilaos.ui;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import javax.swing.BorderFactory;
+import avilaos.config.SimulationConfig;
+import avilaos.simulation.ComputerConfig;
+import avilaos.scheduling.SchedulingPolicyType;
+import avilaos.process.ProcessDefinition;
+import avilaos.sync.BufferDefinition;
+import avilaos.ui.session.*;
+import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
-/** Ventana inicial. Las decisiones de la simulación pertenecerán al núcleo. */
-public final class MainWindow extends JFrame {
-    public MainWindow() {
-        super("ÁvilaOS");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        JPanel content = new JPanel(new BorderLayout(0, 20));
-        content.setBackground(new Color(244, 247, 249));
-        content.setBorder(BorderFactory.createEmptyBorder(40, 32, 40, 32));
-        JLabel title = new JLabel("ÁvilaOS", SwingConstants.CENTER);
-        title.setFont(title.getFont().deriveFont(Font.BOLD, 40f));
-        title.setForeground(new Color(24, 54, 72));
-        JLabel description = new JLabel("Simulador de sistemas operativos distribuidos", SwingConstants.CENTER);
-        description.setFont(description.getFont().deriveFont(16f));
-        description.setForeground(new Color(46, 73, 89));
-        JLabel course = new JLabel("Proyecto 1 · Sistemas Operativos", SwingConstants.CENTER);
-        course.setForeground(new Color(85, 108, 120));
-        content.add(title, BorderLayout.NORTH);
-        content.add(description, BorderLayout.CENTER);
-        content.add(course, BorderLayout.SOUTH);
-        setContentPane(content);
-        setSize(640, 320);
-        setMinimumSize(new java.awt.Dimension(520, 280));
-        setLocationRelativeTo(null);
+/** Ensambla la vista y delega acciones; el cierre del motor ocurre fuera del EDT. */
+public final class MainWindow extends JFrame implements UiView {
+    private final DashboardPanel dashboard;private final UiController controller;
+    public MainWindow(){this(new SimulationConfig(500,2,new ComputerConfig[]{new ComputerConfig(1,64,SchedulingPolicyType.FCFS,2),new ComputerConfig(2,64,SchedulingPolicyType.FCFS,2)},new BufferDefinition[0],new ProcessDefinition[0]));}
+    public MainWindow(SimulationConfig config){
+        super("ÁvilaOS · Simulador de sistemas operativos");UiTheme.apply();dashboard=new DashboardPanel();controller=new UiController(new UiSession(config),this);dashboard.bind(controller);setContentPane(dashboard);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);setSize(1180,780);setMinimumSize(new Dimension(960,640));setLocationRelativeTo(null);addWindowListener(new WindowAdapter(){@Override public void windowClosing(WindowEvent e){controller.requestClose();}});controller.start();
     }
+    public void render(SessionView view){dashboard.render(view);}public void showNotice(SessionNotice notice){dashboard.showNotice(notice);}public void closed(){dashboard.closed();dispose();}
 }
