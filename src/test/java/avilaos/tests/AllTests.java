@@ -47,6 +47,7 @@ public final class AllTests {
         EventPanelTest.run();
         UiControllerTest.run();
         UiIntegrationTest.run();
+        ScenarioJsonTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
