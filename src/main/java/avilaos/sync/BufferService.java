@@ -2,6 +2,7 @@ package avilaos.sync;
 
 import avilaos.process.*;
 import avilaos.simulation.SimulationEvent;
+import avilaos.simulation.EventLog;
 import avilaos.structures.LinkedList;
 import avilaos.structures.LinkedQueue;
 import java.util.concurrent.Semaphore;
@@ -10,6 +11,7 @@ import avilaos.hardware.Ram;
 /** Recursos compartidos. Nunca invoca al Kernel ni espera workers sosteniendo el mutex. */
 public final class BufferService {
     private final BufferRegistry registry;
+    private final EventLog sharedEvents;
     private final Semaphore mutex = new Semaphore(1);
     private final LinkedList<BufferOperation> operations = new LinkedList<>();
     private final LinkedList<BufferWake> wakes = new LinkedList<>();
@@ -20,8 +22,11 @@ public final class BufferService {
 
     public BufferService(BufferRegistry registry) { this(registry, 0); }
     public BufferService(BufferRegistry registry, int latency) {
+        this(registry,latency,null);
+    }
+    public BufferService(BufferRegistry registry, int latency, EventLog sharedEvents) {
         if (registry == null || latency < 0) { throw new IllegalArgumentException("Registro requerido"); }
-        this.registry = registry; this.latency = latency;
+        this.registry = registry; this.latency = latency; this.sharedEvents=sharedEvents;
     }
     private void validateDefinition(ProcessDefinition definition) {
         if (definition == null || (definition.type() != ProcessType.PRODUCER && definition.type() != ProcessType.CONSUMER)) {
@@ -168,8 +173,9 @@ public final class BufferService {
             if (op.modified) {
                 op.modified = false; grantCount((op.producer() ? op.buffer.full() : op.buffer.empty()).signal(), cycle);
             }
-            events.addLast(new SimulationEvent(cycle, p.definition().computerId(), p.id(),
-                    "Limpieza " + reason + " en buffer " + op.buffer.definition().id() + "; contenido confirmado conservado"));
+            SimulationEvent event=new SimulationEvent(cycle, p.definition().computerId(), p.id(),
+                    "Limpieza " + reason + " en buffer " + op.buffer.definition().id() + "; contenido confirmado conservado");
+            events.addLast(event); if(sharedEvents!=null) sharedEvents.append(event);
             for (int i = 0; i < operations.size(); i++) { if (operations.get(i) == op) { operations.removeAt(i); break; } }
         } finally { mutex.release(); }
     }

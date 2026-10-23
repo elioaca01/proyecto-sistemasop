@@ -6,6 +6,8 @@ import avilaos.scheduling.SchedulingPolicy;
 import avilaos.scheduling.SchedulingPolicyType;
 import avilaos.scheduling.SchedulingPolicies;
 import avilaos.simulation.Tickable;
+import avilaos.simulation.EventLog;
+import avilaos.simulation.SimulationEvent;
 import avilaos.structures.LinkedList;
 import avilaos.structures.OrderedProcessQueue;
 import avilaos.sync.BufferService;
@@ -19,6 +21,7 @@ public final class Kernel implements Tickable {
     private final MemoryAdmission admission;
     private final Scheduler scheduler;
     private final BufferService buffers;
+    private final EventLog events;
     private final LinkedList<ProcessControlBlock> incoming = new LinkedList<>();
     private final OrderedProcessQueue ready = new OrderedProcessQueue();
     private final LinkedList<ProcessControlBlock> blocked = new LinkedList<>();
@@ -37,6 +40,9 @@ public final class Kernel implements Tickable {
         this(computerId, cpu, ram, io, policy, quantum, null);
     }
     public Kernel(int computerId, Cpu cpu, Ram ram, IoController io, SchedulingPolicy policy, int quantum, BufferService buffers) {
+        this(computerId,cpu,ram,io,policy,quantum,buffers,null);
+    }
+    public Kernel(int computerId, Cpu cpu, Ram ram, IoController io, SchedulingPolicy policy, int quantum, BufferService buffers, EventLog events) {
         if (computerId <= 0 || cpu == null || ram == null || io == null || policy == null || quantum <= 0) {
             throw new IllegalArgumentException("Computador y componentes requeridos");
         }
@@ -45,7 +51,7 @@ public final class Kernel implements Tickable {
         this.ram = ram;
         this.io = io;
         this.quantum = quantum;
-        this.buffers = buffers;
+        this.buffers = buffers; this.events = events;
         admission = new MemoryAdmission(ram);
         scheduler = new Scheduler(ready, policy);
     }
@@ -79,6 +85,7 @@ public final class Kernel implements Tickable {
             quantum = pendingScheduling.quantum();
             sliceUsed = 0;
             pendingScheduling = null;
+            log(cycle,null,"Cambia planificación a " + scheduler.policyType() + "; quantum " + quantum);
         }
         io.onTick(cycle);
         ProcessControlBlock completed;
@@ -88,6 +95,7 @@ public final class Kernel implements Tickable {
             } else {
                 removeIdentity(blocked, completed);
                 completed.unblock();
+                log(cycle,completed,"Se desbloquea de IO");
                 ready.addLast(completed);
             }
         }
@@ -96,6 +104,7 @@ public final class Kernel implements Tickable {
         if (scheduler.shouldPreempt(cpu.current(), sliceUsed, quantum)) {
             ProcessControlBlock preempted = cpu.current();
             preempted.preempt();
+            log(cycle,preempted,"Se apropia CPU; vuelve a listos");
             ready.addLast(preempted);
             cpu.clear();
             sliceUsed = 0;
@@ -109,18 +118,22 @@ public final class Kernel implements Tickable {
             if (selected == null) { break; }
             if (isBufferProcess(selected) && buffers.prepare(selected, cycle) == BlockReason.NETWORK) {
                 selected.blockBeforeDispatch(BlockReason.NETWORK); blocked.addLast(selected);
-            } else { selected.dispatch(cycle); cpu.load(selected); sliceUsed = 0; }
+                log(cycle,selected,"Acceso remoto al buffer B" + selected.definition().bufferId() + "; se bloquea en NETWORK");
+            } else { selected.dispatch(cycle); cpu.load(selected); sliceUsed = 0; log(cycle,selected,"Computador " + computerId + " selecciona P" + selected.id() + " con " + scheduler.policyType()); }
         }
         cpu.onTick(cycle);
         ProcessControlBlock running = cpu.current();
         if (running != null) {
             sliceUsed++;
             BlockReason bufferBlock = isBufferProcess(running) ? buffers.afterInstruction(running, cycle) : BlockReason.NONE;
+            if (cpu.lastInstruction() == InstructionKind.BUFFER_INSERT) { log(cycle,running,"Se inserta un elemento en B" + running.definition().bufferId()); }
+            if (cpu.lastInstruction() == InstructionKind.BUFFER_REMOVE) { log(cycle,running,"Se extrae un elemento de B" + running.definition().bufferId()); }
             if (bufferBlock != BlockReason.NONE) {
                 blockRunning(running, bufferBlock);
             } else if (cpu.lastInstruction() == InstructionKind.IO_REQUEST) {
                 io.request(running, cycle, running.definition().ioCycles());
                 running.block(BlockReason.IO);
+                log(cycle,running,"Se bloquea en IO");
                 blocked.addLast(running);
                 cpu.clear();
                 sliceUsed = 0;
@@ -145,11 +158,13 @@ public final class Kernel implements Tickable {
             if (admission.admit(process)) {
                 incoming.removeAt(i);
                 ready.addLast(process);
+                log(nextCycle,process,"Se admite en RAM y pasa a listos");
             } else { i++; }
         }
     }
     private void finish(ProcessControlBlock process, TerminationReason reason, long cycle) {
         process.terminate(reason, cycle);
+        log(cycle,process,"P" + process.id() + " termina: " + reason);
         if (isBufferProcess(process)) { buffers.cleanup(process, cycle, reason); }
         if (cpu.current() == process) { cpu.clear(); sliceUsed = 0; }
         removeIdentity(incoming, process);
@@ -164,6 +179,7 @@ public final class Kernel implements Tickable {
     }
     private void blockRunning(ProcessControlBlock p, BlockReason reason) {
         p.block(reason); blocked.addLast(p); cpu.clear(); sliceUsed = 0;
+        log(nextCycle,p,(reason==BlockReason.NETWORK ? "Acceso remoto al buffer B" + p.definition().bufferId() + "; " : "") + "Se bloquea en " + reason + (isBufferProcess(p)?" del buffer B"+p.definition().bufferId():""));
     }
     /** Solo el coordinador entrega avisos, entre ciclos y fuera del mutex compartido. */
     public boolean unblockExternal(ProcessControlBlock p, BlockReason reason) {
@@ -171,7 +187,7 @@ public final class Kernel implements Tickable {
                 || p.state() != ProcessState.BLOCKED || p.blockReason() != reason) { return false; }
         for (int i = 0; i < blocked.size(); i++) {
             if (blocked.get(i) == p) {
-                blocked.removeAt(i); p.unblock(); ready.addLast(p); return true;
+                blocked.removeAt(i); p.unblock(); ready.addLast(p); log(nextCycle,p,"Se desbloquea de " + reason); return true;
             }
         }
         return false;
@@ -180,6 +196,9 @@ public final class Kernel implements Tickable {
         for (int i = 0; i < queue.size(); i++) {
             if (queue.get(i) == process) { queue.removeAt(i); return; }
         }
+    }
+    private void log(long cycle, ProcessControlBlock p, String message) {
+        if(events!=null) events.append(new SimulationEvent(cycle,computerId,p==null?-1:p.id(),message));
     }
     public int quantum() { return quantum; }
     public int sliceUsed() { return sliceUsed; }

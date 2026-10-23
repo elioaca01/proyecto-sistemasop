@@ -16,6 +16,7 @@ public final class Simulation implements ClockDriver, AutoCloseable {
     private final GlobalClock clock;
     private final SnapshotStore snapshots;
     private final BufferService buffers;
+    private final EventLog events=new EventLog();
     private final Semaphore commandsMutex = new Semaphore(1), registryMutex = new Semaphore(1);
     private LinkedQueue<Request> pending = new LinkedQueue<>();
     private LinkedQueue<Request> batch = new LinkedQueue<>();
@@ -43,11 +44,11 @@ public final class Simulation implements ClockDriver, AutoCloseable {
             ordered[j] = value;
         }
         this.cycleMillis = cycleMillis;
-        buffers = new BufferService(new BufferRegistry(), networkLatency);
+        buffers = new BufferService(new BufferRegistry(), networkLatency, events);
         computers = new Computer[ordered.length]; workers = new ComputerWorker[ordered.length];
         for (int i = 0; i < ordered.length; i++) {
             ComputerConfig c = ordered[i];
-            computers[i] = new Computer(c.id(), c.ramCapacity(), c.policy(), c.quantum(), buffers);
+            computers[i] = new Computer(c.id(), c.ramCapacity(), c.policy(), c.quantum(), buffers, events);
             buffers.registerRam(c.id(), computers[i].ram());
             workers[i] = new ComputerWorker(c.id(), computers[i]);
         }
@@ -83,16 +84,16 @@ public final class Simulation implements ClockDriver, AutoCloseable {
         try {
             long following = Math.incrementExact(nextProcessId);
             ProcessControlBlock process = new ProcessControlBlock(nextProcessId, definition, applyingCycle);
-            target.submit(process); registry.addLast(process); nextProcessId = following; return process.id();
+            target.submit(process); events.append(new SimulationEvent(applyingCycle,definition.computerId(),process.id(),"Alta de P"+process.id()+" ("+definition.name()+")")); registry.addLast(process); nextProcessId = following; return process.id();
         } finally { registryMutex.release(); }
     }
     long applyScheduling(int id, SchedulingPolicyType policy, int quantum) {
         requireCoordinator(); computer(id).configureScheduling(policy, quantum); return -1;
     }
     long applyBuffer(BufferDefinition definition) {
-        requireCoordinator(); buffers.createBuffer(definition); return -1;
+        requireCoordinator(); buffers.createBuffer(definition); events.append(new SimulationEvent(applyingCycle,definition.hostId(),-1,"Buffer B"+definition.id()+" creado; capacidad "+definition.capacity())); return -1;
     }
-    long applyDuration(long millis) { requireCoordinator(); cycleMillis = millis; return -1; }
+    long applyDuration(long millis) { requireCoordinator(); cycleMillis = millis; events.append(new SimulationEvent(applyingCycle,0,-1,"Duración del ciclo: "+millis+" ms")); return -1; }
     @Override public long advanceCycle(long cycle) {
         requireCoordinator(); applyingCycle = cycle;
         commandsMutex.acquireUninterruptibly();
@@ -106,6 +107,7 @@ public final class Simulation implements ClockDriver, AutoCloseable {
                 result(new CommandResult(request.id(), cycle, true, id, message));
             } catch (IllegalArgumentException | IllegalStateException rejected) {
                 result(new CommandResult(request.id(), cycle, false, -1, rejected.getMessage()));
+                events.append(new SimulationEvent(cycle,0,-1,"Orden "+request.id()+" rechazada: "+rejected.getMessage()));
             } catch (Throwable unexpected) {
                 result(new CommandResult(request.id(), cycle, false, -1, unexpected.toString()));
                 throw unexpected;
@@ -139,8 +141,7 @@ public final class Simulation implements ClockDriver, AutoCloseable {
         finally { registryMutex.release(); }
         BufferSnapshot[] bufferCopies = new BufferSnapshot[buffers.bufferCount()];
         for (int i = 0; i < bufferCopies.length; i++) { bufferCopies[i] = buffers.snapshotAt(i); }
-        SimulationEvent[] eventCopies = new SimulationEvent[buffers.eventCount()];
-        for (int i = 0; i < eventCopies.length; i++) { eventCopies[i] = buffers.eventAt(i); }
+        SimulationEvent[] eventCopies = events.copy();
         return new SimulationSnapshot(version, nextCycle, state, cycleMillis, error, machineCopies, copies, buffers.latency(), bufferCopies, eventCopies);
     }
     @Override public void publishState(long nextCycle, SimulationState state, long duration, String error) {

@@ -41,11 +41,12 @@ public final class BufferSimulationTest {
             equal(1L, saved.itemAt(0).producerId()); equal(1, saved.itemAt(0).producerComputerId()); equal(1L, saved.itemAt(0).id());
             equal(true, saved.operationAt(0).modified());
             step(sim); SimulationSnapshot end = step(sim);
-            equal(3, end.computerAt(0).ramUsed()); equal(0, end.bufferAt(0).operationCount()); equal(1, end.eventCount());
-            equal(1L, end.eventAt(0).processId()); equal(TerminationReason.COMPLETED, end.computerAt(0).terminatedAt(0).terminationReason());
+            equal(3, end.computerAt(0).ramUsed()); equal(0, end.bufferAt(0).operationCount()); isTrue(end.eventCount()>1);
+            SimulationEvent cleanup=null; for(int i=0;i<end.eventCount();i++) if(end.eventAt(i).message().startsWith("Limpieza")) cleanup=end.eventAt(i);
+            isTrue(cleanup!=null); equal(1L, cleanup.processId()); equal(TerminationReason.COMPLETED, end.computerAt(0).terminatedAt(0).terminationReason());
             equal(0, empty.size()); equal(0L, empty.produced()); equal(1L, saved.mutexOwnerId()); equal(true, saved.operationAt(0).modified());
             ComputerSnapshot[] computers = {end.computerAt(0)}; CommandResult[] results = {end.resultAt(1)};
-            BufferSnapshot[] buffers = {saved}; SimulationEvent[] events = {end.eventAt(0)};
+            BufferSnapshot[] buffers = {saved}; SimulationEvent[] events = {cleanup};
             SimulationSnapshot copy = new SimulationSnapshot(1, 6, SimulationState.PAUSED, 100, null, computers, results, 2, buffers, events);
             computers[0] = null; results[0] = null; buffers[0] = null; events[0] = null;
             equal(1, copy.computerAt(0).id()); equal(1, copy.bufferAt(0).size()); equal(1L, copy.eventAt(0).processId()); isTrue(copy.resultAt(0).accepted());

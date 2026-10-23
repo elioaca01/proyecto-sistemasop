@@ -34,6 +34,8 @@ public final class AllTests {
         BufferSimulationTest.run();
         ProducerConsumerIntegrationTest.run();
         SimulationConfigTest.run();
+        EventLogTest.run();
+        DecisionLogTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }

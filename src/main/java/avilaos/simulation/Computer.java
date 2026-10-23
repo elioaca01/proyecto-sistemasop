@@ -23,12 +23,15 @@ public final class Computer implements Tickable {
         this(id, ramCapacity, policy, quantum, null);
     }
     public Computer(int id, int ramCapacity, SchedulingPolicyType policy, int quantum, BufferService buffers) {
+        this(id,ramCapacity,policy,quantum,buffers,null);
+    }
+    public Computer(int id, int ramCapacity, SchedulingPolicyType policy, int quantum, BufferService buffers, EventLog events) {
         if (id <= 0) { throw new IllegalArgumentException("ID de computador positivo requerido"); }
         this.id = id;
         cpu = new Cpu();
         ram = new Ram(ramCapacity);
         io = new IoController();
-        kernel = new Kernel(id, cpu, ram, io, SchedulingPolicies.create(policy), quantum, buffers);
+        kernel = new Kernel(id, cpu, ram, io, SchedulingPolicies.create(policy), quantum, buffers, events);
     }
     public void configureScheduling(SchedulingPolicyType policy, int quantum) { kernel.configureScheduling(policy, quantum); }
     public SchedulingPolicyType policyType() { return kernel.policyType(); }
