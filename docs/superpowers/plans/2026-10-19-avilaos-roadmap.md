@@ -31,6 +31,8 @@ La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 compl
 
 - [Módulo 4: clúster y reloj](2026-10-22-avilaos-cluster.md): hilos, semáforos Java, controles por API, comandos e instantáneas implementados; 1246 comprobaciones y construcción limpia satisfactorias. Revisión independiente realizada; hallazgo de cobertura corregido. [Guía de defensa](../../defensa/modulo-4-cluster-y-reloj.md).
 
+- [Módulo 5: productor-consumidor y red](2026-10-22-avilaos-buffers.md): buffers en RAM, semáforos simulados, programas de núcleo, red por elemento y limpieza implementados; 24401 comprobaciones y construcción limpia satisfactorias. Revisión final en curso. [Guía de defensa](../../defensa/modulo-5-productor-consumidor.md).
+
 ## Reglas de avance
 
 1. Escribir la prueba de comportamiento, comprobar el fallo esperado, implementar y comprobar el resultado.
