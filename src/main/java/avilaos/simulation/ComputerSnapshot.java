@@ -1,5 +1,7 @@
 package avilaos.simulation;
 import avilaos.hardware.CpuMode;
+import avilaos.sync.BufferService;
+import avilaos.process.ProcessControlBlock;
 import avilaos.process.InstructionKind;
 import avilaos.scheduling.SchedulingPolicyType;
 /** Se captura solo cuando el propietario ha estabilizado el computador. */
@@ -20,7 +22,7 @@ public final class ComputerSnapshot {
     private final ProcessSnapshot[] blocked;
     private final ProcessSnapshot[] terminated;
     private final ProcessSnapshot[] incoming;
-    private ComputerSnapshot(Computer c) {
+    private ComputerSnapshot(Computer c, BufferService buffers) {
         id = c.id();
         nextCycle = c.kernel().nextCycle();
         ramCapacity = c.ram().capacity();
@@ -32,19 +34,25 @@ public final class ComputerSnapshot {
         policyType = c.policyType();
         quantum = c.quantum();
         sliceUsed = c.sliceUsed();
-        running = c.cpu().current() == null ? null : ProcessSnapshot.capture(c.cpu().current());
+        running = c.cpu().current() == null ? null : captureProcess(buffers, c.cpu().current());
         incoming = new ProcessSnapshot[c.kernel().newCount()];
-        for (int i = 0; i < incoming.length; i++) { incoming[i] = ProcessSnapshot.capture(c.kernel().newAt(i)); }
+        for (int i = 0; i < incoming.length; i++) { incoming[i] = captureProcess(buffers, c.kernel().newAt(i)); }
         ready = new ProcessSnapshot[c.kernel().readyCount()];
-        for (int i = 0; i < ready.length; i++) { ready[i] = ProcessSnapshot.capture(c.kernel().readyAt(i)); }
+        for (int i = 0; i < ready.length; i++) { ready[i] = captureProcess(buffers, c.kernel().readyAt(i)); }
         blocked = new ProcessSnapshot[c.kernel().blockedCount()];
-        for (int i = 0; i < blocked.length; i++) { blocked[i] = ProcessSnapshot.capture(c.kernel().blockedAt(i)); }
+        for (int i = 0; i < blocked.length; i++) { blocked[i] = captureProcess(buffers, c.kernel().blockedAt(i)); }
         terminated = new ProcessSnapshot[c.kernel().terminatedCount()];
-        for (int i = 0; i < terminated.length; i++) { terminated[i] = ProcessSnapshot.capture(c.kernel().terminatedAt(i)); }
+        for (int i = 0; i < terminated.length; i++) { terminated[i] = captureProcess(buffers, c.kernel().terminatedAt(i)); }
     }
     public static ComputerSnapshot capture(Computer c) {
+        return capture(c, null);
+    }
+    public static ComputerSnapshot capture(Computer c, BufferService buffers) {
         if (c == null) { throw new IllegalArgumentException("Computador requerido"); }
-        return new ComputerSnapshot(c);
+        return new ComputerSnapshot(c, buffers);
+    }
+    private static ProcessSnapshot captureProcess(BufferService buffers, ProcessControlBlock p) {
+        return ProcessSnapshot.capture(p, buffers == null ? null : buffers.operationSnapshot(p));
     }
     public int id() { return id; }
     public long nextCycle() { return nextCycle; }

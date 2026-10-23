@@ -6,6 +6,7 @@ import avilaos.scheduling.SchedulingPolicyType;
 import avilaos.structures.LinkedList;
 import avilaos.structures.LinkedQueue;
 import java.util.concurrent.Semaphore;
+import avilaos.sync.*;
 
 /** Propietario del clúster. La API externa solo entrega órdenes o lee valores inmutables. */
 public final class Simulation implements ClockDriver, AutoCloseable {
@@ -14,6 +15,7 @@ public final class Simulation implements ClockDriver, AutoCloseable {
     private final ComputerWorker[] workers;
     private final GlobalClock clock;
     private final SnapshotStore snapshots;
+    private final BufferService buffers;
     private final Semaphore commandsMutex = new Semaphore(1), registryMutex = new Semaphore(1);
     private LinkedQueue<Request> pending = new LinkedQueue<>();
     private LinkedQueue<Request> batch = new LinkedQueue<>();
@@ -23,7 +25,10 @@ public final class Simulation implements ClockDriver, AutoCloseable {
     private long nextRequestId = 1, nextProcessId = 1, version, applyingCycle, cycleMillis;
 
     public Simulation(ComputerConfig[] configs, long cycleMillis) {
-        if (configs == null || configs.length < 2 || cycleMillis <= 0) { throw new IllegalArgumentException("Se requieren dos computadores y duración positiva"); }
+        this(configs, cycleMillis, 0);
+    }
+    public Simulation(ComputerConfig[] configs, long cycleMillis, int networkLatency) {
+        if (configs == null || configs.length < 2 || cycleMillis <= 0 || networkLatency < 0) { throw new IllegalArgumentException("Configuración o latencia inválida"); }
         ComputerConfig[] ordered = configs.clone();
         for (int i = 0; i < ordered.length; i++) {
             if (ordered[i] == null) { throw new IllegalArgumentException("Configuración nula"); }
@@ -38,10 +43,12 @@ public final class Simulation implements ClockDriver, AutoCloseable {
             ordered[j] = value;
         }
         this.cycleMillis = cycleMillis;
+        buffers = new BufferService(new BufferRegistry(), networkLatency);
         computers = new Computer[ordered.length]; workers = new ComputerWorker[ordered.length];
         for (int i = 0; i < ordered.length; i++) {
             ComputerConfig c = ordered[i];
-            computers[i] = new Computer(c.id(), c.ramCapacity(), c.policy(), c.quantum());
+            computers[i] = new Computer(c.id(), c.ramCapacity(), c.policy(), c.quantum(), buffers);
+            buffers.registerRam(c.id(), computers[i].ram());
             workers[i] = new ComputerWorker(c.id(), computers[i]);
         }
         snapshots = new SnapshotStore(capture(0, 0, SimulationState.PAUSED, null));
@@ -82,6 +89,9 @@ public final class Simulation implements ClockDriver, AutoCloseable {
     long applyScheduling(int id, SchedulingPolicyType policy, int quantum) {
         requireCoordinator(); computer(id).configureScheduling(policy, quantum); return -1;
     }
+    long applyBuffer(BufferDefinition definition) {
+        requireCoordinator(); buffers.createBuffer(definition); return -1;
+    }
     long applyDuration(long millis) { requireCoordinator(); cycleMillis = millis; return -1; }
     @Override public long advanceCycle(long cycle) {
         requireCoordinator(); applyingCycle = cycle;
@@ -92,13 +102,18 @@ public final class Simulation implements ClockDriver, AutoCloseable {
         while ((request = batch.dequeue()) != null) {
             try {
                 long id = request.command().apply(this);
-                result(new CommandResult(request.id(), cycle, true, id, "Aplicada"));
+                String message = request.command() instanceof AddBufferCommand added ? "Buffer " + added.definition().id() + " creado" : "Aplicada";
+                result(new CommandResult(request.id(), cycle, true, id, message));
             } catch (IllegalArgumentException | IllegalStateException rejected) {
                 result(new CommandResult(request.id(), cycle, false, -1, rejected.getMessage()));
             } catch (Throwable unexpected) {
                 result(new CommandResult(request.id(), cycle, false, -1, unexpected.toString()));
                 throw unexpected;
             }
+        }
+        LinkedQueue<BufferWake> due = buffers.beginCycle(cycle);
+        while (!due.isEmpty()) {
+            BufferWake wake = due.dequeue(); computer(wake.process().definition().computerId()).unblockExternal(wake.process(), wake.reason());
         }
         for (ComputerWorker worker : workers) {
             try { worker.executeCycle(cycle); }
@@ -120,9 +135,13 @@ public final class Simulation implements ClockDriver, AutoCloseable {
         } finally { commandsMutex.release(); }
         ComputerSnapshot[] machineCopies = new ComputerSnapshot[computers.length];
         registryMutex.acquireUninterruptibly();
-        try { for (int i = 0; i < computers.length; i++) { machineCopies[i] = ComputerSnapshot.capture(computers[i]); } }
+        try { for (int i = 0; i < computers.length; i++) { machineCopies[i] = ComputerSnapshot.capture(computers[i], buffers); } }
         finally { registryMutex.release(); }
-        return new SimulationSnapshot(version, nextCycle, state, cycleMillis, error, machineCopies, copies);
+        BufferSnapshot[] bufferCopies = new BufferSnapshot[buffers.bufferCount()];
+        for (int i = 0; i < bufferCopies.length; i++) { bufferCopies[i] = buffers.snapshotAt(i); }
+        SimulationEvent[] eventCopies = new SimulationEvent[buffers.eventCount()];
+        for (int i = 0; i < eventCopies.length; i++) { eventCopies[i] = buffers.eventAt(i); }
+        return new SimulationSnapshot(version, nextCycle, state, cycleMillis, error, machineCopies, copies, buffers.latency(), bufferCopies, eventCopies);
     }
     @Override public void publishState(long nextCycle, SimulationState state, long duration, String error) {
         requireCoordinator();

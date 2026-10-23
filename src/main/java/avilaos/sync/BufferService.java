@@ -5,6 +5,7 @@ import avilaos.simulation.SimulationEvent;
 import avilaos.structures.LinkedList;
 import avilaos.structures.LinkedQueue;
 import java.util.concurrent.Semaphore;
+import avilaos.hardware.Ram;
 
 /** Recursos compartidos. Nunca invoca al Kernel ni espera workers sosteniendo el mutex. */
 public final class BufferService {
@@ -178,6 +179,27 @@ public final class BufferService {
         finally { mutex.release(); }
     }
     public int latency() { return latency; }
+    public void registerRam(int hostId, Ram ram) {
+        mutex.acquireUninterruptibly();
+        try { registry.registerRam(hostId, ram); } finally { mutex.release(); }
+    }
+    public void createBuffer(BufferDefinition definition) {
+        mutex.acquireUninterruptibly();
+        try { registry.create(definition); } finally { mutex.release(); }
+    }
+    public int bufferCount() { mutex.acquireUninterruptibly(); try { return registry.size(); } finally { mutex.release(); } }
+    public BufferSnapshot snapshotAt(int index) {
+        mutex.acquireUninterruptibly();
+        try {
+            BoundedBuffer buffer = registry.getAt(index);
+            int count = 0;
+            for (int i = 0; i < operations.size(); i++) { if (operations.get(i).buffer == buffer) { count++; } }
+            BufferOperationSnapshot[] copies = new BufferOperationSnapshot[count];
+            int j = 0;
+            for (int i = 0; i < operations.size(); i++) { if (operations.get(i).buffer == buffer) { copies[j++] = operations.get(i).snapshot(); } }
+            return new BufferSnapshot(buffer, copies);
+        } finally { mutex.release(); }
+    }
     public int eventCount() { mutex.acquireUninterruptibly(); try { return events.size(); } finally { mutex.release(); } }
     public SimulationEvent eventAt(int index) { mutex.acquireUninterruptibly(); try { return events.get(index); } finally { mutex.release(); } }
 }

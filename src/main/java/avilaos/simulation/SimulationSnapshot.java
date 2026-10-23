@@ -1,4 +1,5 @@
 package avilaos.simulation;
+import avilaos.sync.BufferSnapshot;
 /** Publicación inmutable y versionada; los arreglos nunca salen del objeto. */
 public final class SimulationSnapshot {
     private final long version, nextCycle, cycleMillis;
@@ -6,17 +7,33 @@ public final class SimulationSnapshot {
     private final String error;
     private final ComputerSnapshot[] computers;
     private final CommandResult[] results;
+    private final int networkLatency;
+    private final BufferSnapshot[] buffers;
+    private final SimulationEvent[] events;
     public SimulationSnapshot(long version, long nextCycle, SimulationState state, long cycleMillis,
             String error, ComputerSnapshot[] computers, CommandResult[] results) {
-        if (version < 0 || nextCycle < 0 || state == null || cycleMillis <= 0 || computers == null || results == null) {
+        this(version, nextCycle, state, cycleMillis, error, computers, results, 0, new BufferSnapshot[0], new SimulationEvent[0]);
+    }
+    public SimulationSnapshot(long version, long nextCycle, SimulationState state, long cycleMillis,
+            String error, ComputerSnapshot[] computers, CommandResult[] results, int networkLatency, BufferSnapshot[] buffers, SimulationEvent[] events) {
+        if (version < 0 || nextCycle < 0 || state == null || cycleMillis <= 0 || computers == null || results == null
+                || networkLatency < 0 || buffers == null || events == null) {
             throw new IllegalArgumentException("Instantánea inválida");
         }
+        this.networkLatency = networkLatency; this.buffers = buffers.clone(); this.events = events.clone();
+        for (BufferSnapshot b : this.buffers) { if (b == null) { throw new IllegalArgumentException("Buffer nulo"); } }
+        for (SimulationEvent e : this.events) { if (e == null) { throw new IllegalArgumentException("Evento nulo"); } }
         this.computers = computers.clone(); this.results = results.clone();
         for (ComputerSnapshot c : this.computers) { if (c == null) { throw new IllegalArgumentException("Computador nulo"); } }
         for (CommandResult r : this.results) { if (r == null) { throw new IllegalArgumentException("Resultado nulo"); } }
         this.version = version; this.nextCycle = nextCycle; this.state = state;
         this.cycleMillis = cycleMillis; this.error = error;
     }
+    public int networkLatency() { return networkLatency; }
+    public int bufferCount() { return buffers.length; }
+    public BufferSnapshot bufferAt(int index) { return buffers[index]; }
+    public int eventCount() { return events.length; }
+    public SimulationEvent eventAt(int index) { return events[index]; }
     public long version() { return version; }
     public long nextCycle() { return nextCycle; }
     public SimulationState state() { return state; }
