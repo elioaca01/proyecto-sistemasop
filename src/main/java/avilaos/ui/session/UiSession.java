@@ -108,10 +108,15 @@ public final class UiSession {
         ComputerConfig[] cs=new ComputerConfig[config.computerCount()];for(int i=0;i<cs.length;i++)cs[i]=config.computerAt(i);
         Simulation created=new Simulation(cs,config.cycleMillis(),config.networkLatency());boolean installed=false;
         try{
-            for(int i=0;i<config.bufferCount();i++)created.enqueue(new AddBufferCommand(config.bufferAt(i)));
-            for(int i=0;i<config.processCount();i++)created.enqueue(new AddProcessCommand(config.processAt(i)));
+            long[] requests=new long[config.bufferCount()+config.processCount()];
+            for(int i=0;i<config.bufferCount();i++)requests[i]=created.enqueue(new AddBufferCommand(config.bufferAt(i)));
+            for(int i=0;i<config.processCount();i++)requests[config.bufferCount()+i]=created.enqueue(new AddProcessCommand(config.processAt(i)));
             mutex.acquireUninterruptibly();
-            try{if(!closing){engine=created;initial=config;generation++;started=false;lastSnapshot=created.snapshot();phase=SessionPhase.ACTIVE;installed=true;}}
+            try{if(!closing){engine=created;initial=config;generation++;started=false;lastSnapshot=created.snapshot();phase=SessionPhase.ACTIVE;
+                // Los IDs de órdenes empiezan de nuevo en cada motor: no conservar avisos de otro.
+                while(!notices.isEmpty())notices.removeFirst();
+                for(long request:requests)notices.addLast(new SessionNotice(0,request,false,"Encolada: carga del escenario inicial; se aplica en el ciclo 0"));
+                installed=true;}}
             finally{mutex.release();}
         }finally{if(!installed)created.close();}
     }

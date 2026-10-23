@@ -43,6 +43,8 @@ public final class AllTests {
         UiTableModelTest.run();
         UiFormTest.run();
         ComputerPanelTest.run();
+        BufferPanelTest.run();
+        EventPanelTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
