@@ -10,7 +10,7 @@
 
 **Spec:** [diseño aprobado](../specs/2026-10-18-avilaos-design.md), secciones 5 y 8; [hoja de ruta](2026-10-19-avilaos-roadmap.md), módulo 6. Contrastado con las páginas 6–7 del enunciado original. Base actual `e000710`, 24463 comprobaciones. JSON y fórmulas/gráfico de métricas corresponden a los módulos 7 y 8.
 
-**Execution:** método nativo de los módulos anteriores, en la misma carpeta NetBeans, rama `feat/swing-interface` al implementar y una revisión independiente final. Aprobado por el estudiante el 23 de octubre mediante «si lo apruebo»; ejecución nativa en curso.
+**Execution:** método nativo de los módulos anteriores, en la misma carpeta NetBeans, rama `feat/swing-interface` al implementar y una revisión independiente final. Aprobado por el estudiante el 23 de octubre mediante «si lo apruebo»; ejecución nativa y aceptación completadas.
 
 ## Global Constraints
 

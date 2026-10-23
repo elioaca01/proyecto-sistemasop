@@ -97,3 +97,5 @@ El trabajo permanece en la rama funcional y la carpeta compartida. Sin remoto no
 - Lanzamiento: copia temporal jpackage y Maven por identidad exclusiva de UI. Puede diferir del lanzador del IDE; se mantiene explícita la validación independiente en NetBeans.
 - Tamaño mínimo: desplazar el panel completo cuando no cabe su altura mínima, evitando comprimir las colas. Puede exigir desplazamiento adicional; se probó en ambos tamaños y con selección real.
 - JSON y métricas no se incorporan al módulo 6: pertenecen a módulos 7 y 8 aprobados en la hoja de ruta; el proyecto total aún requiere ambos. No hay hallazgos menores diferidos.
+
+Cierre de ejecución: las diez tareas quedaron completadas. La última verificación completa (`clean package`, 23 de octubre, 16:48 de Venezuela) produjo **OK: 24775 comprobaciones**, JAR y BUILD SUCCESS. Corrección de ventana mínima en `2634424`, evidencia nativa/guía en `759da09`. Se conserva `feat/swing-interface` en la misma carpeta del IDE, sin remoto, PR ni fusión.
