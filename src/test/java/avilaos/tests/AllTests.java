@@ -36,6 +36,8 @@ public final class AllTests {
         SimulationConfigTest.run();
         EventLogTest.run();
         DecisionLogTest.run();
+        UiSessionTest.run();
+        UiSessionLifecycleTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
