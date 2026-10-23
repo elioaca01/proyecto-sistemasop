@@ -4,6 +4,8 @@ public final class AllTests {
     private AllTests() { }
 
     public static void main(String[] args) {
+        // Los componentes se prueban sin ventanas; App corre en otra JVM con su interfaz normal.
+        System.setProperty("java.awt.headless", "true");
         LinkedListTest.run();
         LinkedQueueTest.run();
         RingBufferTest.run();
@@ -38,6 +40,7 @@ public final class AllTests {
         DecisionLogTest.run();
         UiSessionTest.run();
         UiSessionLifecycleTest.run();
+        UiTableModelTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
