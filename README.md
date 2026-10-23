@@ -44,7 +44,7 @@ Las pruebas son ejecutables Java con comprobaciones propias; no requieren JUnit 
 - Pausa, paso y ejecución continua por API, comandos entre ciclos, IDs globales e instantáneas inmutables para lectores concurrentes.
 - Cierre ordenado y propagación de fallos; un ciclo parcial fallido no se confirma como completado.
 - Productores/consumidores locales y remotos: buffers FIFO en RAM anfitriona, semáforos simulados, latencia por elemento y limpieza por deadline.
-- Comandos e instantáneas de buffers, reservas, fases y eventos; 24753 comprobaciones acumuladas del motor y la interfaz.
+- Comandos e instantáneas de buffers, reservas, fases y eventos; 24770 comprobaciones acumuladas del motor y la interfaz.
 - Interfaz Swing con configuración, formularios, vistas de CPU/PCB/colas/RAM, buffers/semáforos, registro y controles. Sesiones y cierre asíncronos; inspección visual real pendiente del desbloqueo del Mac.
 - Persistencia JSON y métricas/gráfico siguen en la hoja de ruta.
 

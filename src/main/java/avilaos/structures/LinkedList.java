@@ -31,6 +31,17 @@ public final class LinkedList<T> {
 
     public T get(int index) { return nodeAt(index).value; }
 
+    /** Copia secuencial O(n), sin volver a recorrer la cabeza por cada índice. */
+    public void copyInto(T[] destination) {
+        if (destination == null || destination.length < size) {
+            throw new IllegalArgumentException("El arreglo debe admitir todos los elementos");
+        }
+        int index = 0;
+        for (Node<T> node = head; node != null; node = node.next) {
+            destination[index++] = node.value;
+        }
+    }
+
     public T removeFirst() {
         if (head == null) {
             throw new IllegalStateException("La lista está vacía");

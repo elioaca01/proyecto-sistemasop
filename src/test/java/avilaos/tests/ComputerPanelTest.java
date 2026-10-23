@@ -17,6 +17,12 @@ public final class ComputerPanelTest {
                 JTable ready=SwingTestSupport.find(panel[0],"computer.ready",JTable.class);equal(1,ready.getRowCount());
                 JTable incoming=SwingTestSupport.find(panel[0],"computer.new",JTable.class);equal(1,incoming.getRowCount());
                 ready.setRowSelectionInterval(0,0);String detail=SwingTestSupport.find(panel[0],"pcb.details",JTextArea.class).getText();isTrue(detail.contains("P2"));isTrue(detail.contains("Memoria requerida"));
+                JTabbedPane tabs=SwingTestSupport.find(panel[0],"computer.queues",JTabbedPane.class);tabs.setSelectedIndex(2);
+                panel[0].render(before.computerAt(0),before.nextCycle());equal(2,tabs.getSelectedIndex());
+                isTrue(SwingTestSupport.find(panel[0],"pcb.details",JTextArea.class).getText().contains("P2"));
+                SwingTestSupport.find(panel[0],"computer.inspect",JButton.class).doClick();equal(-1,ready.getSelectedRow());
+                isTrue(SwingTestSupport.find(panel[0],"pcb.details",JTextArea.class).getText().contains("P1"));
+                ready.setRowSelectionInterval(0,0);
             });
             sim.enqueue(new ChangeSchedulingCommand(1,SchedulingPolicyType.ROUND_ROBIN,1));BufferSimulationTest.step(sim);SimulationSnapshot after=BufferSimulationTest.step(sim);
             SwingTestSupport.edt(()->{

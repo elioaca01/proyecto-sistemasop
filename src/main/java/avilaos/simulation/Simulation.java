@@ -133,7 +133,7 @@ public final class Simulation implements ClockDriver, AutoCloseable {
         commandsMutex.acquireUninterruptibly();
         try {
             copies = new CommandResult[results.size()];
-            for (int i = 0; i < copies.length; i++) { copies[i] = results.get(i); }
+            results.copyInto(copies);
         } finally { commandsMutex.release(); }
         ComputerSnapshot[] machineCopies = new ComputerSnapshot[computers.length];
         registryMutex.acquireUninterruptibly();

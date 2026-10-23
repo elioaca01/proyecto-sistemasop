@@ -67,12 +67,23 @@ public final class UiSession {
             mutex.acquireUninterruptibly();
             try{closing=true;phase=SessionPhase.CLOSING;Action a;while((a=actions.dequeue())!=null){pendingActions--;notices.addLast(new SessionNotice(a.id(),-1,true,"Cancelada por cierre"));}}
             finally{mutex.release();}
-            boolean clean=true;Simulation old=engine;
-            try{if(old!=null)old.close();}catch(Throwable e){clean=false;notice(-1,-1,true,"No se confirmó el cierre: "+e);}
+            Simulation old=engine;
+            if(old!=null)closeEngine(old);
             SimulationSnapshot end=old==null?lastSnapshot:old.snapshot();
-            mutex.acquireUninterruptibly();try{lastSnapshot=end;engine=null;phase=clean?SessionPhase.CLOSED:SessionPhase.FAILED;}finally{mutex.release();}
+            mutex.acquireUninterruptibly();try{lastSnapshot=end;engine=null;phase=SessionPhase.CLOSED;}finally{mutex.release();}
             finished.release();if(interrupted)Thread.currentThread().interrupt();
         }
+    }
+    /** El timeout solo informa demora: se conserva el motor hasta confirmar su salida. */
+    private void closeEngine(Simulation old){
+        old.stop();boolean interrupted=false,reported=false;
+        try{
+            while(true){
+                try{if(old.awaitStopped(2000))return;}
+                catch(InterruptedException e){interrupted=true;}
+                if(!reported){notice(-1,-1,false,"Esperando que el motor confirme su cierre…");reported=true;}
+            }
+        }finally{if(interrupted)Thread.currentThread().interrupt();}
     }
     private void execute(Action a){
         if(a.kind()==Kind.REPLACE){
@@ -103,7 +114,7 @@ public final class UiSession {
         if(config==null)throw new IllegalArgumentException("Escenario inicial requerido");
         mutex.acquireUninterruptibly();try{phase=generation==0?SessionPhase.PREPARING:SessionPhase.REPLACING;}finally{mutex.release();}
         Simulation old=engine;
-        if(old!=null){old.close();mutex.acquireUninterruptibly();try{lastSnapshot=old.snapshot();engine=null;}finally{mutex.release();}}
+        if(old!=null){closeEngine(old);mutex.acquireUninterruptibly();try{lastSnapshot=old.snapshot();engine=null;}finally{mutex.release();}}
         if(isClosing())return;
         ComputerConfig[] cs=new ComputerConfig[config.computerCount()];for(int i=0;i<cs.length;i++)cs[i]=config.computerAt(i);
         Simulation created=new Simulation(cs,config.cycleMillis(),config.networkLatency());boolean installed=false;
@@ -118,12 +129,12 @@ public final class UiSession {
                 for(long request:requests)notices.addLast(new SessionNotice(0,request,false,"Encolada: carga del escenario inicial; se aplica en el ciclo 0"));
                 installed=true;}}
             finally{mutex.release();}
-        }finally{if(!installed)created.close();}
+        }finally{if(!installed)closeEngine(created);}
     }
     public SessionView view(){
         Simulation captured;SimulationSnapshot last;SimulationConfig config;SessionPhase p;long g;boolean began;int pending;SessionNotice[] copies;
         mutex.acquireUninterruptibly();
-        try{captured=engine;last=lastSnapshot;config=initial;p=phase;g=generation;began=started;pending=pendingActions;copies=new SessionNotice[notices.size()];for(int i=0;i<copies.length;i++)copies[i]=notices.get(i);}
+        try{captured=engine;last=lastSnapshot;config=initial;p=phase;g=generation;began=started;pending=pendingActions;copies=new SessionNotice[notices.size()];notices.copyInto(copies);}
         finally{mutex.release();}
         return new SessionView(g,p,began,pending,config,captured==null?last:captured.snapshot(),copies);
     }

@@ -13,7 +13,7 @@ public final class ComputerPanel extends JPanel {
     private final ProcessTableModel[] models=new ProcessTableModel[4];private final JTable[] queues=new JTable[4];private final JTabbedPane tabs=new JTabbedPane();private final ProcessDetailsPanel details=new ProcessDetailsPanel();
     private ComputerSnapshot computer;private long boundary,selected=-1;private boolean rendering;private SchedulingPolicyType lastPolicy;private int lastQuantum=-1;private SchedulingHandler handler=(id,p,q)->{};
     public ComputerPanel(){
-        super(new BorderLayout(0,12));current.setName("computer.current");last.setName("computer.last");policy.setName("computer.policy");quantum.setName("computer.quantum");apply.setName("computer.applyScheduling");inspect.setName("computer.inspect");ram.setName("computer.ram");FormGrid.enumRenderer(policy);
+        super(new BorderLayout(0,12));tabs.setName("computer.queues");current.setName("computer.current");last.setName("computer.last");policy.setName("computer.policy");quantum.setName("computer.quantum");apply.setName("computer.applyScheduling");inspect.setName("computer.inspect");ram.setName("computer.ram");FormGrid.enumRenderer(policy);
         JPanel cpu=new JPanel(new GridLayout(0,1,0,5));cpu.add(current);cpu.add(last);cpu.add(ramText);cpu.add(ram);cpu.setBorder(BorderFactory.createEmptyBorder(4,0,6,0));
         JPanel controls=new JPanel(new FlowLayout(FlowLayout.LEADING,8,0));controls.add(new JLabel("Política"));controls.add(policy);controls.add(new JLabel("Quantum"));controls.add(quantum);controls.add(apply);controls.add(inspect);
         JPanel top=new JPanel(new BorderLayout(0,8));top.add(cpu,BorderLayout.NORTH);top.add(controls,BorderLayout.CENTER);top.add(applied,BorderLayout.SOUTH);add(top,BorderLayout.NORTH);
@@ -26,7 +26,7 @@ public final class ComputerPanel extends JPanel {
         }
         JSplitPane split=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,tabs,details);split.setResizeWeight(.64);split.setBorder(null);details.setMinimumSize(new Dimension(260,180));tabs.setMinimumSize(new Dimension(300,180));add(split,BorderLayout.CENTER);add(error,BorderLayout.SOUTH);
         apply.addActionListener(e->{try{if(computer!=null)handler.apply(computer.id(),(SchedulingPolicyType)policy.getSelectedItem(),InputParser.integer(quantum.getText(),"Quantum",1));error.setText("Cambio enviado; pendiente del próximo ciclo");}catch(IllegalArgumentException|IllegalStateException failure){error.setText(failure.getMessage());}});
-        inspect.addActionListener(e->{if(computer!=null){ProcessSnapshot p=computer.running()!=null?computer.running():find(computer.lastProcessId());if(p!=null){selected=p.id();details.render(p,boundary);}}});
+        inspect.addActionListener(e->{if(computer!=null){ProcessSnapshot p=computer.running()!=null?computer.running():find(computer.lastProcessId());if(p!=null){clearSelection();selected=p.id();details.render(p,boundary);}}});
     }
     public void setSchedulingHandler(SchedulingHandler handler){this.handler=handler;}
     private void selectFrom(int index){selected=models[index].processAt(queues[index].getSelectedRow()).id();rendering=true;try{for(int i=0;i<4;i++)if(i!=index)queues[i].clearSelection();}finally{rendering=false;}details.render(find(selected),boundary);}
@@ -41,7 +41,7 @@ public final class ComputerPanel extends JPanel {
         ProcessSnapshot[][] rows={new ProcessSnapshot[c.newCount()],new ProcessSnapshot[c.readyCount()],new ProcessSnapshot[c.blockedCount()],new ProcessSnapshot[c.terminatedCount()]};
         for(int i=0;i<rows[0].length;i++)rows[0][i]=c.newAt(i);for(int i=0;i<rows[1].length;i++)rows[1][i]=c.readyAt(i);for(int i=0;i<rows[2].length;i++)rows[2][i]=c.blockedAt(i);for(int i=0;i<rows[3].length;i++)rows[3][i]=c.terminatedAt(i);
         rendering=true;
-        try{String[] titles={"Nuevos","Listos","Bloqueados","Terminados"};for(int i=0;i<4;i++){models[i].setRows(rows[i],boundary);tabs.setTitleAt(i,titles[i]+" ("+rows[i].length+")");int row=models[i].rowOf(selected);if(row>=0){queues[i].setRowSelectionInterval(row,row);tabs.setSelectedIndex(i);}}}finally{rendering=false;}
+        try{String[] titles={"Nuevos","Listos","Bloqueados","Terminados"};for(int i=0;i<4;i++){models[i].setRows(rows[i],boundary);tabs.setTitleAt(i,titles[i]+" ("+rows[i].length+")");int row=models[i].rowOf(selected);if(row>=0){queues[i].setRowSelectionInterval(row,row);}}}finally{rendering=false;}
         ProcessSnapshot chosen=find(selected);if(chosen==null)selected=-1;details.render(chosen,boundary);inspect.setEnabled(p!=null||find(c.lastProcessId())!=null);
     }
     private ProcessSnapshot find(long id){if(computer==null||id<0)return null;if(computer.running()!=null&&computer.running().id()==id)return computer.running();for(ProcessTableModel m:models){int row=m.rowOf(id);if(row>=0)return m.processAt(row);}return null;}

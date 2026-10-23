@@ -11,7 +11,7 @@ El motor conserva sus decisiones y la interfaz muestra sus valores; no decide qu
 | Concepto | Qué debes entender |
 | --- | --- |
 | EDT | Hilo de eventos de Swing. Actualiza componentes y atiende botones; no espera el cierre de los hilos del motor. |
-| Sesión | Dueña de una ejecución. Su Thread serializa solicitudes y crea/cierra/reconstruye Simulation. |
+| Sesión | Dueña de una ejecución. Su Thread serializa solicitudes y crea/cierra/reconstruye Simulation; conserva el motor hasta confirmar el cierre, aunque tarde. |
 | Comando pendiente | Encolar no significa aplicar. El motor confirma o rechaza al avanzar el ciclo. |
 | Snapshot | Copia inmutable que la pantalla observa; no recibe PCB/colas mutables. |
 | Generación | Identifica un motor reconstruido. Evita mostrar una publicación antigua después de reiniciar. |
@@ -22,11 +22,11 @@ Una pausa se confirma al terminar el ciclo en curso. El modo de la última instr
 ## Dónde está en el código
 
 - `SimulationConfig` valida y copia la configuración inicial; será la base de JSON en el módulo 7.
-- `EventLog` recibe decisiones de Kernel/Simulation y conserva los eventos entre refrescos de pantalla.
+- `EventLog` recibe decisiones de Kernel/Simulation y conserva los eventos entre refrescos de pantalla; los copia recorriendo una sola vez la lista propia.
 - `UiSession` administra el motor y sus hilos fuera del EDT; `SessionView` publica el contexto de una generación.
 - `UiController` usa un Timer Swing, descarta generaciones antiguas y entrega acciones tipadas.
 - `MainWindow` y `DashboardPanel` ensamblan formularios/paneles; los modelos propios de JTable conservan el orden del núcleo.
-- El detalle de PCB sigue el ID al cambiar de cola o CPU, sin confundir la identidad con el índice de una fila.
+- El detalle de PCB sigue el ID al cambiar de cola o CPU, sin confundir la identidad con el índice de una fila. El refresco respeta la pestaña elegida.
 
 ## Ejemplo para explicarlo
 
@@ -42,9 +42,9 @@ Al pulsar **Paso**, Swing envía una solicitud a la sesión y sigue atendiendo e
 
 ## Prueba manual en NetBeans
 
-La [evidencia técnica](../verification/2026-10-23-interface.md) distingue pruebas automatizadas, inspección visual y validación del IDE. La suite actual espera **24753 comprobaciones**; no son casos independientes, pues incluye invariantes repetidas.
+La [evidencia técnica](../verification/2026-10-23-interface.md) distingue pruebas automatizadas, inspección visual y validación del IDE. La suite actual espera **24770 comprobaciones**; no son casos independientes, pues incluye invariantes repetidas.
 
-1. **Clean and Build:** buscar `OK: 24753 comprobaciones` y `BUILD SUCCESS`.
+1. **Clean and Build:** buscar `OK: 24770 comprobaciones` y `BUILD SUCCESS`.
 2. **Run:** comprobar las cuatro pestañas y que la ventana permite navegar/editar sin congelarse. No debe avanzar sola al abrir.
 3. Antes de iniciar, agregar buffer **B1**, anfitrión **1**, capacidad **1**. Agregar primero un **consumidor C** y luego un **productor P**, ambos en computador **1**, instrucciones **6**, RAM **2**, prioridad **0**, deadline **100**, buffer **1**, cómputo por elemento **1** y cuota **1**.
 4. Pulsar **Paso** doce veces. Cada click añade un ciclo. Al final: ciclo **12**, dos terminados, producidos **1**, consumidos **1**, ocupación **0**, vacíos **1**, llenos **0**, mutex **1**. En el primer paso el consumidor se bloquea en llenos; al despertar no repite wait.

@@ -12,5 +12,11 @@ public final class EventLogTest {
         equal(null,errors[0]);equal(null,errors[1]);equal(100,log.size());
         SimulationEvent[] copy=log.copy();copy[0]=null;isTrue(log.at(0)!=null);
         SimulationEvent[] retained=log.copy();log.append(new SimulationEvent(51,1,1,"fin"));equal(100,retained.length);equal(101,log.size());
+        avilaos.structures.LinkedList<SimulationEvent> list=new avilaos.structures.LinkedList<>();
+        SimulationEvent first=new SimulationEvent(0,1,1,"primero"),last=new SimulationEvent(79999,1,1,"último");
+        list.addLast(first);for(int i=1;i<79999;i++)list.addLast(new SimulationEvent(i,1,1,"registro"));list.addLast(last);
+        SimulationEvent[] bulk=new SimulationEvent[80000];list.copyInto(bulk);equal(first,bulk[0]);equal(last,bulk[79999]);
+        throwsType(IllegalArgumentException.class,()->list.copyInto(new SimulationEvent[1]));
+        bulk[0]=null;equal(first,list.get(0));
     }
 }
