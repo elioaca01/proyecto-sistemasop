@@ -30,6 +30,7 @@ public final class AllTests {
         BufferProgramTest.run();
         BufferOperationTest.run();
         BufferNetworkTest.run();
+        BufferKernelTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }

@@ -8,6 +8,7 @@ import avilaos.scheduling.SchedulingPolicies;
 import avilaos.simulation.Tickable;
 import avilaos.structures.LinkedList;
 import avilaos.structures.OrderedProcessQueue;
+import avilaos.sync.BufferService;
 
 /** Coordina un computador. Recibe ciclos consecutivos y es dueño de las transiciones. */
 public final class Kernel implements Tickable {
@@ -17,6 +18,7 @@ public final class Kernel implements Tickable {
     private final IoController io;
     private final MemoryAdmission admission;
     private final Scheduler scheduler;
+    private final BufferService buffers;
     private final LinkedList<ProcessControlBlock> incoming = new LinkedList<>();
     private final OrderedProcessQueue ready = new OrderedProcessQueue();
     private final LinkedList<ProcessControlBlock> blocked = new LinkedList<>();
@@ -32,6 +34,9 @@ public final class Kernel implements Tickable {
         this(computerId, cpu, ram, io, policy, 2);
     }
     public Kernel(int computerId, Cpu cpu, Ram ram, IoController io, SchedulingPolicy policy, int quantum) {
+        this(computerId, cpu, ram, io, policy, quantum, null);
+    }
+    public Kernel(int computerId, Cpu cpu, Ram ram, IoController io, SchedulingPolicy policy, int quantum, BufferService buffers) {
         if (computerId <= 0 || cpu == null || ram == null || io == null || policy == null || quantum <= 0) {
             throw new IllegalArgumentException("Computador y componentes requeridos");
         }
@@ -40,6 +45,7 @@ public final class Kernel implements Tickable {
         this.ram = ram;
         this.io = io;
         this.quantum = quantum;
+        this.buffers = buffers;
         admission = new MemoryAdmission(ram);
         scheduler = new Scheduler(ready, policy);
     }
@@ -48,13 +54,13 @@ public final class Kernel implements Tickable {
                 || process.definition().computerId() != computerId
                 || process.arrivalCycle() != nextCycle
                 || process.definition().memoryRequired() > ram.capacity()
-                || (process.definition().type() != ProcessType.CPU_BOUND
-                    && process.definition().type() != ProcessType.IO_BOUND)) {
+                || (isBufferProcess(process) && buffers == null)) {
             throw new IllegalArgumentException("Proceso incompatible con este computador/ciclo");
         }
         for (int i = 0; i < registry.size(); i++) {
             if (registry.get(i).id() == process.id()) { throw new IllegalArgumentException("ID ya conocido"); }
         }
+        if (isBufferProcess(process)) { buffers.registerProcess(process); }
         registry.addLast(process);
         incoming.addLast(process);
     }
@@ -95,15 +101,24 @@ public final class Kernel implements Tickable {
             sliceUsed = 0;
             scheduler.reorder();
         }
-        if (cpu.current() == null) {
+        if (cpu.current() != null && isBufferProcess(cpu.current()) && buffers.prepare(cpu.current(), cycle) == BlockReason.NETWORK) {
+            blockRunning(cpu.current(), BlockReason.NETWORK);
+        }
+        while (cpu.current() == null) {
             ProcessControlBlock selected = scheduler.select();
-            if (selected != null) { selected.dispatch(cycle); cpu.load(selected); sliceUsed = 0; }
+            if (selected == null) { break; }
+            if (isBufferProcess(selected) && buffers.prepare(selected, cycle) == BlockReason.NETWORK) {
+                selected.blockBeforeDispatch(BlockReason.NETWORK); blocked.addLast(selected);
+            } else { selected.dispatch(cycle); cpu.load(selected); sliceUsed = 0; }
         }
         cpu.onTick(cycle);
         ProcessControlBlock running = cpu.current();
         if (running != null) {
             sliceUsed++;
-            if (cpu.lastInstruction() == InstructionKind.IO_REQUEST) {
+            BlockReason bufferBlock = isBufferProcess(running) ? buffers.afterInstruction(running, cycle) : BlockReason.NONE;
+            if (bufferBlock != BlockReason.NONE) {
+                blockRunning(running, bufferBlock);
+            } else if (cpu.lastInstruction() == InstructionKind.IO_REQUEST) {
                 io.request(running, cycle, running.definition().ioCycles());
                 running.block(BlockReason.IO);
                 blocked.addLast(running);
@@ -135,6 +150,7 @@ public final class Kernel implements Tickable {
     }
     private void finish(ProcessControlBlock process, TerminationReason reason, long cycle) {
         process.terminate(reason, cycle);
+        if (isBufferProcess(process)) { buffers.cleanup(process, cycle, reason); }
         if (cpu.current() == process) { cpu.clear(); sliceUsed = 0; }
         removeIdentity(incoming, process);
         ready.remove(process.id());
@@ -142,6 +158,23 @@ public final class Kernel implements Tickable {
         io.cancel(process);
         admission.releaseIfAllocated(process);
         terminated.addLast(process);
+    }
+    private static boolean isBufferProcess(ProcessControlBlock p) {
+        return p.definition().type() == ProcessType.PRODUCER || p.definition().type() == ProcessType.CONSUMER;
+    }
+    private void blockRunning(ProcessControlBlock p, BlockReason reason) {
+        p.block(reason); blocked.addLast(p); cpu.clear(); sliceUsed = 0;
+    }
+    /** Solo el coordinador entrega avisos, entre ciclos y fuera del mutex compartido. */
+    public boolean unblockExternal(ProcessControlBlock p, BlockReason reason) {
+        if (p == null || reason == null || reason == BlockReason.NONE || reason == BlockReason.IO
+                || p.state() != ProcessState.BLOCKED || p.blockReason() != reason) { return false; }
+        for (int i = 0; i < blocked.size(); i++) {
+            if (blocked.get(i) == p) {
+                blocked.removeAt(i); p.unblock(); ready.addLast(p); return true;
+            }
+        }
+        return false;
     }
     private static void removeIdentity(LinkedList<ProcessControlBlock> queue, ProcessControlBlock process) {
         for (int i = 0; i < queue.size(); i++) {

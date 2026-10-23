@@ -3,6 +3,8 @@ package avilaos.simulation;
 import avilaos.hardware.*;
 import avilaos.kernel.Kernel;
 import avilaos.process.ProcessControlBlock;
+import avilaos.process.BlockReason;
+import avilaos.sync.BufferService;
 import avilaos.scheduling.SchedulingPolicies;
 import avilaos.scheduling.SchedulingPolicyType;
 
@@ -18,12 +20,15 @@ public final class Computer implements Tickable {
         this(id, ramCapacity, SchedulingPolicyType.FCFS, 2);
     }
     public Computer(int id, int ramCapacity, SchedulingPolicyType policy, int quantum) {
+        this(id, ramCapacity, policy, quantum, null);
+    }
+    public Computer(int id, int ramCapacity, SchedulingPolicyType policy, int quantum, BufferService buffers) {
         if (id <= 0) { throw new IllegalArgumentException("ID de computador positivo requerido"); }
         this.id = id;
         cpu = new Cpu();
         ram = new Ram(ramCapacity);
         io = new IoController();
-        kernel = new Kernel(id, cpu, ram, io, SchedulingPolicies.create(policy), quantum);
+        kernel = new Kernel(id, cpu, ram, io, SchedulingPolicies.create(policy), quantum, buffers);
     }
     public void configureScheduling(SchedulingPolicyType policy, int quantum) { kernel.configureScheduling(policy, quantum); }
     public SchedulingPolicyType policyType() { return kernel.policyType(); }
@@ -35,5 +40,6 @@ public final class Computer implements Tickable {
     public IoController io() { return io; }
     public Kernel kernel() { return kernel; }
     public void submit(ProcessControlBlock process) { kernel.submit(process); }
+    public boolean unblockExternal(ProcessControlBlock p, BlockReason reason) { return kernel.unblockExternal(p, reason); }
     @Override public void onTick(long cycle) { kernel.onTick(cycle); }
 }

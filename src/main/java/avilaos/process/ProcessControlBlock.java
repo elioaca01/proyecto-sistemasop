@@ -86,6 +86,14 @@ public final class ProcessControlBlock {
         state = ProcessState.READY;
     }
 
+    /** Preparar red no ejecuta una instrucción ni registra primera respuesta. */
+    public void blockBeforeDispatch(BlockReason reason) {
+        if (reason != BlockReason.NETWORK) { throw new IllegalArgumentException("Solo red antes del despacho"); }
+        requireState(ProcessState.READY);
+        blockReason = reason;
+        state = ProcessState.BLOCKED;
+    }
+
     /** cycle identifica la instrucción o cierre de ciclo en que termina el proceso. */
     public void terminate(TerminationReason reason, long cycle) {
         if (reason == null || cycle < 0) {
