@@ -27,6 +27,7 @@ public final class BoundedBufferTest {
         registry.registerRam(1, ram); registry.registerRam(2, otherRam);
         registry.create(new BufferDefinition(1, 1, 4)); TestSupport.equal(6, ram.free());
         TestSupport.throwsType(IllegalArgumentException.class, () -> registry.create(new BufferDefinition(2, 1, 7)));
+        TestSupport.throwsType(IllegalArgumentException.class, () -> registry.create(new BufferDefinition(2, 1, Integer.MAX_VALUE)));
         TestSupport.throwsType(IllegalArgumentException.class, () -> registry.create(new BufferDefinition(1, 2, 1)));
         TestSupport.throwsType(IllegalArgumentException.class, () -> registry.create(new BufferDefinition(2, 9, 1)));
         TestSupport.equal(1, registry.size()); TestSupport.equal(6, ram.free());

@@ -21,6 +21,8 @@ public final class BufferRegistry {
         Ram ram = null;
         for (int i = 0; i < hosts.size(); i++) { if (hosts.get(i).id() == definition.hostId()) { ram = hosts.get(i).ram(); } }
         if (ram == null) { throw new IllegalArgumentException("Anfitrión inexistente"); }
+        // Rechazar antes de crear el arreglo físico; una capacidad imposible no debe agotar la JVM.
+        if (definition.capacity() > ram.free()) { throw new IllegalArgumentException("RAM insuficiente para el buffer"); }
         BoundedBuffer buffer = new BoundedBuffer(definition);
         Ram.Reservation reservation = ram.reserve(definition.capacity());
         if (reservation == null) { throw new IllegalArgumentException("RAM insuficiente para el buffer"); }
