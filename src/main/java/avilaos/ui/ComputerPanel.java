@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /** Observa un computador. Su selección sigue al ID global al cambiar de cola o CPU. */
-public final class ComputerPanel extends JPanel {
+public final class ComputerPanel extends JPanel implements Scrollable {
     @FunctionalInterface public interface SchedulingHandler {void apply(int computerId,SchedulingPolicyType policy,int quantum);}
     private final JLabel current=new JLabel("CPU disponible"),last=new JLabel("Último ciclo: —"),ramText=new JLabel(),applied=new JLabel(),error=FormGrid.error();
     private final JProgressBar ram=new JProgressBar();private final JComboBox<SchedulingPolicyType> policy=new JComboBox<>(SchedulingPolicyType.values());private final JTextField quantum=new JTextField("2",4);private final JButton apply=new JButton("Aplicar política/quantum"),inspect=new JButton("Inspeccionar CPU / última ejecución");
@@ -46,4 +46,9 @@ public final class ComputerPanel extends JPanel {
     }
     private ProcessSnapshot find(long id){if(computer==null||id<0)return null;if(computer.running()!=null&&computer.running().id()==id)return computer.running();for(ProcessTableModel m:models){int row=m.rowOf(id);if(row>=0)return m.processAt(row);}return null;}
     public void setControlsEnabled(boolean enabled){policy.setEnabled(enabled);quantum.setEnabled(enabled);apply.setEnabled(enabled);}
+    public Dimension getPreferredScrollableViewportSize(){return getPreferredSize();}
+    public int getScrollableUnitIncrement(Rectangle visible,int orientation,int direction){return 25;}
+    public int getScrollableBlockIncrement(Rectangle visible,int orientation,int direction){return Math.max(25,visible.height-25);}
+    public boolean getScrollableTracksViewportWidth(){return true;}
+    public boolean getScrollableTracksViewportHeight(){return getParent() instanceof JViewport viewport&&viewport.getHeight()>=getMinimumSize().height;}
 }

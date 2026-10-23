@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import static avilaos.tests.TestSupport.*;
 public final class UiControllerTest {
     public static void run(){
+        minimumWindowKeepsQueuesUsable();
         delayedCloseRetainsOwnership();
         UiSession session=new UiSession(SimulationConfigTest.empty().withAddedProcess(SimulationTest.cpu(1,3)));UiController[] controller={null};DashboardPanel[] panel={null};
         try{
@@ -34,6 +35,25 @@ public final class UiControllerTest {
             SwingTestSupport.edt(()->{controller[0].refresh();isTrue(!SwingTestSupport.find(panel[0],"toolbar.start",JButton.class).isEnabled());});
         }finally{if(controller[0]!=null)SwingTestSupport.edt(controller[0]::requestClose);SessionTestSupport.close(session);if(controller[0]!=null)SwingTestSupport.edt(controller[0]::refresh);}
     }
+    private static void minimumWindowKeepsQueuesUsable(){
+        UiSession session=new UiSession(SimulationConfigTest.empty());
+        try{
+            SessionView view=SessionTestSupport.await(session,v->v.phase()==SessionPhase.ACTIVE&&v.pendingActions()==0);
+            SwingTestSupport.edt(()->{
+                UiTheme.apply();DashboardPanel panel=new DashboardPanel();panel.render(view);panel.setSize(960,612);
+                layoutTree(panel);
+                JTable queue=SwingTestSupport.find(panel,"computer.new",JTable.class);JViewport viewport=(JViewport)queue.getParent();
+                if(viewport.getHeight()<queue.getRowHeight()*3)throw new AssertionError("Cola sin espacio en ventana mínima: "+viewport.getHeight());
+                isTrue(viewport.getHeight()>=queue.getRowHeight()*3);
+                ComputerPanel computer=(ComputerPanel)SwingUtilities.getAncestorOfClass(ComputerPanel.class,queue);
+                JViewport outer=(JViewport)computer.getParent();JScrollPane scroll=(JScrollPane)outer.getParent();
+                isTrue(scroll.getVerticalScrollBar().isVisible());outer.setViewPosition(new java.awt.Point(0,computer.getHeight()));
+                isTrue(outer.getViewPosition().y>0);
+                panel.setSize(1180,752);layoutTree(panel);isTrue(viewport.getHeight()>=queue.getRowHeight()*3);
+            });
+        }finally{SessionTestSupport.close(session);}
+    }
+    private static void layoutTree(java.awt.Container parent){parent.doLayout();for(java.awt.Component c:parent.getComponents())if(c instanceof java.awt.Container child)layoutTree(child);}
     private static void delayedCloseRetainsOwnership(){
         UiSession session=new UiSession(SimulationConfigTest.empty());Semaphore gate=null;UiController[] controller={null};boolean[] closed={false};
         try{
