@@ -27,7 +27,7 @@ public final class ScenarioControlsTest {
         SessionView step(){long cycle=session.view().simulation().nextCycle();click("toolbar.step");SessionView v=SessionTestSupport.await(session,x->x.pendingActions()==0&&x.simulation().nextCycle()==cycle+1);SwingTestSupport.edt(controller[0]::refresh);return v;}
         public void close(){SwingTestSupport.edt(controller[0]::requestClose);SessionTestSupport.close(session);SwingTestSupport.edt(controller[0]::refresh);}
     }
-    public static void run(){cancelAndPickerError();draftAndLiveRoundTrip();pendingControls();}
+    public static void run(){cancelAndPickerError();draftAndLiveRoundTrip();loadingDiscardsActiveCellDraft();pendingControls();}
     private static void cancelAndPickerError(){
         try(Harness h=new Harness()){
             long generation=h.session.view().generation();h.click("scenario.load");h.click("scenario.save");equal(1,h.picker.opens);equal(1,h.picker.saves);equal(0,h.session.view().pendingActions());equal(generation,h.session.view().generation());equal(0L,h.session.view().simulation().nextCycle());
@@ -50,6 +50,20 @@ public final class ScenarioControlsTest {
             SwingTestSupport.edt(()->{String msg=SwingTestSupport.find(h.panel[0],"dashboard.notice",JTextArea.class).getText();isTrue(msg.contains("invalido.json"));isTrue(msg.contains("$"));isTrue(SwingTestSupport.find(h.panel[0],"scenario.load",JButton.class).isEnabled());});
             h.click("toolbar.start");SessionTestSupport.await(h.session,v->v.simulation().state()==SimulationState.RUNNING);SwingTestSupport.edt(()->{h.controller[0].refresh();isTrue(!SwingTestSupport.find(h.panel[0],"scenario.load",JButton.class).isEnabled());isTrue(SwingTestSupport.find(h.panel[0],"scenario.save",JButton.class).isEnabled());});
             h.picker.save=file;h.click("scenario.save");h.done();ScenarioJsonTest.equivalent(fresh.initialConfig(),store.load(file));h.click("toolbar.pause");SessionTestSupport.await(h.session,v->v.pendingActions()==0&&v.simulation().state()==SimulationState.PAUSED);
+        }catch(IOException e){throw new AssertionError(e);}
+        finally{try{ConfigurationStoreTest.deleteTree(dir);}catch(IOException e){throw new AssertionError(e);}}
+    }
+    private static void loadingDiscardsActiveCellDraft(){
+        Path dir=null;
+        try(Harness h=new Harness()){
+            dir=Files.createTempDirectory("avilaos-active-editor-");Path loaded=dir.resolve("cargado.json"),saved=dir.resolve("guardado.json");
+            SimulationConfig expected=SimulationConfigTest.empty().withComputers(new ComputerConfig[]{new ComputerConfig(1,128,avilaos.scheduling.SchedulingPolicyType.FCFS,2),new ComputerConfig(2,64,avilaos.scheduling.SchedulingPolicyType.FCFS,2)});
+            JsonConfigurationStore files=new JsonConfigurationStore();files.save(loaded,expected);
+            SwingTestSupport.edt(()->{JTable table=SwingTestSupport.find(h.panel[0],"config.computers",JTable.class);isTrue(table.editCellAt(0,1));((JTextField)table.getEditorComponent()).setText("777");equal(10,table.getValueAt(0,1));});
+            h.picker.open=loaded;h.click("scenario.load");SessionView fresh=h.done();equal(128,fresh.initialConfig().computerAt(0).ramCapacity());
+            SwingTestSupport.edt(()->{JTable table=SwingTestSupport.find(h.panel[0],"config.computers",JTable.class);equal(false,table.isEditing());equal(128,table.getValueAt(0,1));});
+            h.click("config.apply");equal(128,h.done().initialConfig().computerAt(0).ramCapacity());
+            h.picker.save=saved;h.click("scenario.save");h.done();ScenarioJsonTest.equivalent(expected,files.load(saved));
         }catch(IOException e){throw new AssertionError(e);}
         finally{try{ConfigurationStoreTest.deleteTree(dir);}catch(IOException e){throw new AssertionError(e);}}
     }

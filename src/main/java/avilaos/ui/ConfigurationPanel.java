@@ -36,7 +36,7 @@ public final class ConfigurationPanel extends JPanel {
     }
     public void setApplyHandler(Consumer<SimulationConfig> handler){this.handler=handler;}
     private void guard(Runnable action){try{action.run();error.setText(" ");}catch(IllegalArgumentException|IndexOutOfBoundsException e){error.setText(e.getMessage());}}
-    public void load(SimulationConfig c){loading=true;initial=c;count.setText(Integer.toString(c.computerCount()));duration.setText(Long.toString(c.cycleMillis()));latency.setText(Integer.toString(c.networkLatency()));ComputerConfig[] cs=new ComputerConfig[c.computerCount()];for(int i=0;i<cs.length;i++)cs[i]=c.computerAt(i);computers.setConfigs(cs);processRows.setConfig(c);bufferRows.setConfig(c);error.setText(" ");loading=false;dirty=false;}
+    public void load(SimulationConfig c){loading=true;if(table.isEditing())table.getCellEditor().cancelCellEditing();initial=c;count.setText(Integer.toString(c.computerCount()));duration.setText(Long.toString(c.cycleMillis()));latency.setText(Integer.toString(c.networkLatency()));ComputerConfig[] cs=new ComputerConfig[c.computerCount()];for(int i=0;i<cs.length;i++)cs[i]=c.computerAt(i);computers.setConfigs(cs);processRows.setConfig(c);bufferRows.setConfig(c);error.setText(" ");loading=false;dirty=false;}
     public boolean hasDraftChanges(){return dirty;}
     public void updateInitialLoads(SimulationConfig c){initial=c;processRows.setConfig(c);bufferRows.setConfig(c);}
     private void resizeComputers(){
