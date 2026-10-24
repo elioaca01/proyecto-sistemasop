@@ -104,11 +104,11 @@ Decisiones de implementación derivadas del diseño: importar estando pausado re
 
 **Files:** crear `examples/{local-producer-consumer,remote-producer,io-and-scheduling}.json`, `src/test/java/avilaos/tests/ScenarioIntegrationTest.java`; modificar AllTests y correcciones solo tras reproducción.
 
-- [ ] Escribir ejemplos del formato 1: local C/P en computador1, capacidad1, instrucciones6, RAM2, intervalo/cuota1; remoto productor en computador2/host1/L2; ejemplo con CPU e IO y políticas iniciales distintas. Prueba lee cada archivo real con JsonConfigurationStore, no otra copia literal inventada.
-- [ ] Ejecutar las mismas trazas tras cargar/guardar/recargar: local12 pasos, producidos/consumidos1/1, semáforos1/0/1; remoto PC[1,1,1,2,3,4,5,6]. Carga inválida mantiene la simulación pausada que ya avanzó; dar otro Paso comprueba que sigue utilizable. Conservar las pruebas de 24775 comprobaciones previas. Registrar un RED solo si ocurre.
-- [ ] Construcción con dependencia resuelta y luego offline. `clean package`, diff --check y revisión de imports sin colecciones/sorters prohibidos. Comprobar que Run/Debug mantienen Gson en classpath mediante el `<classpath/>` runtime ya configurado; no basta que el codec pase dentro de Maven test.
+- [x] Escribir ejemplos del formato 1: local C/P en computador1, capacidad1, instrucciones6, RAM2, intervalo/cuota1; remoto productor en computador2/host1/L2; ejemplo con CPU e IO y políticas iniciales distintas. Prueba lee cada archivo real con JsonConfigurationStore, no otra copia literal inventada.
+- [x] Ejecutar las mismas trazas tras cargar/guardar/recargar: local12 pasos, producidos/consumidos1/1, semáforos1/0/1; remoto PC[1,1,1,2,3,4,5,6]. Carga inválida mantiene la simulación pausada que ya avanzó; dar otro Paso comprueba que sigue utilizable. Conservar las pruebas de 24775 comprobaciones previas. Registrar un RED solo si ocurre.
+- [x] Construcción con dependencia resuelta y luego offline. `clean package`, diff --check y revisión de imports sin colecciones/sorters prohibidos. Comprobar que Run/Debug mantienen Gson en classpath mediante el `<classpath/>` runtime ya configurado; no basta que el codec pase dentro de Maven test.
 - [ ] Abrir interfaz real: cargar ejemplo local con selector, dar12 pasos, guardar a un destino de prueba, reiniciar/cargar ese archivo y comprobar ciclo0; error de archivo corrupto preserva la ejecución. Revisar ejemplo remoto y controles dentro de Configuración inicial en 1180×780 y 960×640. Si vuelve la ambigüedad Java, copiar JAR y dependencia a envoltorio temporal de validación con identidad exclusiva, documentando diferencia frente a NetBeans. Cerrar por ventana y comprobar salida normal del proceso Maven.
-- [ ] Commit `test: verifica escenarios JSON desde archivos y controles reales`.
+- [x] Commit `test: verifica escenarios JSON desde archivos y controles reales`.
 
 ## Task 6: defensa, evidencia y revisión final
 
@@ -131,6 +131,6 @@ Comando habitual tras resolver la nueva dependencia (primera vez sin `-o`):
 
 `clean package` sustituye test para construcción limpia. En cada verificación leer `OK: N comprobaciones`, BUILD SUCCESS y código0. Surefire=0 no es el total de AllTests.
 
-Fuentes técnicas oficiales consultadas: [Gson 2.14.0](https://github.com/google/gson/releases/tag/gson-parent-2.14.0) y [modo estricto de Gson](https://google.github.io/gson/Troubleshooting.html). No se descargó ni incorporó todavía la dependencia.
+Fuentes técnicas oficiales consultadas: [Gson 2.14.0](https://github.com/google/gson/releases/tag/gson-parent-2.14.0) y [modo estricto de Gson](https://google.github.io/gson/Troubleshooting.html). Dependencia incorporada y resuelta desde Maven Central; construcción offline comprobada.
 
 Autorrevisión del plan: cobertura del diseño §8 y RF7 distribuida en tareas1–5; firmas del codec/almacén/sesión/controlador alineadas; tests de las cinco condiciones de Review Focus ubicados; carga de escenarios distinta de edición previa al inicio; Gson aislado de las estructuras del simulador; documentación y aceptación del IDE diferenciadas. No se rediseñan memoria, planificación ni métricas.

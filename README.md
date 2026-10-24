@@ -12,7 +12,7 @@ Requiere JDK 25 y Apache NetBeans. El desarrollo sigue el [diseño aprobado](doc
 4. Ejecutar **Clean and Build**. La salida debe mostrar `javac [debug release 25]`, `OK: N comprobaciones` y `BUILD SUCCESS`.
 5. Ejecutar **Run Project** para abrir la ventana ÁvilaOS. La acción **Debug Project** inicia el mismo programa con el depurador de NetBeans.
 
-La primera construcción descarga plugins de Maven y necesita conexión. Los fuentes del módulo no tienen dependencias externas de ejecución.
+La primera construcción descarga plugins de Maven y necesita conexión. La aplicación usa Gson 2.14.0 para leer/escribir JSON; Maven descarga la dependencia desde Maven Central.
 
 ## Verificación desde terminal
 
@@ -44,9 +44,10 @@ Las pruebas son ejecutables Java con comprobaciones propias; no requieren JUnit 
 - Pausa, paso y ejecución continua por API, comandos entre ciclos, IDs globales e instantáneas inmutables para lectores concurrentes.
 - Cierre ordenado y propagación de fallos; un ciclo parcial fallido no se confirma como completado.
 - Productores/consumidores locales y remotos: buffers FIFO en RAM anfitriona, semáforos simulados, latencia por elemento y limpieza por deadline.
-- Comandos e instantáneas de buffers, reservas, fases y eventos; 24775 comprobaciones acumuladas del motor y la interfaz.
+- Comandos e instantáneas de buffers, reservas, fases y eventos; 25220 comprobaciones acumuladas del motor y la interfaz.
 - Interfaz Swing con configuración, formularios, vistas de CPU/PCB/colas/RAM, buffers/semáforos, registro y controles. Sesiones y cierre asíncronos; aceptación nativa local/remota, tamaño mínimo y cierre de Maven comprobados.
-- Persistencia JSON y métricas/gráfico siguen en la hoja de ruta.
+- Guardar/cargar escenarios JSON versionados y validados desde Configuración inicial; archivos de ejemplo en `examples/`. Aceptación del selector nativo pendiente de desbloquear el Mac.
+- Métricas/gráfico siguen en la hoja de ruta.
 
 `ProcessDefinition` conserva los atributos iniciales inmutables; `ProcessControlBlock` mantiene el estado vivo del proceso. Apropiar o bloquear conserva PC/MAR y la RAM asignada; ejecutar una instrucción avanza PC/MAR. El núcleo invoca estas operaciones y MemoryAdmission controla las reservas de RAM simulada.
 
@@ -54,10 +55,12 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 
 ## Explicación y evidencia por módulo
 
-- [Guías de defensa por módulo](docs/defensa/README.md): explicaciones breves de los módulos 1–6 (el 6 está en validación final); al completar el proyecto se reunirán en un resumen final.
+- [Guías de defensa por módulo](docs/defensa/README.md): explicaciones breves de los módulos 1–7 (el 7 tiene aceptación nativa pendiente); al completar el proyecto se reunirán en un resumen final.
 - [Verificación del módulo 1](docs/verification/2026-10-19-foundation.md).
 - [Verificación del módulo 2](docs/verification/2026-10-20-single-computer.md).
 - [Verificación del módulo 3](docs/verification/2026-10-20-scheduling.md).
 - [Verificación del módulo 4](docs/verification/2026-10-22-cluster.md).
 - [Verificación del módulo 5](docs/verification/2026-10-23-buffers.md).
 - [Verificación del módulo 6](docs/verification/2026-10-23-interface.md).
+
+- [Verificación del módulo 7](docs/verification/2026-10-23-scenarios-json.md).

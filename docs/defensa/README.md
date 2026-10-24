@@ -9,7 +9,8 @@ Una guía breve por módulo, con el mismo formato: qué hicimos, conceptos esenc
 3. [Políticas de planificación](modulo-3-planificacion.md).
 4. [Clúster y reloj](modulo-4-cluster-y-reloj.md).
 5. [Productor, consumidor y red](modulo-5-productor-consumidor.md).
-6. [Interfaz y observación](modulo-6-interfaz.md), implementación en validación visual/final.
+6. [Interfaz y observación](modulo-6-interfaz.md).
+7. [Escenarios JSON](modulo-7-escenarios-json.md), implementación y pruebas automatizadas listas; selector nativo pendiente.
 
 Las siguientes guías se incorporarán al completar cada módulo. Los conceptos ya explicados se referenciarán para evitar repeticiones. Los resultados detallados de pruebas permanecen en [verificación](../verification/).
 
