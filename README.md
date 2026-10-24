@@ -44,7 +44,7 @@ Las pruebas son ejecutables Java con comprobaciones propias; no requieren JUnit 
 - Pausa, paso y ejecución continua por API, comandos entre ciclos, IDs globales e instantáneas inmutables para lectores concurrentes.
 - Cierre ordenado y propagación de fallos; un ciclo parcial fallido no se confirma como completado.
 - Productores/consumidores locales y remotos: buffers FIFO en RAM anfitriona, semáforos simulados, latencia por elemento y limpieza por deadline.
-- Comandos e instantáneas de buffers, reservas, fases y eventos; 25220 comprobaciones acumuladas del motor y la interfaz.
+- Comandos e instantáneas de buffers, reservas, fases y eventos; 25234 comprobaciones acumuladas del motor y la interfaz.
 - Interfaz Swing con configuración, formularios, vistas de CPU/PCB/colas/RAM, buffers/semáforos, registro y controles. Sesiones y cierre asíncronos; aceptación nativa local/remota, tamaño mínimo y cierre de Maven comprobados.
 - Guardar/cargar escenarios JSON versionados y validados desde Configuración inicial; archivos de ejemplo en `examples/`. Aceptación del selector nativo pendiente de desbloquear el Mac.
 - Métricas/gráfico siguen en la hoja de ruta.
@@ -62,5 +62,4 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 - [Verificación del módulo 4](docs/verification/2026-10-22-cluster.md).
 - [Verificación del módulo 5](docs/verification/2026-10-23-buffers.md).
 - [Verificación del módulo 6](docs/verification/2026-10-23-interface.md).
-
 - [Verificación del módulo 7](docs/verification/2026-10-23-scenarios-json.md).

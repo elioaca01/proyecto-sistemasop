@@ -41,9 +41,9 @@ Carga `examples/local-producer-consumer.json` y avanza doce pasos: se produce y 
 
 ## Prueba manual en NetBeans
 
-La [evidencia técnica](../verification/2026-10-23-scenarios-json.md) separa las pruebas automáticas de la aceptación nativa y del IDE. El total observado actualmente es **25220 comprobaciones**.
+La [evidencia técnica](../verification/2026-10-23-scenarios-json.md) separa las pruebas automáticas de la aceptación nativa y del IDE. El total observado actualmente es **25234 comprobaciones**.
 
-1. **Clean and Build:** buscar `OK: 25220 comprobaciones` y `BUILD SUCCESS`. La primera construcción necesita conexión para descargar Gson 2.14.0 desde Maven Central.
+1. **Clean and Build:** buscar `OK: 25234 comprobaciones` y `BUILD SUCCESS`. La primera construcción necesita conexión para descargar Gson 2.14.0 desde Maven Central.
 2. **Run → Configuración inicial → Cargar escenario:** elegir `examples/local-producer-consumer.json`. Debe quedar pausada en ciclo 0. Cancelar el selector no cambia nada.
 3. Pulsar **Paso** doce veces. En Buffers y semáforos: producidos/consumidos **1/1**, ocupación **0**, vacíos/llenos/mutex **1/0/1**. Hay dos procesos terminados y queda una unidad de RAM para B1.
 4. **Guardar escenario inicial:** usar un nombre de prueba sin extensión. Debe añadir `.json`; repetir el guardado debe pedir confirmación de sobrescritura. Volver a cargarlo deja ciclo 0 y permite repetir el paso anterior.

@@ -10,7 +10,7 @@
 
 **Spec:** [diseño aprobado](../specs/2026-10-18-avilaos-design.md), secciones 2 y 8; [hoja de ruta](2026-10-19-avilaos-roadmap.md), módulo 7. Base `ce87c94`, módulo 6 verificado con 24775 comprobaciones. Las decisiones de escenarios frente a checkpoints y Gson streaming ya pertenecen al diseño aprobado; este plan concreta su implementación.
 
-**Execution:** método nativo conservado, misma carpeta compartida con NetBeans; al implementar crear rama `codex/scenario-json`. Una revisión independiente del rango completo al final, sin implementadores ni revisores por tarea. Aprobado el 23 de octubre: «Apruebo, implementa». Ejecución nativa en curso.
+**Execution:** método nativo conservado, misma carpeta compartida con NetBeans; al implementar crear rama `codex/scenario-json`. Una revisión independiente del rango completo al final, sin implementadores ni revisores por tarea. Aprobado el 23 de octubre: «Apruebo, implementa». Implementación y revisión automatizada terminadas; aceptación interactiva pendiente del desbloqueo del Mac.
 
 ## Global Constraints
 
@@ -114,9 +114,9 @@ Decisiones de implementación derivadas del diseño: importar estando pausado re
 
 **Files:** crear `docs/defensa/modulo-7-escenarios-json.md`, `docs/verification/2026-10-23-scenarios-json.md`; actualizar README, índice de defensa y hoja de ruta.
 
-- [ ] Guía breve: configuración inicial frente a checkpoint, JSON versionado, validación previa, escritura temporal/atómica y E/S fuera del EDT. Ejemplo guardar/cargar y tres preguntas de defensa. Lista manual para NetBeans con resultado esperado; no inferir validación del IDE desde terminal/copia temporal.
-- [ ] Registrar totales reales, pruebas nativas realizadas, errores corregidos, dependencia/versiones y límites. Si un control no pudo verificarse visualmente, decir cuál y por qué; no declarar aceptación completa por tests headless.
-- [ ] Una revisión independiente final del rango completo, en modelo más capaz disponible, usando Review Focus literal y ledger. Corregir Critical/Important en un pase con regresiones RED→GREEN y suite completa; menores diferidos explícitos, sin segundo revisor.
+- [x] Guía breve: configuración inicial frente a checkpoint, JSON versionado, validación previa, escritura temporal/atómica y E/S fuera del EDT. Ejemplo guardar/cargar y tres preguntas de defensa. Lista manual para NetBeans con resultado esperado; no inferir validación del IDE desde terminal/copia temporal.
+- [x] Registrar totales reales, pruebas nativas realizadas, errores corregidos, dependencia/versiones y límites. Si un control no pudo verificarse visualmente, decir cuál y por qué; no declarar aceptación completa por tests headless.
+- [x] Una revisión independiente final del rango completo, en modelo más capaz disponible, usando Review Focus literal y ledger. Corregir Critical/Important en un pase con regresiones RED→GREEN y suite completa; menores diferidos explícitos, sin segundo revisor.
 - [ ] Suite, clean package y diff --check satisfactorios; commit `docs: explica y verifica escenarios JSON para la defensa`. Conservar carpeta y rama local; sin PR/fusión inventados. Retirar solo scratch propio después de conservar evidencia. Siguiente módulo: métricas y gráfico.
 
 ## Verificación y fuentes

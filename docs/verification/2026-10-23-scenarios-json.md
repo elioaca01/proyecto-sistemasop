@@ -1,6 +1,6 @@
 # Verificación del módulo 7 — 23 de octubre de 2026
 
-Estado: implementación y aceptación automatizada terminadas. Aceptación interactiva del selector pendiente: el Mac se bloqueó durante la navegación. No se declara completa la aceptación nativa ni la comprobación en NetBeans. Revisión independiente final pendiente.
+Estado: implementación y aceptación automatizada terminadas. Aceptación interactiva del selector pendiente: el Mac se bloqueó durante la navegación. No se declara completa la aceptación nativa ni la comprobación en NetBeans. Revisión independiente realizada; un hallazgo importante corregido con regresión.
 
 ## Entorno y construcción
 
@@ -12,7 +12,7 @@ macOS arm64, Temurin 25.0.4.1 y Maven 3.9.16 incluido en NetBeans. Rama `codex/s
   -o -B -Dmaven.repo.local=.maven-cache clean package
 ```
 
-Resultado observado: **OK: 25220 comprobaciones**, JAR y **BUILD SUCCESS**, código 0. Incluye las 24775 comprobaciones previas; el total son assertions, incluidas invariantes repetidas, no casos independientes. Surefire muestra cero; el ejecutor efectivo es `exec (core-tests)` / AllTests.
+Resultado final observado: **OK: 25234 comprobaciones**, JAR y **BUILD SUCCESS**, código 0. Incluye las 24775 comprobaciones previas; el total son assertions, incluidas invariantes repetidas, no casos independientes. Surefire muestra cero; el ejecutor efectivo es `exec (core-tests)` / AllTests.
 
 La descarga inicial de Maven Central falló por DNS dentro del sandbox y después se completó con ejecución autorizada. Las construcciones posteriores pasan offline. [Versión oficial de Gson](https://github.com/google/gson/releases/tag/gson-parent-2.14.0), [modo estricto](https://google.github.io/gson/Troubleshooting.html).
 
@@ -46,8 +46,18 @@ Pendiente verificar interactivamente: selector de carga, extensión automática 
 
 ## Revisión y cierre
 
-Revisión independiente final del rango completo pendiente. `git diff --check` sin incidencias y búsqueda de imports/DOM/sorters prohibidos sin coincidencias en el código nuevo. Evidencia de ciclo de vida mediante semáforos y esperas acotadas, sin sleeps para sincronizar.
+Revisión independiente de `235abc1..ed87b5f`, con construcción propia en una copia temporal del código, pasó 25220 comprobaciones y encontró un hallazgo importante, ninguno crítico ni menor. **Editor de tabla anterior:** editar RAM a 777 sin confirmar, cargar un archivo con RAM 128 y luego Aplicar podía confirmar el editor antiguo en el modelo nuevo. La carga debe descartar el contexto de la generación anterior.
+
+`ScenarioControlsTest.loadingDiscardsActiveCellDraft` falló primero con `Esperado: false; recibido: true` para edición activa después de cargar. `ConfigurationPanel.load` ahora cancela la edición antes de reemplazar los datos; la prueba comprueba carga → Aplicar → Guardar y equivalencia del archivo, conservando RAM 128. Suite completa **25234**, BUILD SUCCESS/0. Corrección `eebf7a1` en un único pase, sin segundo revisor ni hallazgos menores diferidos.
+
+`git diff --check` sin incidencias y búsqueda de imports/DOM/sorters prohibidos sin coincidencias en el código nuevo. Evidencia de ciclo de vida mediante semáforos y esperas acotadas, sin sleeps para sincronizar.
 
 El módulo persiste escenarios iniciales, no checkpoints. Un sistema sin reemplazo atómico informa error y conserva destino; no se garantiza durabilidad ante corte eléctrico. Permisos/rutas inválidos se informan al usuario. Las operaciones ya iniciadas pueden terminar al cerrar, pero no instalan otra generación.
 
 Se conserva la rama local y la carpeta NetBeans, sin remoto, PR ni fusión. El proyecto completo aún requiere módulo 8 (métricas/gráfico) y módulo 9 (integración, informe/UML y defensa). Esta guía no marca esos requisitos como cumplidos.
+
+## Alcance confirmado en revisión
+
+El revisor dejó fuera dos comportamientos que el plan excluye expresamente. Se mantiene ese alcance: el archivo reconstruye un escenario inicial; si se necesitara un checkpoint, habría que persistir progreso y estado vivo. El reemplazo atómico protege ante fallos de escritura antes del cambio, pero no promete durabilidad ante apagado abrupto; si esta fuera necesaria, el último guardado podría perderse sin un protocolo adicional de persistencia.
+
+Última construcción limpia tras la corrección: **25234 comprobaciones**, JAR, BUILD SUCCESS y código 0. La aceptación nativa sigue pendiente; las tareas 5–6 conservan ese pendiente y el registro de ejecución para retomarlo al desbloquear el Mac.

@@ -2,7 +2,7 @@
 
 Una guía breve por módulo, con el mismo formato: qué hicimos, conceptos esenciales, clases principales, un ejemplo, tres preguntas probables y una explicación oral corta.
 
-## Módulos terminados
+## Guías disponibles
 
 1. [Base y procesos](modulo-1-base-y-procesos.md).
 2. [Un computador: CPU, RAM, FCFS y E/S](modulo-2-computador.md).
