@@ -21,9 +21,10 @@
 
 ## Documentos y repositorio
 
-- [ ] Informe PDF, dos UML y resumen de defensa de dos páginas revisados; completar al generarlos.
-- [ ] Comparaciones reales de políticas/local-remoto y condiciones documentadas; completar al medirlas.
-- [ ] Repositorio GitHub elegido, cuenta conectada y URL real disponible.
+- [x] Informe PDF de10páginas, dos UML y resumen de defensa de2páginas generados y revisados visualmente.
+- [x] Comparaciones reales de políticas/local-remoto medidas con cargas equivalentes y condiciones documentadas.
+- [x] Nombre/visibilidad elegidos por el estudiante: proyecto-sistemasop-elio, privado.
+- [ ] Instalar/conectar GitHub, crear repositorio y disponer de URL real.
 - [ ] Subir historial real y ramas; registrar Issues y PR descriptivos sin inventar trabajo de otras personas ni integraciones pasadas.
 - [ ] Comprobar acceso de los correctores al repositorio y que README explica la ejecución.
 - [ ] Enviar PDF y enlace por el canal académico y agregar al spreadsheet antes del viernes30 a las07:00 de Venezuela. Lo realiza el estudiante.

@@ -12,10 +12,11 @@ Una guía breve por módulo, con el mismo formato: qué hicimos, conceptos esenc
 6. [Interfaz y observación](modulo-6-interfaz.md).
 7. [Escenarios JSON](modulo-7-escenarios-json.md), implementación y pruebas automatizadas listas; selector nativo pendiente.
 
-8. [Métricas y gráfico](modulo-8-metricas.md), implementado y con pruebas automatizadas; validación interactiva pendiente.
+8. [Métricas y gráfico](modulo-8-metricas.md), escenario local y promedio6 confirmados por el estudiante.
+9. [Integración, informe y defensa](modulo-9-integracion.md).
 
 Las siguientes guías se incorporarán al completar cada módulo. Los conceptos ya explicados se referenciarán para evitar repeticiones. Los resultados detallados de pruebas permanecen en [verificación](../verification/).
 
-## Resumen final pendiente
+## Resumen final disponible
 
-Cuando estén terminados todos los módulos, prepararemos un resumen unificado de aproximadamente dos páginas: recorrido del sistema, decisiones principales y preguntas clave. Sintetizará lo esencial; las guías por módulo servirán para consultar detalles.
+[Resumen unificado editable](resumen-unificado.md) y [PDF de dos páginas](../../output/pdf/avilaos-defensa-resumen.pdf). Sintetiza el recorrido, fórmulas, demo y preguntas clave. Las guías por módulo amplían detalles; el [informe](../../output/pdf/avilaos-informe.pdf) contiene las dos UML y las comparaciones medidas.

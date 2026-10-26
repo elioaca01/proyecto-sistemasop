@@ -1,5 +1,5 @@
 digraph AvilaOS {
-  graph [rankdir=LR, bgcolor="white", pad="0.25", nodesep="0.34", ranksep="0.7", splines=polyline, fontname="Helvetica", fontsize=14, label="UML de clases principales — vista selectiva", labelloc=t];
+  graph [rankdir=LR, bgcolor="white", pad="0.25", nodesep="0.34", ranksep="0.7", splines=polyline, fontname="Helvetica", fontsize=14, label="UML de clases principales - vista selectiva", labelloc=t];
   node [shape=plain, fontname="Helvetica", fontsize=14, color="#183648", style=filled, fillcolor="#F4F7F9", margin="0.12,0.09"];
   edge [fontname="Helvetica", fontsize=11, color="#476477", arrowsize=0.75];
   UiSession [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#183648" BGCOLOR="#F4F7F9"><TR><TD ALIGN="CENTER" BGCOLOR="#DCEFF0"><B>UiSession</B></TD></TR><TR><TD ALIGN="LEFT">- engine: Simulation<BR ALIGN="LEFT"/>- worker: Thread<BR ALIGN="LEFT"/></TD></TR><TR><TD ALIGN="LEFT">+ loadScenario(path)<BR ALIGN="LEFT"/>+ requestClose()<BR ALIGN="LEFT"/></TD></TR></TABLE>>];

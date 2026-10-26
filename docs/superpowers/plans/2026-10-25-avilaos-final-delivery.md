@@ -58,9 +58,9 @@
 
 **Files:** crear `docs/informe/build_report.py`, `docs/informe/README.md`, `output/pdf/avilaos-informe.pdf`, `output/pdf/avilaos-defensa-resumen.pdf`; `docs/defensa/modulo-9-integracion.md` y actualizar índice.
 
-- [ ] Generar informe en español, autor individual Elio Colmenares, con alcance, arquitectura/clases/métodos, enums/interfaces, ciclo global, políticas/RAM, buffers/red, persistencia/métricas, dos UML, pruebas y conclusiones basadas en el JSON. Pendientes externos explícitos; no inventar URL de GitHub, institución ni número de estudiante.
-- [ ] Generar resumen exactamente2páginas con recorrido oral del sistema, conceptos, fórmulas, ejemplo local, preguntas clave y demo breve. Mantener guías por módulo para ampliar.
-- [ ] Usar PDF skill: marcar operación antes de primera autoría, renderizar todas las páginas con Poppler y revisar imágenes, texto/paginación/cortes, cifras y legibilidad; corregir distribución hasta aprobar. Commit `docs: prepara informe PDF y resumen de defensa`.
+- [x] Generar informe en español, autor individual Elio Colmenares, con alcance, arquitectura/clases/métodos, enums/interfaces, ciclo global, políticas/RAM, buffers/red, persistencia/métricas, dos UML, pruebas y conclusiones basadas en el JSON. Pendientes externos explícitos; no inventar URL de GitHub, institución ni número de estudiante.
+- [x] Generar resumen exactamente2páginas con recorrido oral del sistema, conceptos, fórmulas, ejemplo local, preguntas clave y demo breve. Mantener guías por módulo para ampliar.
+- [x] Usar PDF skill: marcar operación antes de primera autoría, renderizar todas las páginas con Poppler y revisar imágenes, texto/paginación/cortes, cifras y legibilidad; corregir distribución hasta aprobar. Commit `docs: prepara informe PDF y resumen de defensa`.
 
 ## Task 5: copia limpia, revisión y preparación final
 

@@ -9,7 +9,7 @@
 <g id="graph0" class="graph" transform="scale(2.5 2.5) rotate(0) translate(18 768)">
 <title>AvilaOS</title>
 <polygon fill="white" stroke="none" points="-18,18 -18,-768 1450,-768 1450,18 -18,18"/>
-<text xml:space="preserve" text-anchor="middle" x="716" y="-732.7" font-family="Helvetica,sans-Serif" font-size="14.00">UML de clases principales — vista selectiva</text>
+<text xml:space="preserve" text-anchor="middle" x="716" y="-732.7" font-family="Helvetica,sans-Serif" font-size="14.00">UML de clases principales &#45; vista selectiva</text>
 <!-- UiSession -->
 <g id="node1" class="node">
 <title>UiSession</title>
