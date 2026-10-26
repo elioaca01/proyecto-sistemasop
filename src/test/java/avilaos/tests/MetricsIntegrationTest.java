@@ -48,6 +48,12 @@ public final class MetricsIntegrationTest {
             load(h,"local-producer-consumer");h.step();SwingTestSupport.edt(()->write(SwingTestSupport.find(h.panel[0],"metrics.chart",UtilizationChart.class),760,300,dir.resolve("module8-one-cycle.png")));
             for(int n=1;n<12;n++)h.step();SwingTestSupport.edt(()->{JTabbedPane tabs=SwingTestSupport.find(h.panel[0],"dashboard.tabs",JTabbedPane.class);tabs.setSelectedIndex(tabs.indexOfTab("Métricas"));write(h.panel[0],1180,780,dir.resolve("module8-local-metrics.png"));write(h.panel[0],960,640,dir.resolve("module8-minimum-metrics.png"));});
         }
+        ComputerConfig[] configs=new ComputerConfig[7];for(int i=0;i<7;i++)configs[i]=new ComputerConfig(i+1,10,SchedulingPolicyType.FCFS,2);
+        try(Simulation sim=new Simulation(configs,500)){
+            for(int i=0;i<7;i++)sim.enqueue(new AddProcessCommand(SimulationTest.cpu(i+1,i+1)));
+            for(int n=1;n<=8;n++)SemaphoreWaitMetricsTest.step(sim,n);SimulationSnapshot end=sim.snapshot();
+            SwingTestSupport.edt(()->{UtilizationChart chart=new UtilizationChart();chart.setSnapshot(end);write(chart,960,400,dir.resolve("module8-seven-computers.png"));});
+        }
     }
     private static void write(Component component,int width,int height,Path path){try{ImageIO.write(MetricsPanelTest.paint(component,width,height),"png",path.toFile());}catch(java.io.IOException e){throw new AssertionError(e);}}
 }

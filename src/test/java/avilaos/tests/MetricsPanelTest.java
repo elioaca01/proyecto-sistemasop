@@ -13,7 +13,7 @@ import static avilaos.tests.TestSupport.*;
 public final class MetricsPanelTest {
     static void layout(Container c){c.doLayout();for(Component child:c.getComponents())if(child instanceof Container container)layout(container);}
     static BufferedImage paint(Component c,int width,int height){c.setSize(width,height);if(c instanceof Container container)for(int i=0;i<4;i++)layout(container);BufferedImage image=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);Graphics2D g=image.createGraphics();try{c.paint(g);}finally{g.dispose();}return image;}
-    public static void run(){models();dashboardAndLayout();chart();}
+    public static void run(){models();dashboardAndLayout();chart();distinctLegendsForSevenComputers();}
     private static void models(){
         try(Simulation s=SemaphoreWaitMetricsTest.create(SemaphoreWaitMetricsTest.example("local-producer-consumer"))){
             MetricsTableModel machines=new MetricsTableModel();machines.setSnapshot(s.snapshot());equal(3,machines.getRowCount());equal("Sin datos",machines.getValueAt(0,4));equal("Sin datos",machines.getValueAt(0,5));isTrue(!machines.isCellEditable(0,0));
@@ -34,6 +34,19 @@ public final class MetricsPanelTest {
                 UtilizationChart chart=SwingTestSupport.find(h.panel[0],"metrics.chart",UtilizationChart.class);isTrue(chart.getAccessibleContext().getAccessibleDescription().contains("Muestras: 1"));
             });
             h.click("toolbar.restart");h.done();SwingTestSupport.edt(()->{JTable table=SwingTestSupport.find(h.panel[0],"metrics.computers",JTable.class);equal("Sin datos",table.getValueAt(0,5));isTrue(SwingTestSupport.find(h.panel[0],"metrics.chart",UtilizationChart.class).getAccessibleContext().getAccessibleDescription().contains("Muestras: 0"));});
+        }
+    }
+    private static void distinctLegendsForSevenComputers(){
+        ComputerConfig[] configs=new ComputerConfig[7];for(int i=0;i<configs.length;i++)configs[i]=new ComputerConfig(i+1,10,avilaos.scheduling.SchedulingPolicyType.FCFS,2);
+        try(Simulation sim=new Simulation(configs,500)){
+            for(int i=0;i<7;i++)sim.enqueue(new AddProcessCommand(SimulationTest.cpu(i+1,i+1)));
+            for(int n=1;n<=8;n++)SemaphoreWaitMetricsTest.step(sim,n);SimulationSnapshot snapshot=sim.snapshot();
+            SwingTestSupport.edt(()->{
+                UtilizationChart chart=new UtilizationChart();chart.setSnapshot(snapshot);BufferedImage image=paint(chart,760,300);
+                // A 760px la leyenda tiene cuatro columnas: P1 y P7 deben tener marcas distintas.
+                boolean same=true;for(int x=0;x<24;x++)if(image.getRGB(64+x,39)!=image.getRGB(374+x,59)){same=false;break;}
+                equal(false,same);
+            });
         }
     }
     private static void chart(){

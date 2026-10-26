@@ -25,7 +25,13 @@ public final class UtilizationChart extends JPanel implements Scrollable {
     public int getScrollableBlockIncrement(Rectangle visible,int orientation,int direction){return Math.max(24,(orientation==SwingConstants.VERTICAL?visible.height:visible.width)-24);}
     public boolean getScrollableTracksViewportWidth(){return true;}
     public boolean getScrollableTracksViewportHeight(){return getParent() instanceof JViewport v&&v.getHeight()>=minimumHeight();}
-    private static Stroke stroke(int series){return series%3==0?new BasicStroke(2):new BasicStroke(2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND,10,series%3==1?new float[]{7,4}:new float[]{2,3},0);}
+    private static Stroke stroke(int series){
+        int pass=series/COLORS.length;
+        if(series%3==0&&pass==0)return new BasicStroke(2);
+        // La siguiente vuelta de colores usa otro patrón, incluso para la antigua línea continua.
+        float[] dash=series%3==2?new float[]{2+pass,3,1+pass,3}:new float[]{7+2*pass,4};
+        return new BasicStroke(2,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND,10,dash,0);
+    }
     @Override protected void paintComponent(Graphics graphics){
         super.paintComponent(graphics);Graphics2D g=(Graphics2D)graphics.create();
         try{
