@@ -58,10 +58,10 @@
 
 **Interfaces:** MetricsSnapshot `static calculate(long cycles,ComputerSnapshot[],BufferSnapshot[])`, `PerformanceMetrics global()`, `computerCount()/computerIdAt(int)/computerAt(int)`, `SemaphoreWaitMetrics waits()`. UtilizationSample inmutable `(long cycle,int[] computerIds,double[] utilizations)`, getters cycle/computerCount/computerIdAt/utilizationAt; arreglos defensivos. UtilizationHistory `record(MetricsSnapshot)`, `UtilizationSample[] copy()`. SimulationSnapshot añade sobrecarga con MetricsSnapshot y UtilizationSample[], mantiene constructores existentes; getters metrics(),sampleCount(),sampleAt(int).
 
-- [ ] RED: tres pasos con CPU A2 generan tres muestras con utilización1,1,2/3; máquina vacía0. Pausas repetidas/cierre no agregan muestras. Lectura que omite pasos conserva las muestras intermedias. IDs2/9 se mantienen por ID, no por índice+1.
-- [ ] RED: fallo de comando después de un ciclo deja métricas/historial de ese ciclo confirmado. Retener snapshot viejo y mutar arreglos de entrada no modifica muestras previas. Rechazar ciclos repetidos/fuera de secuencia en historial.
-- [ ] Actualizar métricas e historial al final de advanceCycle, después de todos los workers. Publicaciones de control transportan el último cálculo sin repetirlo. Inicialización en0 con denominadores explícitos. Los constructores legacy calculan métricas y usan historial vacío.
-- [ ] Suite GREEN y commit `feat: publica metricas e historial por ciclo confirmado`.
+- [x] RED: tres pasos con CPU A2 generan tres muestras con utilización1,1,2/3; máquina vacía0. Pausas repetidas/cierre no agregan muestras. Lectura que omite pasos conserva las muestras intermedias. IDs2/9 se mantienen por ID, no por índice+1.
+- [x] RED: fallo del segundo worker después de un ciclo, con inyección de cierre en el test deja métricas/historial de ese ciclo confirmado. Retener snapshot viejo y mutar arreglos de entrada no modifica muestras previas. Rechazar ciclos repetidos/fuera de secuencia en historial.
+- [x] Actualizar métricas e historial al final de advanceCycle, después de todos los workers. Publicaciones de control transportan el último cálculo sin repetirlo. Inicialización en0 con denominadores explícitos. Los constructores legacy calculan métricas y usan historial vacío.
+- [x] Suite GREEN y commit `feat: publica metricas e historial por ciclo confirmado`.
 
 ## Task 4: tablas y gráfico Swing
 

@@ -7,6 +7,7 @@ import avilaos.structures.LinkedList;
 import avilaos.structures.LinkedQueue;
 import java.util.concurrent.Semaphore;
 import avilaos.sync.*;
+import avilaos.metrics.*;
 
 /** Propietario del clúster. La API externa solo entrega órdenes o lee valores inmutables. */
 public final class Simulation implements ClockDriver, AutoCloseable {
@@ -17,6 +18,8 @@ public final class Simulation implements ClockDriver, AutoCloseable {
     private final SnapshotStore snapshots;
     private final BufferService buffers;
     private final EventLog events=new EventLog();
+    private final UtilizationHistory utilizationHistory = new UtilizationHistory();
+    private MetricsSnapshot metrics;
     private final Semaphore commandsMutex = new Semaphore(1), registryMutex = new Semaphore(1);
     private LinkedQueue<Request> pending = new LinkedQueue<>();
     private LinkedQueue<Request> batch = new LinkedQueue<>();
@@ -122,6 +125,8 @@ public final class Simulation implements ClockDriver, AutoCloseable {
             catch (InterruptedException e) { Thread.currentThread().interrupt(); throw new IllegalStateException("Coordinación interrumpida", e); }
             catch (IllegalStateException e) { throw new IllegalStateException("Fallo del computador " + worker.computerId(), e); }
         }
+        MetricsSnapshot confirmed = MetricsSnapshot.calculate(Math.addExact(cycle, 1), captureComputers(), captureBuffers());
+        utilizationHistory.record(confirmed); metrics = confirmed;
         return cycleMillis;
     }
     private void result(CommandResult result) {
@@ -135,14 +140,24 @@ public final class Simulation implements ClockDriver, AutoCloseable {
             copies = new CommandResult[results.size()];
             results.copyInto(copies);
         } finally { commandsMutex.release(); }
-        ComputerSnapshot[] machineCopies = new ComputerSnapshot[computers.length];
-        registryMutex.acquireUninterruptibly();
-        try { for (int i = 0; i < computers.length; i++) { machineCopies[i] = ComputerSnapshot.capture(computers[i], buffers); } }
-        finally { registryMutex.release(); }
-        BufferSnapshot[] bufferCopies = new BufferSnapshot[buffers.bufferCount()];
-        for (int i = 0; i < bufferCopies.length; i++) { bufferCopies[i] = buffers.snapshotAt(i); }
+        ComputerSnapshot[] machineCopies = captureComputers();
+        BufferSnapshot[] bufferCopies = captureBuffers();
+        if (metrics == null) { metrics = MetricsSnapshot.calculate(0, machineCopies, bufferCopies); }
         SimulationEvent[] eventCopies = events.copy();
-        return new SimulationSnapshot(version, nextCycle, state, cycleMillis, error, machineCopies, copies, buffers.latency(), bufferCopies, eventCopies);
+        return new SimulationSnapshot(version, nextCycle, state, cycleMillis, error, machineCopies, copies,
+                buffers.latency(), bufferCopies, eventCopies, metrics, utilizationHistory.copy());
+    }
+    private ComputerSnapshot[] captureComputers() {
+        ComputerSnapshot[] result = new ComputerSnapshot[computers.length];
+        registryMutex.acquireUninterruptibly();
+        try { for (int i = 0; i < computers.length; i++) { result[i] = ComputerSnapshot.capture(computers[i], buffers); } }
+        finally { registryMutex.release(); }
+        return result;
+    }
+    private BufferSnapshot[] captureBuffers() {
+        BufferSnapshot[] result = new BufferSnapshot[buffers.bufferCount()];
+        for (int i = 0; i < result.length; i++) { result[i] = buffers.snapshotAt(i); }
+        return result;
     }
     @Override public void publishState(long nextCycle, SimulationState state, long duration, String error) {
         requireCoordinator();

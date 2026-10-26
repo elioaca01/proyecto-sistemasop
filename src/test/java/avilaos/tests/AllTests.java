@@ -54,6 +54,7 @@ public final class AllTests {
         ScenarioIntegrationTest.run();
         PerformanceMetricsTest.run();
         SemaphoreWaitMetricsTest.run();
+        MetricsHistoryTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }

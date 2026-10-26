@@ -1,5 +1,6 @@
 package avilaos.simulation;
 import avilaos.sync.BufferSnapshot;
+import avilaos.metrics.*;
 /** Publicación inmutable y versionada; los arreglos nunca salen del objeto. */
 public final class SimulationSnapshot {
     private final long version, nextCycle, cycleMillis;
@@ -10,16 +11,26 @@ public final class SimulationSnapshot {
     private final int networkLatency;
     private final BufferSnapshot[] buffers;
     private final SimulationEvent[] events;
+    private final MetricsSnapshot metrics;
+    private final UtilizationSample[] samples;
     public SimulationSnapshot(long version, long nextCycle, SimulationState state, long cycleMillis,
             String error, ComputerSnapshot[] computers, CommandResult[] results) {
         this(version, nextCycle, state, cycleMillis, error, computers, results, 0, new BufferSnapshot[0], new SimulationEvent[0]);
     }
     public SimulationSnapshot(long version, long nextCycle, SimulationState state, long cycleMillis,
             String error, ComputerSnapshot[] computers, CommandResult[] results, int networkLatency, BufferSnapshot[] buffers, SimulationEvent[] events) {
+        this(version, nextCycle, state, cycleMillis, error, computers, results, networkLatency, buffers, events,
+                MetricsSnapshot.calculate(nextCycle, computers, buffers), new UtilizationSample[0]);
+    }
+    public SimulationSnapshot(long version, long nextCycle, SimulationState state, long cycleMillis,
+            String error, ComputerSnapshot[] computers, CommandResult[] results, int networkLatency, BufferSnapshot[] buffers,
+            SimulationEvent[] events, MetricsSnapshot metrics, UtilizationSample[] samples) {
         if (version < 0 || nextCycle < 0 || state == null || cycleMillis <= 0 || computers == null || results == null
-                || networkLatency < 0 || buffers == null || events == null) {
+                || networkLatency < 0 || buffers == null || events == null || metrics == null || samples == null) {
             throw new IllegalArgumentException("Instantánea inválida");
         }
+        this.metrics = metrics; this.samples = samples.clone();
+        for (UtilizationSample sample : this.samples) { if (sample == null) { throw new IllegalArgumentException("Muestra nula"); } }
         this.networkLatency = networkLatency; this.buffers = buffers.clone(); this.events = events.clone();
         for (BufferSnapshot b : this.buffers) { if (b == null) { throw new IllegalArgumentException("Buffer nulo"); } }
         for (SimulationEvent e : this.events) { if (e == null) { throw new IllegalArgumentException("Evento nulo"); } }
@@ -29,6 +40,9 @@ public final class SimulationSnapshot {
         this.version = version; this.nextCycle = nextCycle; this.state = state;
         this.cycleMillis = cycleMillis; this.error = error;
     }
+    public MetricsSnapshot metrics() { return metrics; }
+    public int sampleCount() { return samples.length; }
+    public UtilizationSample sampleAt(int index) { return samples[index]; }
     public int networkLatency() { return networkLatency; }
     public int bufferCount() { return buffers.length; }
     public BufferSnapshot bufferAt(int index) { return buffers[index]; }
