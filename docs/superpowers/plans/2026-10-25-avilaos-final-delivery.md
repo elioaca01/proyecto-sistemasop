@@ -48,11 +48,11 @@
 
 ## Task 3: dos UML derivados del código
 
-**Files:** crear `docs/uml/{clases,estados}.dot`, SVG y PNG correspondientes.
+**Files:** crear `docs/uml/{clases,estados}.dot`, SVG y PNG correspondientes; render_states.py define transiciones y layout fijo, render_all.py regenera ambos UML.
 
-- [ ] Leer clases/métodos reales y dibujar vista selectiva de clases, con composición Computer y relación de workers/reloj, PCB, políticas y servicio de buffers. Leyenda distingue dependencias de llamadas, composición y realización de interfaces.
-- [ ] Estados NEW/READY/RUNNING/BLOCKED/TERMINATED; admisión, apropiación, IO/semáforo/red, red previa al despacho y deadline desde cualquier estado activo. Permitir terminar al concluir IO si no quedan instrucciones.
-- [ ] Generar con dot; inspeccionar PNGs y comprobar nombres/transiciones contra fuentes. Commit `docs: documenta clases y estados con UML`.
+- [x] Leer clases/métodos reales y dibujar vista selectiva de clases, con composición Computer y relación de workers/reloj, PCB, políticas y servicio de buffers. Leyenda distingue dependencias de llamadas, composición y realización de interfaces.
+- [x] Estados NEW/READY/RUNNING/BLOCKED/TERMINATED; admisión, apropiación, IO/semáforo/red, red previa al despacho y deadline desde cualquier estado activo. Permitir terminar al concluir IO si no quedan instrucciones.
+- [x] Generar con dot; inspeccionar PNGs y comprobar nombres/transiciones contra fuentes. Commit `docs: documenta clases y estados con UML`.
 
 ## Task 4: informe y defensa unificada
 
