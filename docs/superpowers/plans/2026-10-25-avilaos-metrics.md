@@ -87,12 +87,14 @@
 
 **Files:** crear `docs/defensa/modulo-8-metricas.md`, `docs/verification/2026-10-25-metrics.md`; actualizar README, índice y roadmap.
 
-- [ ] Guía breve con fórmulas, denominadores, un cálculo manual, tres preguntas y pasos NetBeans; enlazar conceptos previos sin repetir todos los módulos.
-- [ ] Una revisión independiente final, modelo más capaz disponible, del rango entero con Review Focus literal y ledger. Corregir Important/Critical en un único pase RED→GREEN + suite; menores diferidos explícitos. No segunda revisión.
-- [ ] clean package, diffcheck, evidencia y commits. Conservar rama y carpeta local como se acordó, sin remoto/PR/fusión. Aceptación nativa pendiente se conserva como tal; no eliminar registros necesarios para retomarla.
+- [x] Guía breve con fórmulas, denominadores, un cálculo manual, tres preguntas y pasos NetBeans; enlazar conceptos previos sin repetir todos los módulos.
+- [x] Una revisión independiente final, modelo más capaz disponible, del rango entero con Review Focus literal y ledger. Corregir Important/Critical en un único pase RED→GREEN + suite; menores diferidos explícitos. No segunda revisión.
+- [x] clean package, diffcheck, evidencia y commits. Conservar rama y carpeta local como se acordó, sin remoto/PR/fusión. Aceptación nativa pendiente se conserva como tal; no eliminar registros necesarios para retomarla.
 
 ## Comando y autorrevisión
 
 `JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home '/Applications/Apache NetBeans.app/Contents/Resources/netbeans/java/maven/bin/mvn' -o -B -Dmaven.repo.local=.maven-cache test` (sustituir test por clean package para construcción limpia). Cada GREEN requiere OK:N, BUILD SUCCESS y código0.
 
 Cobertura §9/RF8: fórmulas tarea1, esperas tarea2, confirmación/historial tarea3, presentación/gráfico tarea4, equivalencia/controles tarea5 y defensa tarea6. Interfaces entre tareas alineadas; ninguna nueva dependencia ni cambio de semántica de CPU/reloj. La espera se mide en límites compatibles con wakes existentes. La muestra usa el número de ciclos completados, no el índice de la instrucción (0-based).
+
+Cierre: seis tareas verificadas, revisión independiente realizada y una corrección RED→GREEN; suite final25454. Continúa pendiente la aceptación interactiva/IDE según el registro.

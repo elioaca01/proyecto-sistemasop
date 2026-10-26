@@ -41,9 +41,9 @@ Carga `examples/local-producer-consumer.json` y avanza doce pasos: se produce y 
 
 ## Prueba manual en NetBeans
 
-La [evidencia técnica](../verification/2026-10-23-scenarios-json.md) separa las pruebas automáticas de la aceptación nativa y del IDE. El total observado actualmente es **25234 comprobaciones**.
+La [evidencia técnica](../verification/2026-10-23-scenarios-json.md) separa las pruebas automáticas de la aceptación nativa y del IDE. Al cerrar su implementación se observaron **25234 comprobaciones**; la [guía del módulo8](modulo-8-metricas.md) indica el total posterior.
 
-1. **Clean and Build:** buscar `OK: 25234 comprobaciones` y `BUILD SUCCESS`. La primera construcción necesita conexión para descargar Gson 2.14.0 desde Maven Central.
+1. **Clean and Build:** buscar `OK: N comprobaciones` y `BUILD SUCCESS`. La primera construcción necesita conexión para descargar Gson 2.14.0 desde Maven Central.
 2. **Run → Configuración inicial → Cargar escenario:** elegir `examples/local-producer-consumer.json`. Debe quedar pausada en ciclo 0. Cancelar el selector no cambia nada.
 3. Pulsar **Paso** doce veces. En Buffers y semáforos: producidos/consumidos **1/1**, ocupación **0**, vacíos/llenos/mutex **1/0/1**. Hay dos procesos terminados y queda una unidad de RAM para B1.
 4. **Guardar escenario inicial:** usar un nombre de prueba sin extensión. Debe añadir `.json`; repetir el guardado debe pedir confirmación de sobrescritura. Volver a cargarlo deja ciclo 0 y permite repetir el paso anterior.
@@ -51,4 +51,4 @@ La [evidencia técnica](../verification/2026-10-23-scenarios-json.md) separa las
 6. Cargar `examples/remote-producer.json`; observar computador 2. Tras ocho pasos, PC **1,1,1,2,3,4,5,6**. En el segundo/tercer paso está bloqueado por Red. Al final B1 contiene un elemento, producido **1** y RAM del productor liberada.
 7. Cargar `examples/io-and-scheduling.json` para explorar las cuatro políticas y E/S. Durante **Iniciar**, Guardar sigue disponible y Cargar queda deshabilitado; Pausar permite cargar de nuevo. Cerrar debe terminar el proceso.
 
-La suite ejecutó estos archivos mediante paneles y botones reales en modo headless. La aceptación interactiva del selector todavía está pendiente por bloqueo del Mac; tampoco se ha confirmado este módulo desde el IDE del estudiante.
+La suite ejecutó estos archivos mediante paneles y botones reales en modo headless. La aceptación interactiva del selector todavía está pendiente: al retomar, la herramienta quedó sin responder; tampoco se ha confirmado este módulo desde el IDE del estudiante.

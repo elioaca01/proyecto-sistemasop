@@ -46,7 +46,7 @@ Carga `examples/local-producer-consumer.json` y avanza doce pasos. C y P ejecuta
 
 ## Prueba manual en NetBeans
 
-1. **Clean and Build:** buscar `OK: 25453 comprobaciones` y `BUILD SUCCESS`.
+1. **Clean and Build:** buscar `OK: 25454 comprobaciones` y `BUILD SUCCESS`.
 2. **Run → Configuración inicial → Cargar escenario:** elegir el ejemplo local, ir a Métricas y comprobar **Sin datos** antes del primer ciclo.
 3. Avanzar doce pasos y comparar con el cálculo anterior. Desplazar horizontalmente la tabla para ver respuesta, deadlines y Jain. En **Buffers y esperas**, comprobar B1 y el promedio 6.
 4. En ventana pequeña, desplazar el gráfico o arrastrar el divisor entre gráfico/tablas para ver los ejes. La leyenda identifica cada computador; el eje X usa ciclos globales completados y el eje Y utilización acumulada en porcentaje.

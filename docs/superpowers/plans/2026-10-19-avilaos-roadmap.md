@@ -35,10 +35,10 @@ La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 compl
 
 - [Módulo 6: interfaz Swing](2026-10-23-avilaos-interface.md): configuración, formularios, vistas y controles implementados; 24775 comprobaciones y construcción limpia satisfactorias. Revisión independiente realizada y tres hallazgos importantes corregidos con regresiones. Aceptación nativa local/remota, tamaño mínimo y cierre de Maven comprobados; defecto de distribución corregido con regresión. [Guía de defensa](../../defensa/modulo-6-interfaz.md).
 
-- [Módulo 7: escenarios JSON](2026-10-23-avilaos-scenarios-json.md): guardar/cargar escenarios iniciales, validación estricta, UTF-8 y reemplazo atómico implementados; 25234 comprobaciones y construcción limpia satisfactorias. Aceptación nativa del selector pendiente de desbloquear el Mac; revisión independiente final realizada; editor de tabla anterior corregido con regresión. [Guía de defensa](../../defensa/modulo-7-escenarios-json.md).
+- [Módulo 7: escenarios JSON](2026-10-23-avilaos-scenarios-json.md): guardar/cargar escenarios iniciales, validación estricta, UTF-8 y reemplazo atómico implementados; 25234 comprobaciones y construcción limpia satisfactorias. Aceptación nativa del selector pendiente por falta de respuesta de la herramienta; revisión independiente final realizada; editor de tabla anterior corregido con regresión. [Guía de defensa](../../defensa/modulo-7-escenarios-json.md).
 
 
-- [Módulo 8: métricas](2026-10-25-avilaos-metrics.md): cinco métricas por máquina/globales, esperas por buffer e historial/gráfico implementados; 25453 comprobaciones y construcción limpia satisfactorias. Renders de paneles revisados; revisión independiente en curso y aceptación interactiva pendiente. [Guía de defensa](../../defensa/modulo-8-metricas.md).
+- [Módulo 8: métricas](2026-10-25-avilaos-metrics.md): cinco métricas por máquina/globales, esperas por buffer e historial/gráfico implementados; 25454 comprobaciones y construcción limpia satisfactorias. Renders de paneles revisados; revisión independiente realizada y distinción de curvas corregida con regresión; aceptación interactiva pendiente. [Guía de defensa](../../defensa/modulo-8-metricas.md).
 
 ## Reglas de avance
 
