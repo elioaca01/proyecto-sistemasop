@@ -21,7 +21,7 @@ public final class MetricsPanel extends JPanel {
     private static JScrollPane table(javax.swing.table.TableModel model,String name,String scrollName){
         JTable table=new JTable(model);table.setName(name);table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);table.setRowHeight(26);table.setFillsViewportHeight(true);
         for(int i=0;i<table.getColumnCount();i++)table.getColumnModel().getColumn(i).setPreferredWidth(i==0?160:i==4||i>=8?180:145);
-        JScrollPane scroll=new JScrollPane(table);scroll.setName(scrollName);scroll.setPreferredSize(new Dimension(760,150));scroll.setMinimumSize(new Dimension(220,75));return scroll;
+        JScrollPane scroll=new JScrollPane(table);scroll.setColumnHeaderView(table.getTableHeader());scroll.setName(scrollName);scroll.setPreferredSize(new Dimension(760,150));scroll.setMinimumSize(new Dimension(220,75));return scroll;
     }
     public void render(SimulationSnapshot snapshot){
         computers.setSnapshot(snapshot);buffers.setSnapshot(snapshot);chart.setSnapshot(snapshot);

@@ -17,7 +17,7 @@ public final class UtilizationChart extends JPanel implements Scrollable {
         String text="Ciclo global; utilización acumulada (%). Computadores: "+ids+". Muestras: "+(snapshot==null?0:snapshot.sampleCount())+".";
         getAccessibleContext().setAccessibleDescription(text);setToolTipText(text);revalidate();repaint();
     }
-    private int minimumHeight(){return 190+20*((snapshot==null?0:snapshot.metrics().computerCount()+3)/4);}
+    private int minimumHeight(){return 140+20*((snapshot==null?0:snapshot.metrics().computerCount()+3)/4);}
     @Override public Dimension getPreferredSize(){return new Dimension(760,Math.max(300,minimumHeight()));}
     @Override public Dimension getMinimumSize(){return new Dimension(250,minimumHeight());}
     public Dimension getPreferredScrollableViewportSize(){return getPreferredSize();}
@@ -35,11 +35,12 @@ public final class UtilizationChart extends JPanel implements Scrollable {
             for(int i=0;i<count;i++){
                 int x=64+(i%columns)*155,y=43+(i/columns)*20;g.setColor(COLORS[i%COLORS.length]);g.setStroke(stroke(i));g.drawLine(x,y-4,x+23,y-4);g.drawString("Computador "+snapshot.metrics().computerIdAt(i),x+30,y);
             }
-            int left=64,top=72+rows*20,right=Math.max(left+1,getWidth()-24),bottom=Math.max(top+1,getHeight()-48),width=right-left,height=bottom-top;
+            int left=64,top=58+rows*20,right=Math.max(left+1,getWidth()-24),bottom=Math.max(top+1,getHeight()-48),width=right-left,height=bottom-top;
             g.setStroke(new BasicStroke(1));g.setColor(UiTheme.INK);g.drawString("Utilización acumulada (%)",left,top-10);
-            for(int percent=0;percent<=100;percent+=25){int y=bottom-(int)Math.round(height*percent/100.0);g.setColor(UiTheme.BORDER);g.drawLine(left,y,right,y);g.setColor(UiTheme.INK);g.drawString(Integer.toString(percent),left-34,y+4);}
+            for(int percent=0;percent<=100;percent+=(height<100?50:25)){int y=bottom-(int)Math.round(height*percent/100.0);g.setColor(UiTheme.BORDER);g.drawLine(left,y,right,y);g.setColor(UiTheme.INK);g.drawString(Integer.toString(percent),left-34,y+4);}
             long last=snapshot==null||snapshot.sampleCount()==0?1:snapshot.sampleAt(snapshot.sampleCount()-1).cycle();
-            for(int tick=0;tick<=4;tick++){int x=left+width*tick/4;long cycle=Math.round(last*(tick/4.0));g.setColor(UiTheme.BORDER);g.drawLine(x,top,x,bottom);g.setColor(UiTheme.INK);String label=Long.toString(cycle);g.drawString(label,x-g.getFontMetrics().stringWidth(label)/2,bottom+18);}
+            int ticks=(int)Math.min(4,last);
+            for(int tick=0;tick<=ticks;tick++){long cycle=Math.round(last*(tick/(double)ticks));int x=left+(int)Math.round(width*(cycle/(double)last));g.setColor(UiTheme.BORDER);g.drawLine(x,top,x,bottom);g.setColor(UiTheme.INK);String label=Long.toString(cycle);g.drawString(label,x-g.getFontMetrics().stringWidth(label)/2,bottom+18);}
             g.setColor(UiTheme.INK);g.drawLine(left,top,left,bottom);g.drawLine(left,bottom,right,bottom);String axis="Ciclo global";g.drawString(axis,left+(width-g.getFontMetrics().stringWidth(axis))/2,getHeight()-8);
             if(snapshot==null||snapshot.sampleCount()==0){g.drawString("Sin ciclos confirmados",left+16,top+height/2);return;}
             for(int machine=0;machine<count;machine++){

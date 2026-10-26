@@ -78,10 +78,10 @@
 
 **Files:** crear `tests/MetricsIntegrationTest.java`, modificar AllTests; render de evidencia en docs/verification/images/ sin fingir ventana nativa.
 
-- [ ] Leer ejemplos JSON reales con sesiones/botones: local12 instrucciones12, completados2, user2/kernel10, globalCPU50%, throughput2/12, Jain1, respuesta0.5, semwait6; remoto8 user1/kernel5, globalCPU37.5%, semwait sin datos.
-- [ ] Cambio vivo de duración no cambia fórmulas por ciclo; reiniciar y cargar vuelve a0 con métricas vacías. Ejecución que acumula muestras sin refrescar la vista conserva todo el historial.
-- [ ] Prueba sostenida de varias máquinas, captura retenida y cierre ordenado. Run clean package, diffcheck y búsqueda de colecciones/sorters prohibidos. Renderizar panel a archivo y revisar legibilidad con view_image; no afirmar aceptación nativa si la herramienta sigue sin responder.
-- [ ] Commit `test: verifica metricas con escenarios y controles reales`.
+- [x] Leer ejemplos JSON reales con sesiones/botones: local12 instrucciones12, completados2, user2/kernel10, globalCPU50%, throughput2/12, Jain1, respuesta0.5, semwait6; remoto8 user1/kernel5, globalCPU37.5%, semwait sin datos.
+- [x] Cambio vivo de duración no cambia fórmulas por ciclo; reiniciar y cargar vuelve a0 con métricas vacías. Ejecución que acumula muestras sin refrescar la vista conserva todo el historial.
+- [x] Prueba sostenida de varias máquinas, captura retenida y cierre ordenado. Run clean package, diffcheck y búsqueda de colecciones/sorters prohibidos. Renderizar panel a archivo y revisar legibilidad con view_image; no afirmar aceptación nativa si la herramienta sigue sin responder.
+- [x] Commit `test: verifica metricas con escenarios y controles reales`.
 
 ## Task 6: defensa, documentación y revisión final
 
