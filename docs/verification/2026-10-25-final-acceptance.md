@@ -21,7 +21,7 @@ La evidencia confirma build y resultado visual local siguiendo el procedimiento 
 | --- | --- | --- | --- |
 | 1 Arquitectura | Computer ensambla CPU/RAM/IO/Kernel; Tickable, GlobalClock y ComputerWorker | ComputerTest, ComputerWorkerTest, GlobalClockTest, ClusterIntegrationTest | Arranque/ventana y varios módulos visuales anteriores |
 | 2 Procesos/PCB | ProcessDefinition, ProcessControlBlock, ProcessState/Type/BlockReason | ProcessDefinitionTest, ProcessControlBlockTest, ComputerTest | Estados/PCB comprobados en módulo6; resultado local confirmado |
-| 3 Planificación | FCFS, EDF, RR, prioridades, cambios por comandos | PolicyTest, PreemptiveKernelTest, SchedulingChangeTest, UiIntegrationTest | RR y selección visual módulo6; comparación reproducible final en preparación |
+| 3 Planificación | FCFS, EDF, RR, prioridades, cambios por comandos | PolicyTest, PreemptiveKernelTest, SchedulingChangeTest, UiIntegrationTest, FinalAcceptanceTest | RR y selección visual módulo6; comparaciones finales medidas en JSON |
 | 4 Productor-consumidor | BufferService, tres SimulatedSemaphore, NetworkTransfer, BufferProgram | ProducerConsumerIntegrationTest, BufferNetworkTest, BufferOperationTest | Local12, contadores/sems1/0/1; remoto visual anterior módulo6 |
 | 5 Memoria | Ram, MemoryAdmission, reservas de buffer/limpieza | RamTest, MemoryAdmissionTest, BufferSimulationTest | RAM local/buffers verificados en módulos anteriores |
 | 6 GUI | Dashboard, formularios, paneles/tablaPCB, registro y controles | UiFormTest, UiControllerTest, UiIntegrationTest, MetricsPanelTest | Run y pestañas local/métricas confirmados por estudiante |
@@ -29,6 +29,16 @@ La evidencia confirma build y resultado visual local siguiendo el procedimiento 
 | 8 Métricas/gráfico | MetricsSnapshot/Calculator, esperas, historial y Java2D | PerformanceMetricsTest, SemaphoreWaitMetricsTest, MetricsHistoryTest, MetricsIntegrationTest | CPUglobal50%, completados2, respuesta0.5 y promedioespera6 confirmados |
 
 Toda la suite usa AllTests; Surefire=0 no significa ausencia de comprobaciones. La evidencia anterior detallada permanece en cada documento de verificación de módulos1–8.
+
+## Integración y copia limpia
+
+FinalAcceptanceTest añade96 comprobaciones a la base25454: **25550** en total. Ejecuta cuatro políticas a horizonte12, un productor local/remoto a horizonte8 y dos parejas C/P a horizonte16. El JSON `data/final-comparisons.json` conserva configuraciones, denominadores y resultados exportados de las instantáneas del motor real. El informe lee ese archivo.
+
+Se extrajo `git archive` del commit **774e58054b6541c0896e90b9fec5b676ca4f5cc8** a una carpeta temporal nueva: target no existía. Desde allí, JDK25/Maven ejecutaron `clean package` con caché de dependencias externa explícita. Resultado: **OK:25550 comprobaciones**, **BUILD SUCCESS**, código0,6.248s. Se recompilaron las fuentes de la copia; no se copiaron target ni archivos ignorados. La caché evita una descarga de dependencias, no sustituye la compilación.
+
+Esto prueba independencia de artefactos de construcción locales. No afirma una descarga de Maven Central desde cero ni apertura/Debug/Run de esa copia en NetBeans.
+
+El informe tiene10páginas; el resumen de defensa, exactamente2. Ambos se generaron desde fuentes versionadas y se revisaron visualmente tras renderizar cada página. Los UML de clases/estados tienen fuentes y SVG/PNG, con formato amplio en el informe para conservar legibilidad.
 
 ## Pendientes para cerrar aceptación y entrega
 

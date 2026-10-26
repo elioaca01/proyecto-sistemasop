@@ -7,6 +7,7 @@
 - [x] B1 local: producido/consumido1/1, ocupación0, semáforos1/0/1.
 - [x] El estudiante confirma espera promedio6 en Métricas → Buffers y esperas.
 - [x] Pruebas automáticas de parámetros, archivos inválidos, guardado seguro, reinicio, red, políticas, métricas y cierre; evidencia por módulo.
+- [x] Copia limpia por git archive de 774e580, sin target previo: clean package con JDK25, 25550 comprobaciones y BUILD SUCCESS. Esto verifica construcción por terminal.
 
 ## Prueba manual final en NetBeans
 
@@ -24,10 +25,11 @@
 - [x] Informe PDF de10páginas, dos UML y resumen de defensa de2páginas generados y revisados visualmente.
 - [x] Comparaciones reales de políticas/local-remoto medidas con cargas equivalentes y condiciones documentadas.
 - [x] Nombre/visibilidad elegidos por el estudiante: proyecto-sistemasop-elio, privado.
-- [ ] Instalar/conectar GitHub, crear repositorio y disponer de URL real.
+- [x] GitHub conectado a elioaca01 y creación privada autorizada por el estudiante.
+- [ ] Crear repositorio proyecto-sistemasop-elio y disponer de URL real. El navegador requiere iniciar sesión; la integración no ofrece creación de repositorios.
 - [ ] Subir historial real y ramas; registrar Issues y PR descriptivos sin inventar trabajo de otras personas ni integraciones pasadas.
 - [ ] Comprobar acceso de los correctores al repositorio y que README explica la ejecución.
 - [ ] Enviar PDF y enlace por el canal académico y agregar al spreadsheet antes del viernes30 a las07:00 de Venezuela. Lo realiza el estudiante.
 - [ ] Practicar defensa individual con el resumen y abrir las guías por módulo ante dudas.
 
-No publicar ni enviar automáticamente en nombre del estudiante. El informe y el ZIP local no equivalen a envío académico.
+El estudiante autorizó preparar el repositorio privado indicado. El envío académico lo realiza el estudiante; el informe y el ZIP local no equivalen a ese envío.

@@ -7,7 +7,7 @@ Requiere JDK 25 y Apache NetBeans. El desarrollo sigue el [diseño aprobado](doc
 ## Abrir y ejecutar en NetBeans
 
 1. En **File > Open Project**, seleccionar esta carpeta, `proyecto-sistemas-op`. NetBeans reconocerá el archivo `pom.xml`.
-2. En **Tools > Java Platforms**, registrar Temurin 25 si no aparece. En este Mac está en `/Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home`.
+2. En **Tools > Java Platforms**, registrar un JDK 25 si no aparece, seleccionando su carpeta de instalación.
 3. En las propiedades del proyecto, **Build > Compile**, seleccionar JDK 25 como plataforma Java. El `pom.xml` fija además `release=25`.
 4. Ejecutar **Clean and Build**. La salida debe mostrar `javac [debug release 25]`, `OK: N comprobaciones` y `BUILD SUCCESS`.
 5. Ejecutar **Run Project** para abrir la ventana ÁvilaOS. La acción **Debug Project** inicia el mismo programa con el depurador de NetBeans.
@@ -44,10 +44,10 @@ Las pruebas son ejecutables Java con comprobaciones propias; no requieren JUnit 
 - Pausa, paso y ejecución continua por API, comandos entre ciclos, IDs globales e instantáneas inmutables para lectores concurrentes.
 - Cierre ordenado y propagación de fallos; un ciclo parcial fallido no se confirma como completado.
 - Productores/consumidores locales y remotos: buffers FIFO en RAM anfitriona, semáforos simulados, latencia por elemento y limpieza por deadline.
-- Comandos e instantáneas de buffers, reservas, fases y eventos; 25454 comprobaciones acumuladas del motor y la interfaz.
+- Comandos e instantáneas de buffers, reservas, fases y eventos; 25550 comprobaciones acumuladas del motor y la interfaz, incluidos ocho experimentos finales.
 - Interfaz Swing con configuración, formularios, vistas de CPU/PCB/colas/RAM, buffers/semáforos, registro y controles. Sesiones y cierre asíncronos; aceptación nativa local/remota, tamaño mínimo y cierre de Maven comprobados.
 - Guardar/cargar escenarios JSON versionados y validados desde Configuración inicial; archivos de ejemplo en `examples/`. Aceptación del selector nativo pendiente por falta de respuesta de la herramienta de interfaz.
-- Pestaña Métricas: throughput, CPU usuario/núcleo, respuesta, deadlines, Jain, esperas por buffer e historial completo de utilización; 25454 comprobaciones y renders headless revisados. La validación interactiva del IDE sigue pendiente.
+- Pestaña Métricas: throughput, CPU usuario/núcleo, respuesta, deadlines, Jain, esperas por buffer e historial completo de utilización. Renders revisados y escenario local/promedio de espera confirmados por el estudiante. Otros pendientes manuales están en el checklist de entrega.
 
 `ProcessDefinition` conserva los atributos iniciales inmutables; `ProcessControlBlock` mantiene el estado vivo del proceso. Apropiar o bloquear conserva PC/MAR y la RAM asignada; ejecutar una instrucción avanza PC/MAR. El núcleo invoca estas operaciones y MemoryAdmission controla las reservas de RAM simulada.
 
@@ -55,7 +55,7 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 
 ## Explicación y evidencia por módulo
 
-- [Guías de defensa por módulo](docs/defensa/README.md): explicaciones breves de los módulos 1–8 (la aceptación interactiva de 7–8 está pendiente); al completar el proyecto se reunirán en un resumen final.
+- [Guías de defensa por módulo](docs/defensa/README.md): módulos 1–9, con conceptos y preguntas; [resumen unificado](output/pdf/avilaos-defensa-resumen.pdf) de dos páginas.
 - [Verificación del módulo 1](docs/verification/2026-10-19-foundation.md).
 - [Verificación del módulo 2](docs/verification/2026-10-20-single-computer.md).
 - [Verificación del módulo 3](docs/verification/2026-10-20-scheduling.md).
@@ -64,3 +64,13 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 - [Verificación del módulo 6](docs/verification/2026-10-23-interface.md).
 - [Verificación del módulo 7](docs/verification/2026-10-23-scenarios-json.md).
 - [Verificación del módulo 8](docs/verification/2026-10-25-metrics.md).
+- [Integración y aceptación final](docs/verification/2026-10-25-final-acceptance.md).
+
+## Informe y entrega
+
+- [Informe PDF](output/pdf/avilaos-informe.pdf): arquitectura, UML de clases/estados, fórmulas y comparaciones reproducibles de políticas y red.
+- [Fuentes y regeneración del informe](docs/informe/README.md); [fuentes UML](docs/uml/README.md).
+- [Preparar el ZIP y comprobar sus hashes](docs/entrega/README.md).
+- [Checklist manual y envío](docs/entrega/checklist.md): pruebas de archivos, Debug/copia limpia en NetBeans, acceso GitHub y entrega académica que aún requieren confirmación.
+
+Las conclusiones comparativas se limitan a las cargas y horizontes publicados en `docs/verification/data/final-comparisons.json`. La generación del informe usa herramientas Python separadas; no son necesarias para compilar ni ejecutar el simulador.

@@ -1,4 +1,5 @@
 /target/
+/output/entrega/
 /.maven-cache/
 /nbproject/private/
 /nb-configuration.xml

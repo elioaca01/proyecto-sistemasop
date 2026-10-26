@@ -42,6 +42,8 @@ La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 compl
 
 ## Reglas de avance
 
+Módulo9: [plan de integración y entrega](2026-10-25-avilaos-final-delivery.md). Experimentos incorporados, suite25550; informe10páginas, dos UML y resumen2páginas generados/revisados. Copia limpia construida por terminal; revisión final/paquete y cierre GitHub/manual en curso. [Guía](../../defensa/modulo-9-integracion.md) y [checklist](../../entrega/checklist.md).
+
 1. Escribir la prueba de comportamiento, comprobar el fallo esperado, implementar y comprobar el resultado.
 2. Usar una rama por funcionalidad y commits descriptivos; integrar por PR cuando esté conectado GitHub.
 3. Al cerrar cada módulo, conservar evidencia de pruebas y una guía breve de defensa independiente en `docs/defensa/`, con conceptos, ejemplo y preguntas. Al terminar todos, sintetizarlas en un resumen unificado de aproximadamente dos páginas, según la preferencia del estudiante.
@@ -60,5 +62,5 @@ La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 compl
 
 ## Pendientes externos
 
-- Elegir o crear el repositorio GitHub y disponer de autenticación. Existen Git local, `main` y `develop`; aún no existe un remoto registrado.
+- El estudiante eligió proyecto-sistemasop-elio privado; la integración GitHub identifica elioaca01. La creación requiere iniciar sesión en el navegador; todavía no se registra un remoto ni se afirma publicación.
 - El envío académico, la inscripción en el spreadsheet y la asistencia a la defensa corresponden al estudiante. No se programan envíos ni automatizaciones.
