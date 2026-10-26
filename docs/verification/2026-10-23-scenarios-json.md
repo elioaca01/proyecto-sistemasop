@@ -63,3 +63,5 @@ El revisor dejó fuera dos comportamientos que el plan excluye expresamente. Se 
 Última construcción limpia tras la corrección: **25234 comprobaciones**, JAR, BUILD SUCCESS y código 0. La aceptación nativa sigue pendiente; las tareas 5–6 conservan ese pendiente y el registro de ejecución para retomarlo al desbloquear el Mac.
 
 Reanudación del 25 de octubre: nueva construcción limpia satisfactoria (25234). CUA volvió a bloquearse durante minutos y el siguiente acceso se interrumpió; el proceso temporal registró salida137. La validación del selector/cierre permanece pendiente por la herramienta, no se la infiere del nuevo módulo8. Se continuó el trabajo independiente de métricas según la indicación del estudiante.
+
+Confirmación posterior del 25: el estudiante ejecutó el escenario local y aportó capturas con el resultado esperado, además de confirmar el promedio6. Esto aporta evidencia visual del escenario; los pasos específicos de guardar/sobrescribir/archivo inválido todavía no constan. [Registro final](2026-10-25-final-acceptance.md).

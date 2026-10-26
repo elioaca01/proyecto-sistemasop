@@ -38,7 +38,7 @@ La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 compl
 - [Módulo 7: escenarios JSON](2026-10-23-avilaos-scenarios-json.md): guardar/cargar escenarios iniciales, validación estricta, UTF-8 y reemplazo atómico implementados; 25234 comprobaciones y construcción limpia satisfactorias. Aceptación nativa del selector pendiente por falta de respuesta de la herramienta; revisión independiente final realizada; editor de tabla anterior corregido con regresión. [Guía de defensa](../../defensa/modulo-7-escenarios-json.md).
 
 
-- [Módulo 8: métricas](2026-10-25-avilaos-metrics.md): cinco métricas por máquina/globales, esperas por buffer e historial/gráfico implementados; 25454 comprobaciones y construcción limpia satisfactorias. Renders de paneles revisados; revisión independiente realizada y distinción de curvas corregida con regresión; aceptación interactiva pendiente. [Guía de defensa](../../defensa/modulo-8-metricas.md).
+- [Módulo 8: métricas](2026-10-25-avilaos-metrics.md): cinco métricas por máquina/globales, esperas por buffer e historial/gráfico implementados; 25454 comprobaciones y construcción limpia satisfactorias. Renders de paneles revisados; revisión independiente realizada y distinción de curvas corregida con regresión; escenario local confirmado visualmente por el estudiante y promedio6 confirmado. Otros pendientes en el [checklist](../../entrega/checklist.md). [Guía de defensa](../../defensa/modulo-8-metricas.md).
 
 ## Reglas de avance
 
