@@ -51,4 +51,4 @@ Reiniciar: cero y métricas vacías. Cargar remote-producer.json; tras ocho paso
 **¿La red siempre añade dos ciclos al tiempo total?** Al productor aislado sí en la prueba L2:6→8. En pareja C/P:12→13 porque P empieza antes en otra CPU. Distinguir latencia, solapamiento y horizonte de medición.
 
 ## 10. Antes de defender
-Saber localizar las clases y las dos UML; explicar una traza sin memorizar solo cifras. Compilar/ejecutar en NetBeans, practicar pausa/paso/reinicio/PCB y completar checklist de archivos, cierre, Debug y copia limpia. Confirmar URL/acceso GitHub e informe enviado por el canal académico. Consultar las guías por módulo para ampliar; este resumen es el recorrido esencial.
+Saber localizar las clases y las dos UML; explicar una traza sin memorizar solo cifras. Compilar/ejecutar en NetBeans, practicar pausa/paso/reinicio/PCB y completar checklist de archivos, cierre, Debug y copia limpia. Comprobar acceso de correctores a GitHub y enviar el informe por el canal académico. Consultar las guías por módulo para ampliar; este resumen es el recorrido esencial.

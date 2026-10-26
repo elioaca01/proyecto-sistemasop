@@ -7,7 +7,7 @@ import subprocess
 from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[2]
-PREFIX = "proyecto-sistemasop-elio/"
+PREFIX = "proyecto-sistemasop/"
 
 
 def git(*args):
@@ -31,7 +31,7 @@ def main():
         count = sum(not entry.is_dir() for entry in zipped.infolist())
     output = ROOT / "output/entrega"
     output.mkdir(parents=True, exist_ok=True)
-    filename = "proyecto-sistemasop-elio-" + revision[:7] + ".zip"
+    filename = "proyecto-sistemasop-" + revision[:7] + ".zip"
     (output / filename).write_bytes(archive)
     manifest = {
         "sourceRevision": revision,

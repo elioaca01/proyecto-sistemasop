@@ -22,7 +22,7 @@ El productor aislado local/remoto termina en6/8 con seis instrucciones. A horizo
 
 - **¿Cuál política es mejor?** Depende de la carga y del objetivo. Aquí EDF y prioridades completan más plazos cortos; no se extrapola a otros quantums/cargas.
 - **¿Qué evidencia sustenta las conclusiones?** FinalAcceptanceTest ejecuta el motor real, comprueba resultados y exporta el JSON que leen las tablas del informe.
-- **¿Ya está entregado el proyecto?** El paquete local y el PDF no son el envío académico. Faltan los pasos del checklist que todavía no consten y la publicación/acceso GitHub.
+- **¿Ya está entregado el proyecto?** El paquete local y el PDF no son el envío académico. El historial ya está en GitHub; faltan los pasos del checklist que todavía no consten, Issues/PR y acceso de correctores.
 
 **Explicación breve:** «Cerramos el proyecto con pruebas de integración y comparaciones de condiciones iguales. Las conclusiones citan poblaciones y horizontes para no confundir cifras. El informe y los dos UML permiten recorrer el código; el resumen de dos páginas organiza mi defensa».
 

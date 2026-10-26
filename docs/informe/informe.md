@@ -2,7 +2,7 @@
 # ÁvilaOS
 ## Proyecto 1 - Sistemas Operativos
 **Autor:** Elio Colmenares. Desarrollo individual.
-**Fecha de esta versión:** 25 de octubre de 2026.
+**Fecha de esta versión:** 26 de octubre de 2026.
 **Entorno:** Java 25, Apache NetBeans, Maven y Swing. Gson 2.14.0 se limita a JSON streaming; el gráfico usa Java2D.
 
 ### Propósito
@@ -136,7 +136,7 @@ El estudiante aportó build de 25454 comprobaciones y capturas de la ventana rea
 - La primera construcción necesita acceso a Maven Central para plugins y Gson. No requiere la caché privada del desarrollador ni rutas de su Mac. El README contiene la alternativa con Maven y JDK 25 seleccionados.
 
 ### Lo que todavía requiere cierre
-Guardar/recargar/sobrescribir y rechazar JSON corrupto en ventana real, cerrar la ejecución actual, Debug y abrir una copia limpia en el IDE permanecen en el checklist. Los tests automáticos no se presentan como sustitutos de esas comprobaciones. El repositorio GitHub y su URL real, Issues/PR y envío académico siguen pendientes; no se inventa una publicación ni se entrega por correo automáticamente.
+Guardar/recargar/sobrescribir y rechazar JSON corrupto en ventana real, cerrar la ejecución actual, Debug y abrir una copia limpia en el IDE permanecen en el checklist. Repositorio privado: https://github.com/elioaca01/proyecto-sistemasop. Historial y13ramas publicados por SSH; la versión completa está en codex/final-delivery. Issues/PR, integración hacia develop/main, acceso de correctores y envío académico siguen pendientes.
 
 ### Fuentes y artefactos
 Enunciado Proyecto 1, Sistemas Operativos 2627-1, suministrado por el estudiante; diseño aprobado del 18 de octubre; código Java en src/main/java; ejecutor AllTests y FinalAcceptanceTest; mediciones en docs/verification/data/final-comparisons.json; evidencia de módulos en docs/verification; guías en docs/defensa. El informe y el resumen se regeneran desde docs/informe/build_report.py.

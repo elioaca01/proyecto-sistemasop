@@ -2,11 +2,17 @@
 
 Proyecto 1 de Sistemas Operativos: simulador de sistema operativo distribuido.
 
+Repositorio privado: [elioaca01/proyecto-sistemasop](https://github.com/elioaca01/proyecto-sistemasop). La versión completa está en **codex/final-delivery**; las ramas originales de cada módulo conservan el historial. La integración por PR hacia develop/main sigue pendiente. Para seleccionar explícitamente la versión completa:
+
+```sh
+git clone --branch codex/final-delivery git@github.com:elioaca01/proyecto-sistemasop.git
+```
+
 Requiere JDK 25 y Apache NetBeans. El desarrollo sigue el [diseño aprobado](docs/superpowers/specs/2026-10-18-avilaos-design.md) y la [hoja de ruta](docs/superpowers/plans/2026-10-19-avilaos-roadmap.md).
 
 ## Abrir y ejecutar en NetBeans
 
-1. En **File > Open Project**, seleccionar esta carpeta, `proyecto-sistemas-op`. NetBeans reconocerá el archivo `pom.xml`.
+1. En **File > Open Project**, seleccionar la carpeta que contiene `pom.xml`. NetBeans reconocerá el proyecto Maven.
 2. En **Tools > Java Platforms**, registrar un JDK 25 si no aparece, seleccionando su carpeta de instalación.
 3. En las propiedades del proyecto, **Build > Compile**, seleccionar JDK 25 como plataforma Java. El `pom.xml` fija además `release=25`.
 4. Ejecutar **Clean and Build**. La salida debe mostrar `javac [debug release 25]`, `OK: N comprobaciones` y `BUILD SUCCESS`.

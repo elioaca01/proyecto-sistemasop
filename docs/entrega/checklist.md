@@ -26,10 +26,11 @@
 - [x] Comparaciones reales de políticas/local-remoto medidas con cargas equivalentes y condiciones documentadas.
 - [x] Revisión independiente final sin hallazgos críticos/importantes; mejora menor de clasificación binaria de PDF registrada para después.
 - [x] Empaquetador probado y ZIP local con fuentes versionadas, PDF y manifest.json de hashes.
-- [x] Nombre/visibilidad elegidos por el estudiante: proyecto-sistemasop-elio, privado.
+- [x] El estudiante creó el repositorio privado con el nombre definitivo proyecto-sistemasop y proporcionó su URL SSH.
 - [x] GitHub conectado a elioaca01 y creación privada autorizada por el estudiante.
-- [ ] Crear repositorio proyecto-sistemasop-elio y disponer de URL real. El navegador requiere iniciar sesión; la integración no ofrece creación de repositorios.
-- [ ] Subir historial real y ramas; registrar Issues y PR descriptivos sin inventar trabajo de otras personas ni integraciones pasadas.
+- [x] Repositorio real: https://github.com/elioaca01/proyecto-sistemasop. Acceso SSH comprobado; consulta sin autenticación HTTP404, coherente con repositorio privado.
+- [x] Subir historial real y las 13 ramas, incluida codex/final-delivery con la versión completa. Sin reescribir historia ni fusionar ramas.
+- [ ] Habilitar este repositorio en la integración GitHub: actualmente responde404 aunque el acceso SSH funciona. Registrar Issues/PR descriptivos e integrar ramas con aprobación, sin inventar integraciones pasadas.
 - [ ] Comprobar acceso de los correctores al repositorio y que README explica la ejecución.
 - [ ] Enviar PDF y enlace por el canal académico y agregar al spreadsheet antes del viernes30 a las07:00 de Venezuela. Lo realiza el estudiante.
 - [ ] Practicar defensa individual con el resumen y abrir las guías por módulo ante dudas.
