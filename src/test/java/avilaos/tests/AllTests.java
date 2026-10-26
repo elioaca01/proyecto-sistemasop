@@ -52,6 +52,7 @@ public final class AllTests {
         UiSessionPersistenceTest.run();
         ScenarioControlsTest.run();
         ScenarioIntegrationTest.run();
+        PerformanceMetricsTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }

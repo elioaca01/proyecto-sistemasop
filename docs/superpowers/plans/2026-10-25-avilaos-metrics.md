@@ -36,10 +36,10 @@
 
 **Interfaces:** PCB `boolean everAdmitted()` persiste después de terminar, true en admit. ProcessSnapshot añade último campo boolean everAdmitted. PerformanceMetrics record `(long cycles,int processors,long userCycles,long kernelCycles,long completed,long expired,long pending,long responded,double responseCycles,long admitted,double serviceSquared)`; métodos double throughput/utilization/userUtilization/kernelUtilization/averageResponse/deadlineCompliance/fairness devuelven NaN sin datos. MetricsCalculator `static PerformanceMetrics computer(ComputerSnapshot,long cycles)` y `static PerformanceMetrics aggregate(PerformanceMetrics[],long cycles)`.
 
-- [ ] RED: admitido sin servicio y terminado después de liberar RAM conservan everAdmitted; vencido NEW false. CPU FCFS A2/B1 tras tres ciclos: completed2, busy3, respuesta promedio1, fairness9/10, throughput2/3. Todos los ceros dan NaN según denominador; utilización/throughput=0 si cycles>0.
-- [ ] RED: sumar dos computadores con poblaciones/respuestas distintas recalcula promedio ponderado y Jain global, no media de índices. Caso serviceSquared mayor que long admite valor double finito y capacidad computadores×ciclos no desborda long.
-- [ ] Implementar admisión persistente y fórmula desde todos los PCB en running/new/ready/blocked/terminated; evitar omisiones/duplicaciones. No alterar planificación.
-- [ ] Run `mvn test` con JDK25/caché: leer OK y BUILD SUCCESS, código0. Commit `feat: calcula metricas de procesos y CPU con formulas comunes`.
+- [x] RED: admitido sin servicio y terminado después de liberar RAM conservan everAdmitted; vencido NEW false. CPU FCFS A2/B1 tras tres ciclos: completed2, busy3, respuesta promedio1, fairness9/10, throughput2/3. Todos los ceros dan NaN según denominador; utilización/throughput=0 si cycles>0.
+- [x] RED: sumar dos computadores con poblaciones/respuestas distintas recalcula promedio ponderado y Jain global, no media de índices. Caso serviceSquared mayor que long admite valor double finito y capacidad computadores×ciclos no desborda long.
+- [x] Implementar admisión persistente y fórmula desde todos los PCB en running/new/ready/blocked/terminated; evitar omisiones/duplicaciones. No alterar planificación.
+- [x] Run `mvn test` con JDK25/caché: leer OK y BUILD SUCCESS, código0. Commit `feat: calcula metricas de procesos y CPU con formulas comunes`.
 
 ## Task 2: episodios de espera de semáforos
 

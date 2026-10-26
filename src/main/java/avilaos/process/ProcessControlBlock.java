@@ -13,6 +13,7 @@ public final class ProcessControlBlock {
     private int pc;
     private int mar;
     private int assignedMemory;
+    private boolean everAdmitted;
     private long firstRunCycle = -1;
     private long terminationCycle = -1;
     private TerminationReason terminationReason;
@@ -37,6 +38,7 @@ public final class ProcessControlBlock {
     public void admit() {
         requireState(ProcessState.NEW);
         assignedMemory = definition.memoryRequired();
+        everAdmitted = true;
         state = ProcessState.READY;
     }
 
@@ -132,6 +134,7 @@ public final class ProcessControlBlock {
     public int mar() { return mar; }
     public int remainingInstructions() { return definition.instructionCount() - pc; }
     public int assignedMemory() { return assignedMemory; }
+    public boolean everAdmitted() { return everAdmitted; }
     public long arrivalCycle() { return arrivalCycle; }
     public long deadlineAt() { return deadlineAt; }
     public long firstRunCycle() { return firstRunCycle; }
