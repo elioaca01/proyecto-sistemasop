@@ -57,6 +57,7 @@ public final class AllTests {
         MetricsHistoryTest.run();
         MetricsPanelTest.run();
         MetricsIntegrationTest.run();
+        FinalAcceptanceTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }

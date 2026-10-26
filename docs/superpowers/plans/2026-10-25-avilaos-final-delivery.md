@@ -42,9 +42,9 @@
 
 **Interfaces:** `FinalAcceptanceTest.run()` verifica resultados del simulador; `main(String[] args)` exporta JSON streaming UTF8 a args[0]. No generar el archivo durante la suite ordinaria.
 
-- [ ] Escribir primero comprobaciones de cuatro políticas bajo carga idéntica: computador1 A8/D9/prio2, B2/D3/prio0, C4/D7/prio1; computador2 D6/D20/prio1. RAM64 cadauno, quantum2, llegada0, medir12 ciclos. Esperados completados FCFS2, EDF3, RR1, prioridades3; vencidos2/1/3/1. Medir servicio, respuesta/población, Jain y cumplimiento desde MetricsSnapshot real. Si pasan inicialmente, no inventar RED.
-- [ ] Productor6/RAM2/plazo100/intervalo1/cuota1 y B1(host1,cap1), dos computadores, latencia2: local productor1 completa en6 pasos y remoto productor2 en8; a horizonte común8 servicio6 para ambos, producido1, consumido0. Local se queda inactivo los dos ciclos adicionales; distinguir makespan de utilización en horizonte común. Añadir pareja C/P en horizonte16: C1/P1 local y C1/P2 remoto; terminación normal esperada en12/13, espera6/7, explicando disponibilidad de CPU y solapamiento además de la latencia.
-- [ ] Exportar bases/fórmulas/definiciones y condiciones al JSON, sin colecciones ni resultados escritos a mano. Suite y CLI satisfactorios; commit `test: mide politicas y red con cargas equivalentes`.
+- [x] Escribir primero comprobaciones de cuatro políticas bajo carga idéntica: computador1 A8/D9/prio2, B2/D3/prio0, C4/D7/prio1; computador2 D6/D20/prio1. RAM64 cadauno, quantum2, llegada0, medir12 ciclos. Esperados completados FCFS2, EDF3, RR1, prioridades3; vencidos2/1/3/1. Medir servicio, respuesta/población, Jain y cumplimiento desde MetricsSnapshot real. Si pasan inicialmente, no inventar RED.
+- [x] Productor6/RAM2/plazo100/intervalo1/cuota1 y B1(host1,cap1), dos computadores, latencia2: local productor1 completa en6 pasos y remoto productor2 en8; a horizonte común8 servicio6 para ambos, producido1, consumido0. Local se queda inactivo los dos ciclos adicionales; distinguir makespan de utilización en horizonte común. Añadir pareja C/P en horizonte16: C1/P1 local y C1/P2 remoto; terminación normal esperada en12/13, espera6/7, explicando disponibilidad de CPU y solapamiento además de la latencia.
+- [x] Exportar bases/fórmulas/definiciones y condiciones al JSON, sin colecciones ni resultados escritos a mano. Suite y CLI satisfactorios; commit `test: mide politicas y red con cargas equivalentes`.
 
 ## Task 3: dos UML derivados del código
 
