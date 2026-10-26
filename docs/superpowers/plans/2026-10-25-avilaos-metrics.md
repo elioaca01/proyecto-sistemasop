@@ -47,10 +47,10 @@
 
 **Interfaces:** SemaphoreWaitMetrics record `(long completedEpisodes,long completedCycles,long openEpisodes,long openCycles)`, `double averageWait()` y `static combine(SemaphoreWaitMetrics[])`. BufferSnapshot `SemaphoreWaitMetrics waits()`. BufferOperation waitStartedAt=-1; BoundedBuffer conserva contadores cerrados y método `recordWait(long cycles)`.
 
-- [ ] RED: ejemplo local del módulo7, tras paso1 un abierto con tiempo0, tras paso2 tiempo1; al final paso12 un cerrado con6 ciclos, sin abiertos. Deadline de consumidor esperando en llenos cuenta episodio cerrado; consumidor sin productor no inventa episodios completados.
-- [ ] RED: remoto L2 incluye PC inmóvil por red pero espera de semáforo cero si no se bloqueó; no contar IO. Concesión/cancelación antes de entregar wake no cierra doble. Varios participantes y espera mutex preservan total, promedio ponderado y abiertos.
-- [ ] Implementar comienzo solo al fallar wait de los tres semáforos; cierre al programar concesión con boundary cycle+1 o cleanup por deadline. Capturar abiertos bajo mutex del servicio usando su próximo límite. No cambiar permisos ni orden de wakes.
-- [ ] Suite GREEN y commit `feat: contabiliza episodios de espera en semaforos`.
+- [x] RED: ejemplo local del módulo7, tras paso1 un abierto con tiempo0, tras paso2 tiempo1; al final paso12 un cerrado con6 ciclos, sin abiertos. Deadline de consumidor esperando en llenos cuenta episodio cerrado; consumidor sin productor no inventa episodios completados.
+- [x] RED: remoto L2 incluye PC inmóvil por red pero espera de semáforo cero si no se bloqueó; no contar IO. Concesión/cancelación antes de entregar wake no cierra doble. Varios participantes y espera mutex preservan total, promedio ponderado y abiertos.
+- [x] Implementar comienzo solo al fallar wait de los tres semáforos; cierre al programar concesión con boundary cycle+1 o cleanup por deadline. Capturar abiertos bajo mutex del servicio usando su próximo límite. No cambiar permisos ni orden de wakes.
+- [x] Suite GREEN y commit `feat: contabiliza episodios de espera en semaforos`.
 
 ## Task 3: publicación confirmada e historial completo
 

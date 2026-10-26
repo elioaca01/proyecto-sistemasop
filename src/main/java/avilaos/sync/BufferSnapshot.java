@@ -1,5 +1,7 @@
 package avilaos.sync;
 
+import avilaos.metrics.SemaphoreWaitMetrics;
+
 /** Copia por valor; se construye bajo el mutex del servicio, sin retener PCB ni buffer. */
 public final class BufferSnapshot {
     private final BufferDefinition definition;
@@ -8,7 +10,9 @@ public final class BufferSnapshot {
     private final BufferItem[] items;
     private final long[] emptyWaiting, fullWaiting, mutexWaiting;
     private final BufferOperationSnapshot[] operations;
-    BufferSnapshot(BoundedBuffer b, BufferOperationSnapshot[] operations) {
+    private final SemaphoreWaitMetrics waits;
+    BufferSnapshot(BoundedBuffer b, BufferOperationSnapshot[] operations, SemaphoreWaitMetrics waits) {
+        this.waits = waits;
         definition = b.definition(); size = b.size(); produced = b.produced(); consumed = b.consumed();
         emptyValue = b.empty().value(); fullValue = b.full().value(); mutexValue = b.mutex().value();
         mutexOwnerId = b.mutexOwner() == null ? -1 : b.mutexOwner().id();
@@ -22,6 +26,7 @@ public final class BufferSnapshot {
         for (int i = 0; i < ids.length; i++) { ids[i] = s.waitingAt(i).id(); }
         return ids;
     }
+    public SemaphoreWaitMetrics waits() { return waits; }
     public BufferDefinition definition() { return definition; }
     public int size() { return size; }
     public long produced() { return produced; }

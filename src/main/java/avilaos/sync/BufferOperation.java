@@ -5,6 +5,7 @@ final class BufferOperation {
     final ProcessControlBlock process; final BoundedBuffer buffer;
     boolean countingPermit, mutexHeld, modified, networkStarted;
     long networkAvailableAt = -1;
+    long waitStartedAt = -1;
     int completedItems, lastPc;
     BlockReason waiting = BlockReason.NONE;
     BufferOperation(ProcessControlBlock process, BoundedBuffer buffer) { this.process = process; this.buffer = buffer; }

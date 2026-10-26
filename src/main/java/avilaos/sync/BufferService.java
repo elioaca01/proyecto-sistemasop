@@ -7,6 +7,7 @@ import avilaos.structures.LinkedList;
 import avilaos.structures.LinkedQueue;
 import java.util.concurrent.Semaphore;
 import avilaos.hardware.Ram;
+import avilaos.metrics.SemaphoreWaitMetrics;
 
 /** Recursos compartidos. Nunca invoca al Kernel ni espera workers sosteniendo el mutex. */
 public final class BufferService {
@@ -92,12 +93,12 @@ public final class BufferService {
                     if (op.countingPermit || op.modified || op.mutexHeld) { throw new IllegalStateException("Reserva de conteo duplicada"); }
                     SimulatedSemaphore sem = phase == BufferPhase.WAIT_EMPTY ? op.buffer.empty() : op.buffer.full();
                     if (sem.waitFor(p)) { op.countingPermit = true; }
-                    else { op.waiting = phase == BufferPhase.WAIT_EMPTY ? BlockReason.SEMAPHORE_EMPTY : BlockReason.SEMAPHORE_FULL; }
+                    else { op.waiting = phase == BufferPhase.WAIT_EMPTY ? BlockReason.SEMAPHORE_EMPTY : BlockReason.SEMAPHORE_FULL; op.waitStartedAt = Math.addExact(cycle, 1); }
                 }
                 case WAIT_MUTEX -> {
                     if (!op.countingPermit || op.mutexHeld) { throw new IllegalStateException("Conteo previo requerido"); }
                     if (op.buffer.mutex().waitFor(p)) { op.buffer.claimMutex(p); op.mutexHeld = true; }
-                    else { op.waiting = BlockReason.SEMAPHORE_MUTEX; }
+                    else { op.waiting = BlockReason.SEMAPHORE_MUTEX; op.waitStartedAt = Math.addExact(cycle, 1); }
                 }
                 case INSERT, REMOVE -> {
                     if (!op.countingPermit || !op.mutexHeld || op.modified) { throw new IllegalStateException("Reservas incompletas"); }
@@ -135,8 +136,14 @@ public final class BufferService {
     }
     private void schedule(BufferOperation op, BlockReason reason, long cycle) {
         if (op.waiting != reason) { throw new IllegalStateException("Concesión sin espera correspondiente"); }
+        closeWait(op, Math.addExact(cycle, 1));
         op.waiting = BlockReason.NONE;
         wakes.addLast(new BufferWake(op.process, reason, Math.addExact(cycle, 1)));
+    }
+    private static void closeWait(BufferOperation op, long boundary) {
+        if (op.waitStartedAt >= 0) {
+            op.buffer.recordWait(boundary - op.waitStartedAt); op.waitStartedAt = -1;
+        }
     }
     public LinkedQueue<BufferWake> beginCycle(long cycle) {
         mutex.acquireUninterruptibly();
@@ -163,6 +170,7 @@ public final class BufferService {
             requireCycle(cycle);
             if (p == null || reason == null || p.state() != ProcessState.TERMINATED) { throw new IllegalArgumentException("Terminación requerida"); }
             BufferOperation op = find(p); if (op == null) { return; }
+            closeWait(op, Math.addExact(cycle, 1));
             op.buffer.empty().cancelWaiting(p); op.buffer.full().cancelWaiting(p); op.buffer.mutex().cancelWaiting(p);
             for (int i = 0; i < wakes.size();) { if (wakes.get(i).process() == p) { wakes.removeAt(i); } else { i++; } }
             for (int i = 0; i < transfers.size();) { if (transfers.get(i).process() == p) { transfers.removeAt(i); } else { i++; } }
@@ -201,9 +209,15 @@ public final class BufferService {
             int count = 0;
             for (int i = 0; i < operations.size(); i++) { if (operations.get(i).buffer == buffer) { count++; } }
             BufferOperationSnapshot[] copies = new BufferOperationSnapshot[count];
-            int j = 0;
-            for (int i = 0; i < operations.size(); i++) { if (operations.get(i).buffer == buffer) { copies[j++] = operations.get(i).snapshot(); } }
-            return new BufferSnapshot(buffer, copies);
+            int j = 0; long open = 0, openCycles = 0;
+            for (int i = 0; i < operations.size(); i++) {
+                BufferOperation op = operations.get(i);
+                if (op.buffer == buffer) {
+                    copies[j++] = op.snapshot();
+                    if (op.waitStartedAt >= 0) { open++; openCycles = Math.addExact(openCycles, nextCycle - op.waitStartedAt); }
+                }
+            }
+            return new BufferSnapshot(buffer, copies, new SemaphoreWaitMetrics(buffer.completedWaits(), buffer.waitCycles(), open, openCycles));
         } finally { mutex.release(); }
     }
     public int eventCount() { mutex.acquireUninterruptibly(); try { return events.size(); } finally { mutex.release(); } }

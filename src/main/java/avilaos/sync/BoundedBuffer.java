@@ -9,6 +9,7 @@ public final class BoundedBuffer {
     private final SimulatedSemaphore empty, full, mutex = new SimulatedSemaphore(1, 1);
     private ProcessControlBlock owner;
     private long produced, consumed;
+    private long completedWaits, waitCycles;
     public BoundedBuffer(BufferDefinition definition) {
         if (definition == null) { throw new IllegalArgumentException("Definición requerida"); }
         this.definition = definition; items = new RingBuffer<>(definition.capacity());
@@ -28,6 +29,13 @@ public final class BoundedBuffer {
     }
     public void insert(ProcessControlBlock p, BufferItem item) { requireOwner(p); items.put(item); produced++; }
     public BufferItem remove(ProcessControlBlock p) { requireOwner(p); BufferItem item = items.take(); consumed++; return item; }
+    public void recordWait(long cycles) {
+        if (cycles < 0) { throw new IllegalArgumentException("Espera negativa"); }
+        long count = Math.incrementExact(completedWaits), total = Math.addExact(waitCycles, cycles);
+        completedWaits = count; waitCycles = total;
+    }
+    public long completedWaits() { return completedWaits; }
+    public long waitCycles() { return waitCycles; }
     public BufferDefinition definition() { return definition; }
     public int size() { return items.size(); }
     public BufferItem itemAt(int index) { return items.get(index); }

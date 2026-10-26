@@ -53,6 +53,7 @@ public final class AllTests {
         ScenarioControlsTest.run();
         ScenarioIntegrationTest.run();
         PerformanceMetricsTest.run();
+        SemaphoreWaitMetricsTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }
