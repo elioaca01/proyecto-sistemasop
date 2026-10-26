@@ -66,10 +66,10 @@
 
 **Files:** documentación de entrega/README/roadmap, evidencia final y paquete de entrega local reproducible.
 
-- [ ] git archive de una revisión comprometida a directorio temporal limpio; Maven desde esa copia con caché explícita externa comprueba independencia de target y archivos no versionados. Esto es construcción terminal, no comprobación de esa copia en NetBeans.
-- [ ] Una revisión independiente del rango con plan/spec/Review Focus/ledger, incluidos JSON y UML/PDF; corregir Important/Critical en un pase, regresiones para cambios de comportamiento y render de PDFs para cambios documentales. Sin segunda revisión; menores registrados explícitos.
-- [ ] Construcción final, PDF completo/resumen2páginas, enlaces/diffcheck/códigoJava sin colecciones. Empaquetar fuente versionada e informe, con instrucciones y checksums, excluyendo cachés/target/datos personales. No incluir el ZIP dentro de sí mismo.
-- [ ] Conservar rama/carpeta. Publicación GitHub, Issues/PR, URL real y pruebas manuales que faltan permanecen pendientes hasta ejecutarse; pedir la información necesaria tras preparar lo independiente. No declarar el proyecto entregado por generar el paquete local.
+- [x] git archive de una revisión comprometida a directorio temporal limpio; Maven desde esa copia con caché explícita externa comprueba independencia de target y archivos no versionados. Esto es construcción terminal, no comprobación de esa copia en NetBeans.
+- [x] Una revisión independiente del rango con plan/spec/Review Focus/ledger, incluidos JSON y UML/PDF; corregir Important/Critical en un pase, regresiones para cambios de comportamiento y render de PDFs para cambios documentales. Sin segunda revisión; menores registrados explícitos.
+- [x] Construcción final, PDF completo/resumen2páginas, enlaces/diffcheck/códigoJava sin colecciones. Empaquetar fuente versionada e informe, con instrucciones y checksums, excluyendo cachés/target/datos personales. No incluir el ZIP dentro de sí mismo.
+- [x] Conservar rama/carpeta. Publicación GitHub, Issues/PR, URL real y pruebas manuales que faltan permanecen pendientes hasta ejecutarse; pedir la información necesaria tras preparar lo independiente. No declarar el proyecto entregado por generar el paquete local.
 
 ## Verificación
 

@@ -42,7 +42,7 @@ La interfaz y la documentación avanzan junto con el núcleo. El módulo 6 compl
 
 ## Reglas de avance
 
-Módulo9: [plan de integración y entrega](2026-10-25-avilaos-final-delivery.md). Experimentos incorporados, suite25550; informe10páginas, dos UML y resumen2páginas generados/revisados. Copia limpia construida por terminal; revisión final/paquete y cierre GitHub/manual en curso. [Guía](../../defensa/modulo-9-integracion.md) y [checklist](../../entrega/checklist.md).
+Módulo9: [plan de integración y entrega](2026-10-25-avilaos-final-delivery.md). Experimentos incorporados, suite25550; informe10páginas, dos UML y resumen2páginas generados/revisados. Copia limpia construida por terminal; revisión independiente satisfactoria, paquete local con hashes preparado. Cierre GitHub y pruebas manuales pendientes. [Guía](../../defensa/modulo-9-integracion.md), [revisión](../../verification/2026-10-25-final-review.md) y [checklist](../../entrega/checklist.md).
 
 1. Escribir la prueba de comportamiento, comprobar el fallo esperado, implementar y comprobar el resultado.
 2. Usar una rama por funcionalidad y commits descriptivos; integrar por PR cuando esté conectado GitHub.

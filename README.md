@@ -65,6 +65,7 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 - [Verificación del módulo 7](docs/verification/2026-10-23-scenarios-json.md).
 - [Verificación del módulo 8](docs/verification/2026-10-25-metrics.md).
 - [Integración y aceptación final](docs/verification/2026-10-25-final-acceptance.md).
+- [Revisión independiente final](docs/verification/2026-10-25-final-review.md).
 
 ## Informe y entrega
 

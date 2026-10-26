@@ -24,6 +24,8 @@
 
 - [x] Informe PDF de10páginas, dos UML y resumen de defensa de2páginas generados y revisados visualmente.
 - [x] Comparaciones reales de políticas/local-remoto medidas con cargas equivalentes y condiciones documentadas.
+- [x] Revisión independiente final sin hallazgos críticos/importantes; mejora menor de clasificación binaria de PDF registrada para después.
+- [x] Empaquetador probado y ZIP local con fuentes versionadas, PDF y manifest.json de hashes.
 - [x] Nombre/visibilidad elegidos por el estudiante: proyecto-sistemasop-elio, privado.
 - [x] GitHub conectado a elioaca01 y creación privada autorizada por el estudiante.
 - [ ] Crear repositorio proyecto-sistemasop-elio y disponer de URL real. El navegador requiere iniciar sesión; la integración no ofrece creación de repositorios.
