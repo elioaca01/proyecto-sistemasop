@@ -55,6 +55,7 @@ public final class AllTests {
         PerformanceMetricsTest.run();
         SemaphoreWaitMetricsTest.run();
         MetricsHistoryTest.run();
+        MetricsPanelTest.run();
         System.out.println("OK: " + TestSupport.count() + " comprobaciones");
     }
 }

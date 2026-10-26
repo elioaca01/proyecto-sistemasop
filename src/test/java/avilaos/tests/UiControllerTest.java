@@ -13,7 +13,7 @@ public final class UiControllerTest {
         UiSession session=new UiSession(SimulationConfigTest.empty().withAddedProcess(SimulationTest.cpu(1,3)));UiController[] controller={null};DashboardPanel[] panel={null};
         try{
             SessionTestSupport.await(session,v->v.phase()==SessionPhase.ACTIVE&&v.pendingActions()==0);
-            SwingTestSupport.edt(()->{panel[0]=new DashboardPanel();controller[0]=new UiController(session,panel[0]);panel[0].bind(controller[0]);controller[0].start();controller[0].refresh();equal(4,SwingTestSupport.find(panel[0],"dashboard.tabs",JTabbedPane.class).getTabCount());isTrue(SwingTestSupport.find(panel[0],"toolbar.step",JButton.class).isEnabled());SwingTestSupport.find(panel[0],"toolbar.step",JButton.class).doClick();});
+            SwingTestSupport.edt(()->{panel[0]=new DashboardPanel();controller[0]=new UiController(session,panel[0]);panel[0].bind(controller[0]);controller[0].start();controller[0].refresh();equal(5,SwingTestSupport.find(panel[0],"dashboard.tabs",JTabbedPane.class).getTabCount());isTrue(SwingTestSupport.find(panel[0],"toolbar.step",JButton.class).isEnabled());SwingTestSupport.find(panel[0],"toolbar.step",JButton.class).doClick();});
             SessionView old=SessionTestSupport.await(session,v->v.simulation().nextCycle()==1);
             SwingTestSupport.edt(()->{controller[0].refresh();isTrue(SwingTestSupport.find(panel[0],"dashboard.cycle",JLabel.class).getText().contains("1"));isTrue(!SwingTestSupport.find(panel[0],"config.apply",JButton.class).isEnabled());});
             long g=old.generation();Semaphore heartbeat=new Semaphore(0);

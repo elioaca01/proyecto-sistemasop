@@ -67,12 +67,12 @@
 
 **Files:** crear `ui/{MetricsPanel,UtilizationChart}.java`, `ui/model/{MetricsTableModel,BufferMetricsTableModel}.java`, `tests/MetricsPanelTest.java`; modificar DashboardPanel, AllTests.
 
-**Interfaces:** modelos AbstractTableModel propios, `setSnapshot(SimulationSnapshot)`; MetricsPanel `render(SimulationSnapshot)`, tabla names metrics.computers/metrics.buffers y chart metrics.chart. UtilizationChart `setSnapshot(SimulationSnapshot)` conserva solo copia inmutable, paintComponent Java2D.
+**Interfaces:** modelos AbstractTableModel propios, `setSnapshot(SimulationSnapshot)`; MetricsPanel `render(SimulationSnapshot)`, tabla names metrics.computers/metrics.buffers y chart metrics.chart. UtilizationChart `setSnapshot(SimulationSnapshot)` conserva solo copia inmutable, paintComponent Java2D. MetricsSnapshot añade BufferMetrics inmutable y bufferCount()/bufferAt(int) para que también los contadores de buffers permanezcan en el último ciclo confirmado ante fallo.
 
-- [ ] RED: tabla filaGlobal+computadores, porcentajes/unidades correctos, celdas solo lectura y «Sin datos» para NaN. Buffers muestran producido/consumido/ocupación, cerrados/tiempo/promedio y abiertos/tiempo separado.
-- [ ] RED: panel real integrado en Dashboard muestra «Métricas»; cargar/reiniciar limpia filas/historial viejos. Layout960×640 con desplazamiento de tablas; pintar gráfico vacío/1muestra/muchasmuestras en BufferedImage sin excepción ni NaN visible.
-- [ ] Añadir pestaña Métricas con JSplitPane vertical, gráfico arriba y tablas en pestañas inferiores con scroll horizontal. Eje X «Ciclo global», Y «Utilización acumulada (%)», leyenda por ID real y escala0..100; colores+trazos diferenciados. Sin librería adicional ni Timer nuevo.
-- [ ] Suite GREEN y commit `feat: muestra metricas y grafico de utilizacion en Swing`.
+- [x] RED: tabla filaGlobal+computadores, porcentajes/unidades correctos, celdas solo lectura y «Sin datos» para NaN. Buffers muestran producido/consumido/ocupación, cerrados/tiempo/promedio y abiertos/tiempo separado.
+- [x] RED: panel real integrado en Dashboard muestra «Métricas»; cargar/reiniciar limpia filas/historial viejos. Layout960×640 con desplazamiento de tablas; pintar gráfico vacío/1muestra/muchasmuestras en BufferedImage sin excepción ni NaN visible.
+- [x] Añadir pestaña Métricas con JSplitPane vertical, gráfico arriba y tablas en pestañas inferiores con scroll horizontal. Eje X «Ciclo global», Y «Utilización acumulada (%)», leyenda por ID real y escala0..100; colores+trazos diferenciados. Sin librería adicional ni Timer nuevo.
+- [x] Suite GREEN y commit `feat: muestra metricas y grafico de utilizacion en Swing`.
 
 ## Task 5: aceptación integrada y evidencia gráfica
 

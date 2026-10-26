@@ -13,7 +13,7 @@ public final class DashboardPanel extends JPanel implements UiView {
     private final JTextField duration=new JTextField("500",6);private final JComboBox<Integer> computers=new JComboBox<>();
     private final JButton loadScenario=new JButton("Cargar escenario"),saveScenario=new JButton("Guardar escenario inicial");
     private final ScenarioFilePicker filePicker;
-    private final ComputerPanel computerPanel=new ComputerPanel();private final BufferPanel bufferPanel=new BufferPanel();private final EventPanel eventPanel=new EventPanel();private final ConfigurationPanel configuration=new ConfigurationPanel();private final JTabbedPane tabs=new JTabbedPane();
+    private final ComputerPanel computerPanel=new ComputerPanel();private final BufferPanel bufferPanel=new BufferPanel();private final EventPanel eventPanel=new EventPanel();private final ConfigurationPanel configuration=new ConfigurationPanel();private final MetricsPanel metricsPanel=new MetricsPanel();private final JTabbedPane tabs=new JTabbedPane();
     private UiController controller;private SessionView latest;private SimulationConfig shownConfig;private long generation=-1,lastDuration=-1;private boolean rendering,durationEdited,updatingDuration;
     public DashboardPanel(){
         this(new SwingScenarioFilePicker());
@@ -33,7 +33,7 @@ public final class DashboardPanel extends JPanel implements UiView {
         JPanel fileButtons=new JPanel(new FlowLayout(FlowLayout.LEADING,8,6));fileButtons.add(loadScenario);fileButtons.add(saveScenario);
         JPanel fileBand=new JPanel(new BorderLayout(0,4));fileBand.add(fileButtons,BorderLayout.NORTH);fileBand.add(new JLabel("Guardar usa la configuración inicial aplicada. Cargar vuelve al ciclo 0"),BorderLayout.SOUTH);
         JPanel scenario=new JPanel(new BorderLayout(0,10));scenario.add(fileBand,BorderLayout.NORTH);scenario.add(new JScrollPane(configuration),BorderLayout.CENTER);
-        tabs.setName("dashboard.tabs");tabs.addTab("Computadores",machine);tabs.addTab("Buffers y semáforos",bufferPanel);tabs.addTab("Configuración inicial",scenario);tabs.addTab("Registro",eventPanel);add(tabs,BorderLayout.CENTER);
+        tabs.setName("dashboard.tabs");tabs.addTab("Computadores",machine);tabs.addTab("Buffers y semáforos",bufferPanel);tabs.addTab("Configuración inicial",scenario);tabs.addTab("Registro",eventPanel);tabs.addTab("Métricas",metricsPanel);add(tabs,BorderLayout.CENTER);
         notice.setName("dashboard.notice");notice.setEditable(false);notice.setLineWrap(true);notice.setWrapStyleWord(true);notice.setOpaque(false);notice.setForeground(UiTheme.INK);add(notice,BorderLayout.SOUTH);
         computers.addActionListener(e->{if(!rendering)renderComputer();});
         duration.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){public void insertUpdate(javax.swing.event.DocumentEvent e){changed();}public void removeUpdate(javax.swing.event.DocumentEvent e){changed();}public void changedUpdate(javax.swing.event.DocumentEvent e){changed();}private void changed(){if(!updatingDuration)durationEdited=true;}});
@@ -54,7 +54,7 @@ public final class DashboardPanel extends JPanel implements UiView {
         try{computers.removeAllItems();if(s!=null)for(int i=0;i<s.computerCount();i++)computers.addItem(s.computerAt(i).id());if(selected!=null)for(int i=0;i<computers.getItemCount();i++)if(selected.equals(computers.getItemAt(i)))computers.setSelectedIndex(i);}finally{rendering=false;}
         if(s!=null){cycle.setText("Ciclo "+s.nextCycle());state.setText(view.phase()==SessionPhase.ACTIVE?UiText.label(s.state()):phaseLabel(view.phase()));metadata.setText("Aplicada: "+s.cycleMillis()+" ms · red "+s.networkLatency()+" ciclos");if(lastDuration!=s.cycleMillis()){if(!durationEdited){updatingDuration=true;try{duration.setText(Long.toString(s.cycleMillis()));}finally{updatingDuration=false;}}lastDuration=s.cycleMillis();}renderComputer();}
         else{state.setText(phaseLabel(view.phase()));}
-        bufferPanel.render(s);eventPanel.renderSession(view);
+        bufferPanel.render(s);eventPanel.renderSession(view);metricsPanel.render(s);
         boolean active=view.phase()==SessionPhase.ACTIVE&&s!=null&&s.state()!=SimulationState.FAILED&&s.state()!=SimulationState.STOPPED&&s.state()!=SimulationState.STOPPING;
         boolean idle=active&&view.pendingActions()==0;
         start.setEnabled(idle&&s.state()==SimulationState.PAUSED);pause.setEnabled(active&&s.state()==SimulationState.RUNNING);step.setEnabled(idle&&s.state()==SimulationState.PAUSED);
