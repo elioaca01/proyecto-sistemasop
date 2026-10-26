@@ -12,6 +12,8 @@ Una guía breve por módulo, con el mismo formato: qué hicimos, conceptos esenc
 6. [Interfaz y observación](modulo-6-interfaz.md).
 7. [Escenarios JSON](modulo-7-escenarios-json.md), implementación y pruebas automatizadas listas; selector nativo pendiente.
 
+8. [Métricas y gráfico](modulo-8-metricas.md), implementado y con pruebas automatizadas; validación interactiva pendiente.
+
 Las siguientes guías se incorporarán al completar cada módulo. Los conceptos ya explicados se referenciarán para evitar repeticiones. Los resultados detallados de pruebas permanecen en [verificación](../verification/).
 
 ## Resumen final pendiente

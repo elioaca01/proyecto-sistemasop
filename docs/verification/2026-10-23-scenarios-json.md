@@ -61,3 +61,5 @@ Se conserva la rama local y la carpeta NetBeans, sin remoto, PR ni fusión. El p
 El revisor dejó fuera dos comportamientos que el plan excluye expresamente. Se mantiene ese alcance: el archivo reconstruye un escenario inicial; si se necesitara un checkpoint, habría que persistir progreso y estado vivo. El reemplazo atómico protege ante fallos de escritura antes del cambio, pero no promete durabilidad ante apagado abrupto; si esta fuera necesaria, el último guardado podría perderse sin un protocolo adicional de persistencia.
 
 Última construcción limpia tras la corrección: **25234 comprobaciones**, JAR, BUILD SUCCESS y código 0. La aceptación nativa sigue pendiente; las tareas 5–6 conservan ese pendiente y el registro de ejecución para retomarlo al desbloquear el Mac.
+
+Reanudación del 25 de octubre: nueva construcción limpia satisfactoria (25234). CUA volvió a bloquearse durante minutos y el siguiente acceso se interrumpió; el proceso temporal registró salida137. La validación del selector/cierre permanece pendiente por la herramienta, no se la infiere del nuevo módulo8. Se continuó el trabajo independiente de métricas según la indicación del estudiante.

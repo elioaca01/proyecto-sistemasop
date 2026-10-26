@@ -44,10 +44,10 @@ Las pruebas son ejecutables Java con comprobaciones propias; no requieren JUnit 
 - Pausa, paso y ejecución continua por API, comandos entre ciclos, IDs globales e instantáneas inmutables para lectores concurrentes.
 - Cierre ordenado y propagación de fallos; un ciclo parcial fallido no se confirma como completado.
 - Productores/consumidores locales y remotos: buffers FIFO en RAM anfitriona, semáforos simulados, latencia por elemento y limpieza por deadline.
-- Comandos e instantáneas de buffers, reservas, fases y eventos; 25234 comprobaciones acumuladas del motor y la interfaz.
+- Comandos e instantáneas de buffers, reservas, fases y eventos; 25453 comprobaciones acumuladas del motor y la interfaz.
 - Interfaz Swing con configuración, formularios, vistas de CPU/PCB/colas/RAM, buffers/semáforos, registro y controles. Sesiones y cierre asíncronos; aceptación nativa local/remota, tamaño mínimo y cierre de Maven comprobados.
 - Guardar/cargar escenarios JSON versionados y validados desde Configuración inicial; archivos de ejemplo en `examples/`. Aceptación del selector nativo pendiente de desbloquear el Mac.
-- Métricas/gráfico siguen en la hoja de ruta.
+- Pestaña Métricas: throughput, CPU usuario/núcleo, respuesta, deadlines, Jain, esperas por buffer e historial completo de utilización; 25453 comprobaciones y renders headless revisados. La validación interactiva del IDE sigue pendiente.
 
 `ProcessDefinition` conserva los atributos iniciales inmutables; `ProcessControlBlock` mantiene el estado vivo del proceso. Apropiar o bloquear conserva PC/MAR y la RAM asignada; ejecutar una instrucción avanza PC/MAR. El núcleo invoca estas operaciones y MemoryAdmission controla las reservas de RAM simulada.
 
@@ -55,7 +55,7 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 
 ## Explicación y evidencia por módulo
 
-- [Guías de defensa por módulo](docs/defensa/README.md): explicaciones breves de los módulos 1–7 (el 7 tiene aceptación nativa pendiente); al completar el proyecto se reunirán en un resumen final.
+- [Guías de defensa por módulo](docs/defensa/README.md): explicaciones breves de los módulos 1–8 (la aceptación interactiva de 7–8 está pendiente); al completar el proyecto se reunirán en un resumen final.
 - [Verificación del módulo 1](docs/verification/2026-10-19-foundation.md).
 - [Verificación del módulo 2](docs/verification/2026-10-20-single-computer.md).
 - [Verificación del módulo 3](docs/verification/2026-10-20-scheduling.md).
@@ -63,3 +63,4 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 - [Verificación del módulo 5](docs/verification/2026-10-23-buffers.md).
 - [Verificación del módulo 6](docs/verification/2026-10-23-interface.md).
 - [Verificación del módulo 7](docs/verification/2026-10-23-scenarios-json.md).
+- [Verificación del módulo 8](docs/verification/2026-10-25-metrics.md).
