@@ -8,7 +8,7 @@
 
 **Tech Stack:** Java25/Maven/Swing/Gson existentes; Graphviz instalado para UML; ReportLab/pypdf/Poppler del runtime de documentos para generar y revisar PDFs. Las herramientas de informe no son dependencias de ejecución del simulador.
 
-**Spec:** diseño aprobado `docs/superpowers/specs/2026-10-18-avilaos-design.md` §10 y enunciado pp10–11. Continúa el trabajo solicitado en la misma carpeta NetBeans, método nativo con una revisión final. Rama `codex/final-delivery`, base `e2c489d`. No crear/fusionar/publicar un repositorio sin resolver la selección del usuario. Envío académico y spreadsheet pertenecen al estudiante.
+**Spec:** diseño aprobado `docs/superpowers/specs/2026-10-18-avilaos-design.md` §10 y enunciado pp10–11. Continúa el trabajo solicitado en la misma carpeta NetBeans, método nativo con una revisión final. Rama `release/final-delivery`, base `e2c489d`. No crear/fusionar/publicar un repositorio sin resolver la selección del usuario. Envío académico y spreadsheet pertenecen al estudiante.
 
 ## Global Constraints
 

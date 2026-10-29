@@ -62,5 +62,5 @@ Módulo9: [plan de integración y entrega](2026-10-25-avilaos-final-delivery.md)
 
 ## Pendientes externos
 
-- El estudiante creó el repositorio privado [elioaca01/proyecto-sistemasop](https://github.com/elioaca01/proyecto-sistemasop). Origin SSH y las 13 ramas están publicados; la versión completa está en codex/final-delivery. El conector necesita acceso a este repositorio para Issues/PR; no se han fusionado main/develop.
+- El estudiante creó el repositorio privado [elioaca01/proyecto-sistemasop](https://github.com/elioaca01/proyecto-sistemasop). Origin SSH y las 12 ramas están publicados; la versión completa está en release/final-delivery. El conector necesita acceso a este repositorio para Issues/PR; no se han fusionado main/develop.
 - El envío académico, la inscripción en el spreadsheet y la asistencia a la defensa corresponden al estudiante. No se programan envíos ni automatizaciones.

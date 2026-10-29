@@ -2,7 +2,7 @@
 # ÁvilaOS
 ## Proyecto 1 - Sistemas Operativos
 **Autor:** Elio Colmenares. Desarrollo individual.
-**Fecha de esta versión:** 26 de octubre de 2026.
+**Fecha de esta versión:** 29 de octubre de 2026.
 **Entorno:** Java 25, Apache NetBeans, Maven y Swing. Gson 2.14.0 se limita a JSON streaming; el gráfico usa Java2D.
 
 ### Propósito
@@ -14,7 +14,7 @@ La GUI observa instantáneas y envía órdenes; no decide la planificación. El 
 Este informe explica las clases y decisiones principales, presenta dos UML y compara resultados medidos con cargas equivalentes. No pretende documentar cada línea de código. Las guías por módulo permiten ampliar cada tema; el resumen de defensa reúne lo esencial en dos páginas.
 
 ### Estado verificable
-La suite de integración actual pasa **25550 comprobaciones**. El estudiante confirmó un build previo de 25454 comprobaciones y la ejecución visual local: ciclo 12, dos completados, CPU global 50 %, respuesta 0.5 y espera promedio de semáforo 6 ciclos. Las 96 comprobaciones posteriores verifican los experimentos comparativos de este informe.
+La compilación limpia repetida el 29 de octubre pasa **25550 comprobaciones**. El estudiante confirmó un build previo de 25454 comprobaciones y la ejecución visual local: ciclo 12, dos completados, CPU global 50 %, respuesta 0.5 y espera promedio de semáforo 6 ciclos. Las 96 comprobaciones posteriores verifican los experimentos comparativos de este informe.
 
 Los experimentos provienen de `FinalAcceptanceTest` y `docs/verification/data/final-comparisons.json`. Los valores del informe se leen de ese archivo generado por el motor. Las pruebas manuales restantes y GitHub se identifican en la sección final; este documento no constituye envío académico.
 
@@ -136,7 +136,7 @@ El estudiante aportó build de 25454 comprobaciones y capturas de la ventana rea
 - La primera construcción necesita acceso a Maven Central para plugins y Gson. No requiere la caché privada del desarrollador ni rutas de su Mac. El README contiene la alternativa con Maven y JDK 25 seleccionados.
 
 ### Lo que todavía requiere cierre
-Guardar/recargar/sobrescribir y rechazar JSON corrupto en ventana real, cerrar la ejecución actual, Debug y abrir una copia limpia en el IDE permanecen en el checklist. Repositorio privado: https://github.com/elioaca01/proyecto-sistemasop. Historial y13ramas publicados por SSH; la versión completa está en codex/final-delivery. Issues/PR, integración hacia develop/main, acceso de correctores y envío académico siguen pendientes.
+Guardar/recargar/sobrescribir y rechazar JSON corrupto en ventana real, cerrar la ejecución actual, Debug y abrir una copia limpia en el IDE permanecen en el checklist. Repositorio privado: https://github.com/elioaca01/proyecto-sistemasop. Historial y 12 ramas publicados por SSH; la versión completa está en release/final-delivery. La auditoría del 29 de octubre confirmó 0 Issues y 0 Pull Requests; integrar mediante PR comentados hacia develop/main, comprobar acceso de correctores y efectuar el envío académico siguen pendientes.
 
 ### Fuentes y artefactos
 Enunciado Proyecto 1, Sistemas Operativos 2627-1, suministrado por el estudiante; diseño aprobado del 18 de octubre; código Java en src/main/java; ejecutor AllTests y FinalAcceptanceTest; mediciones en docs/verification/data/final-comparisons.json; evidencia de módulos en docs/verification; guías en docs/defensa. El informe y el resumen se regeneran desde docs/informe/build_report.py.

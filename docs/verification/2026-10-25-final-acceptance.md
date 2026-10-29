@@ -42,4 +42,4 @@ El informe tiene10páginas; el resumen de defensa, exactamente2. Ambos se genera
 
 ## Pendientes para cerrar aceptación y entrega
 
-Usar el [checklist](../entrega/checklist.md). No se presenta la compilación terminal de un archive como ejecución limpia en NetBeans. El 26 de octubre se publicó por SSH el historial y las 13 ramas en [elioaca01/proyecto-sistemasop](https://github.com/elioaca01/proyecto-sistemasop); codex/final-delivery contiene la versión completa. Issues/PR, integración y envío académico siguen pendientes; no se simulan. La integración GitHub requiere acceso a este repositorio privado.
+Usar el [checklist](../entrega/checklist.md). No se presenta la compilación terminal de un archive como ejecución limpia en NetBeans. El 26 de octubre se publicó por SSH el historial y las 12 ramas en [elioaca01/proyecto-sistemasop](https://github.com/elioaca01/proyecto-sistemasop); release/final-delivery contiene la versión completa. Issues/PR, integración y envío académico siguen pendientes; no se simulan. La integración GitHub requiere acceso a este repositorio privado.

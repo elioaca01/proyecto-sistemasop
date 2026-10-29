@@ -10,7 +10,7 @@
 
 **Spec:** [diseño aprobado](../specs/2026-10-18-avilaos-design.md), secciones 2 y 8; [hoja de ruta](2026-10-19-avilaos-roadmap.md), módulo 7. Base `ce87c94`, módulo 6 verificado con 24775 comprobaciones. Las decisiones de escenarios frente a checkpoints y Gson streaming ya pertenecen al diseño aprobado; este plan concreta su implementación.
 
-**Execution:** método nativo conservado, misma carpeta compartida con NetBeans; al implementar crear rama `codex/scenario-json`. Una revisión independiente del rango completo al final, sin implementadores ni revisores por tarea. Aprobado el 23 de octubre: «Apruebo, implementa». Implementación y revisión automatizada terminadas; aceptación interactiva pendiente del desbloqueo del Mac.
+**Execution:** método nativo conservado, misma carpeta compartida con NetBeans; al implementar crear rama `feat/scenario-json`. Una revisión independiente del rango completo al final, sin implementadores ni revisores por tarea. Aprobado el 23 de octubre: «Apruebo, implementa». Implementación y revisión automatizada terminadas; aceptación interactiva pendiente del desbloqueo del Mac.
 
 ## Global Constraints
 

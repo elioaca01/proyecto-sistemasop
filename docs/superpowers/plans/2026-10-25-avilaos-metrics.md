@@ -8,7 +8,7 @@
 
 **Tech Stack:** Java 25, Maven, Swing/Java2D y estructuras propias; sin otra dependencia.
 
-**Spec:** [diseño aprobado](../specs/2026-10-18-avilaos-design.md), §9; enunciado RF8 y gráfico. La continuación «sigue con las tareas siguientes» / «sigue» mantiene ejecución nativa en la misma carpeta del IDE. Rama `codex/performance-metrics`, base `09ff0ae`. Módulo 7 automatizado con 25234 comprobaciones; su aceptación interactiva permanece pendiente por bloqueo/timeout de la herramienta, sin impedir este trabajo independiente.
+**Spec:** [diseño aprobado](../specs/2026-10-18-avilaos-design.md), §9; enunciado RF8 y gráfico. La continuación «sigue con las tareas siguientes» / «sigue» mantiene ejecución nativa en la misma carpeta del IDE. Rama `feat/performance-metrics`, base `09ff0ae`. Módulo 7 automatizado con 25234 comprobaciones; su aceptación interactiva permanece pendiente por bloqueo/timeout de la herramienta, sin impedir este trabajo independiente.
 
 ## Global Constraints
 

@@ -29,10 +29,15 @@
 - [x] El estudiante creó el repositorio privado con el nombre definitivo proyecto-sistemasop y proporcionó su URL SSH.
 - [x] GitHub conectado a elioaca01 y creación privada autorizada por el estudiante.
 - [x] Repositorio real: https://github.com/elioaca01/proyecto-sistemasop. Acceso SSH comprobado; consulta sin autenticación HTTP404, coherente con repositorio privado.
-- [x] Subir historial real y las 13 ramas, incluida codex/final-delivery con la versión completa. Sin reescribir historia ni fusionar ramas.
-- [ ] Habilitar este repositorio en la integración GitHub: actualmente responde404 aunque el acceso SSH funciona. Registrar Issues/PR descriptivos e integrar ramas con aprobación, sin inventar integraciones pasadas.
+- [x] Subir historial real y las 12 ramas, incluida release/final-delivery con la versión completa. Sin reescribir historia ni fusionar ramas.
+- [x] Renombrar las tres ramas con prefijo rechazado a feat/scenario-json, feat/performance-metrics y release/final-delivery, localmente y en GitHub; conservar commits.
+- [ ] Registrar tareas reales y errores pendientes mediante Issues: el 29 de octubre se verificaron 0 abiertos y 0 cerrados en GitHub.
+- [ ] Integrar mediante Pull Requests comentados hacia develop y luego main: el 29 de octubre se verificaron 0 abiertos y 0 cerrados. No reconstruir una historia de PR ficticia.
+- [ ] Habilitar acceso del conector GitHub al repositorio privado si se usará la API; el acceso autenticado por navegador y SSH funciona.
 - [ ] Comprobar acceso de los correctores al repositorio y que README explica la ejecución.
 - [ ] Enviar PDF y enlace por el canal académico y agregar al spreadsheet antes del viernes30 a las07:00 de Venezuela. Lo realiza el estudiante.
 - [ ] Practicar defensa individual con el resumen y abrir las guías por módulo ante dudas.
 
 El estudiante autorizó preparar el repositorio privado indicado. El envío académico lo realiza el estudiante; el informe y el ZIP local no equivalen a ese envío.
+
+Auditoría del 29 de octubre: [estándares, GUI e informe](../verification/2026-10-29-development-standards.md). Recuento corregido: 12 ramas reales; origin/HEAD es una referencia simbólica, no una rama adicional.

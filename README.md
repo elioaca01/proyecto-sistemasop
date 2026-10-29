@@ -2,10 +2,10 @@
 
 Proyecto 1 de Sistemas Operativos: simulador de sistema operativo distribuido.
 
-Repositorio privado: [elioaca01/proyecto-sistemasop](https://github.com/elioaca01/proyecto-sistemasop). La versión completa está en **codex/final-delivery**; las ramas originales de cada módulo conservan el historial. La integración por PR hacia develop/main sigue pendiente. Para seleccionar explícitamente la versión completa:
+Repositorio privado: [elioaca01/proyecto-sistemasop](https://github.com/elioaca01/proyecto-sistemasop). La versión completa está en **release/final-delivery**; las ramas originales de cada módulo conservan el historial. La integración por PR hacia develop/main sigue pendiente. Para seleccionar explícitamente la versión completa:
 
 ```sh
-git clone --branch codex/final-delivery git@github.com:elioaca01/proyecto-sistemasop.git
+git clone --branch release/final-delivery git@github.com:elioaca01/proyecto-sistemasop.git
 ```
 
 Requiere JDK 25 y Apache NetBeans. El desarrollo sigue el [diseño aprobado](docs/superpowers/specs/2026-10-18-avilaos-design.md) y la [hoja de ruta](docs/superpowers/plans/2026-10-19-avilaos-roadmap.md).
@@ -81,3 +81,5 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 - [Checklist manual y envío](docs/entrega/checklist.md): pruebas de archivos, Debug/copia limpia en NetBeans, acceso GitHub y entrega académica que aún requieren confirmación.
 
 Las conclusiones comparativas se limitan a las cargas y horizontes publicados en `docs/verification/data/final-comparisons.json`. La generación del informe usa herramientas Python separadas; no son necesarias para compilar ni ejecutar el simulador.
+
+Auditoría del 29 de octubre: [estándares de desarrollo, interfaz e informe](docs/verification/2026-10-29-development-standards.md). GitHub contiene 12 ramas con nombres funcionales; falta registrar Issues e integrar mediante Pull Requests comentados.

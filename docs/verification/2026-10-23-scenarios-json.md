@@ -4,7 +4,7 @@ Estado: implementación y aceptación automatizada terminadas. Aceptación inter
 
 ## Entorno y construcción
 
-macOS arm64, Temurin 25.0.4.1 y Maven 3.9.16 incluido en NetBeans. Rama `codex/scenario-json`, base `235abc1`, misma carpeta del IDE. Única dependencia de aplicación incorporada: `com.google.code.gson:gson:2.14.0`, para JsonReader/JsonWriter en modo STRICT. No se usa DOM/reflexión ni colecciones Gson para almacenar los objetos del simulador.
+macOS arm64, Temurin 25.0.4.1 y Maven 3.9.16 incluido en NetBeans. Rama `feat/scenario-json`, base `235abc1`, misma carpeta del IDE. Única dependencia de aplicación incorporada: `com.google.code.gson:gson:2.14.0`, para JsonReader/JsonWriter en modo STRICT. No se usa DOM/reflexión ni colecciones Gson para almacenar los objetos del simulador.
 
 ```sh
 /usr/bin/env JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home \
