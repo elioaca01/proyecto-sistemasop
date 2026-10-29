@@ -2,7 +2,7 @@
 
 Proyecto 1 de Sistemas Operativos: simulador de sistema operativo distribuido.
 
-Repositorio privado: [elioaca01/proyecto-sistemasop](https://github.com/elioaca01/proyecto-sistemasop). La versión completa está en **release/final-delivery**; las ramas originales de cada módulo conservan el historial. La integración por PR hacia develop/main sigue pendiente. Para seleccionar explícitamente la versión completa:
+Repositorio privado: [elioaca01/proyecto-sistemasop](https://github.com/elioaca01/proyecto-sistemasop). La versión completa está en **release/final-delivery**; las ramas originales de cada módulo conservan el historial. El [PR #3](https://github.com/elioaca01/proyecto-sistemasop/pull/3) propone integrarla en develop y está en borrador; la fusión y el posterior PR hacia main siguen pendientes. Para seleccionar explícitamente la versión completa:
 
 ```sh
 git clone --branch release/final-delivery git@github.com:elioaca01/proyecto-sistemasop.git

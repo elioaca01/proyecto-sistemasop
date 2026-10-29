@@ -31,9 +31,10 @@
 - [x] Repositorio real: https://github.com/elioaca01/proyecto-sistemasop. Acceso SSH comprobado; consulta sin autenticación HTTP404, coherente con repositorio privado.
 - [x] Subir historial real y las 12 ramas, incluida release/final-delivery con la versión completa. Sin reescribir historia ni fusionar ramas.
 - [x] Renombrar las tres ramas con prefijo rechazado a feat/scenario-json, feat/performance-metrics y release/final-delivery, localmente y en GitHub; conservar commits.
-- [ ] Registrar tareas reales y errores pendientes mediante Issues: el 29 de octubre se verificaron 0 abiertos y 0 cerrados en GitHub.
-- [ ] Integrar mediante Pull Requests comentados hacia develop y luego main: el 29 de octubre se verificaron 0 abiertos y 0 cerrados. No reconstruir una historia de PR ficticia.
-- [ ] Habilitar acceso del conector GitHub al repositorio privado si se usará la API; el acceso autenticado por navegador y SSH funciona.
+- [x] Registrar pendientes reales en [Issue #1: aceptación en NetBeans](https://github.com/elioaca01/proyecto-sistemasop/issues/1) e [Issue #2: acceso de correctores y envío](https://github.com/elioaca01/proyecto-sistemasop/issues/2). Ambos abiertos; no se inventaron errores ni Issues históricos.
+- [x] Crear [PR #3](https://github.com/elioaca01/proyecto-sistemasop/pull/3), release/final-delivery → develop, en borrador, con descripción y comentario de validación local: 25550 comprobaciones y BUILD SUCCESS.
+- [ ] Revisar y fusionar el PR #3 hacia develop; después crear y revisar el PR de develop hacia main. No reconstruir una historia de PR ficticia ni marcar la integración como realizada antes de fusionar.
+- [x] Instalar ChatGPT Codex Connector en elioaca01 con acceso al repositorio seleccionado: get_repo ya responde correctamente y confirma visibilidad privada. Los Issues y el PR se crearon mediante la API.
 - [ ] Comprobar acceso de los correctores al repositorio y que README explica la ejecución.
 - [ ] Enviar PDF y enlace por el canal académico y agregar al spreadsheet antes del viernes30 a las07:00 de Venezuela. Lo realiza el estudiante.
 - [ ] Practicar defensa individual con el resumen y abrir las guías por módulo ante dudas.

@@ -81,3 +81,11 @@ Comando ejecutado el 29 de octubre con JDK 25 y Maven de NetBeans:
 Resultado observado: **OK: 25550 comprobaciones**, JAR generado, **BUILD SUCCESS**, código 0, 6.734 s. No se modificó código Java en esta auditoría. Son assertions de AllTests, no 25550 casos independientes; Surefire=0 no sustituye ese bloque. La construcción terminal no se presenta como Debug o aceptación de una copia limpia en NetBeans.
 
 Prioridad antes de la entrega: Issues y PR comentados reales; comprobaciones manuales restantes en NetBeans; acceso de correctores al repositorio privado; PDF y enlace por el canal académico/spreadsheet. La fecha acordada con el estudiante es viernes 30 de octubre antes de las 07:00 de Venezuela. El envío y la defensa corresponden al estudiante.
+
+## Actualización tras instalar el conector en la cuenta correcta
+
+El estudiante completó la instalación de ChatGPT Codex Connector en elioaca01, limitada al repositorio del proyecto. Se comprobó mediante get_repo el acceso y la visibilidad privada. Se registraron tareas actuales en [Issue #1](https://github.com/elioaca01/proyecto-sistemasop/issues/1), aceptación final en NetBeans, y [Issue #2](https://github.com/elioaca01/proyecto-sistemasop/issues/2), acceso de correctores/envío académico. Ambos permanecen abiertos.
+
+Se creó el [PR #3](https://github.com/elioaca01/proyecto-sistemasop/pull/3), release/final-delivery → develop, en borrador, con descripción del resultado, alcance y límites, y comentario de verificación. El recuento cero de la auditoría inicial corresponde al estado anterior; no se alteró retrospectivamente. Las fusiones hacia develop/main siguen pendientes de revisión y aprobación.
+
+Verificación local adicional de 77ff7e2: clean package con JDK25, **25550 comprobaciones**, **BUILD SUCCESS**, código0, 6.447s. No se modificó Java ni se atribuyó este resultado a CI de GitHub. El informe conserva diez páginas tras actualizar el estado de los Issues/PR; el resumen se conserva sin cambios.
