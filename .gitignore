@@ -1,0 +1,9 @@
+/target/
+/output/entrega/
+/.maven-cache/
+/nbproject/private/
+/nb-configuration.xml
+/.superpowers/
+.DS_Store
+*.log
+*.tmp

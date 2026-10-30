@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1040" viewBox="0 0 1100 1040"><rect width="100%" height="100%" fill="white"/>
+<polyline points="500,67 500,120" fill="none" stroke="#476477" stroke-width="1.8"/>
+<polygon points="500,120 504.0,110.0 496.0,110.0" fill="#476477"/>
+<polyline points="500,190 500,300" fill="none" stroke="#476477" stroke-width="1.8"/>
+<polygon points="500,300 504.0,290.0 496.0,290.0" fill="#476477"/>
+<polyline points="500,370 500,500" fill="none" stroke="#476477" stroke-width="1.8"/>
+<polygon points="500,500 504.0,490.0 496.0,490.0" fill="#476477"/>
+<polyline points="395,540 300,540 300,335 395,335" fill="none" stroke="#476477" stroke-width="1.8"/>
+<polygon points="395,335 385.0,331.0 385.0,339.0" fill="#476477"/>
+<polyline points="605,540 760,540" fill="none" stroke="#476477" stroke-width="1.8"/>
+<polygon points="760,540 750.0,536.0 750.0,544.0" fill="#476477"/>
+<polyline points="605,335 865,335 865,500" fill="none" stroke="#476477" stroke-width="1.8"/>
+<polygon points="865,500 869.0,490.0 861.0,490.0" fill="#476477"/>
+<polyline points="940,500 940,260 580,260 580,300" fill="none" stroke="#476477" stroke-width="1.8"/>
+<polygon points="580,300 584.0,290.0 576.0,290.0" fill="#476477"/>
+<polyline points="500,595 500,820" fill="none" stroke="#476477" stroke-width="1.8"/>
+<polygon points="500,820 504.0,810.0 496.0,810.0" fill="#476477"/>
+<polyline points="865,595 865,735 630,850" fill="none" stroke="#476477" stroke-width="1.8"/>
+<polygon points="630,850 640.7403786764011,849.1973382483828 637.2239557645545,842.0116044720006" fill="#476477"/>
+<polyline points="605,155 1070,155 1070,870 630,870" fill="none" stroke="#A34529" stroke-width="1.8" stroke-dasharray="8 6"/>
+<polygon points="630,870 640.0,874.0 640.0,866.0" fill="#A34529"/>
+<polyline points="605,350 1020,350 1020,890 630,890" fill="none" stroke="#A34529" stroke-width="1.8" stroke-dasharray="8 6"/>
+<polygon points="630,890 640.0,894.0 640.0,886.0" fill="#A34529"/>
+<polyline points="395,575 260,630 260,875 370,875" fill="none" stroke="#A34529" stroke-width="1.8" stroke-dasharray="8 6"/>
+<polygon points="370,875 360.0,871.0 360.0,879.0" fill="#A34529"/>
+<polyline points="970,575 995,620 995,910 630,910" fill="none" stroke="#A34529" stroke-width="1.8" stroke-dasharray="8 6"/>
+<polygon points="630,910 640.0,914.0 640.0,906.0" fill="#A34529"/>
+<polyline points="500,930 500,970" fill="none" stroke="#476477" stroke-width="1.8"/>
+<polygon points="500,970 504.0,960.0 496.0,960.0" fill="#476477"/>
+<rect x="395" y="120" width="210" height="70" rx="14" fill="#F4F7F9" stroke="#183648" stroke-width="1.6"/>
+<text x="500.0" y="150.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">NEW</text>
+<text x="500.0" y="171.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">Sin reserva de RAM</text>
+<rect x="395" y="300" width="210" height="70" rx="14" fill="#F4F7F9" stroke="#183648" stroke-width="1.6"/>
+<text x="500.0" y="330.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">READY</text>
+<text x="500.0" y="351.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">RAM asignada</text>
+<rect x="395" y="500" width="210" height="95" rx="14" fill="#F4F7F9" stroke="#183648" stroke-width="1.6"/>
+<text x="500.0" y="532.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">RUNNING</text>
+<text x="500.0" y="553.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">Una instrucción</text>
+<text x="500.0" y="574.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">por ciclo CPU</text>
+<rect x="760" y="500" width="210" height="95" rx="14" fill="#F4F7F9" stroke="#183648" stroke-width="1.6"/>
+<text x="865.0" y="532.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">BLOCKED</text>
+<text x="865.0" y="553.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">RAM y contexto</text>
+<text x="865.0" y="574.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">conservados</text>
+<rect x="370" y="820" width="260" height="110" rx="14" fill="#F4F7F9" stroke="#183648" stroke-width="1.6"/>
+<text x="500.0" y="849.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">TERMINATED</text>
+<text x="500.0" y="870.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">Razón y ciclo conservados</text>
+<text x="500.0" y="891.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">Recursos liberados</text>
+<text x="500.0" y="912.5" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="18" fill="#183648">por el núcleo</text>
+<rect x="586.5" y="76" width="127.0" height="22" fill="white"/>
+<text x="650" y="93" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">creación / llegada</text>
+<rect x="332.75" y="223" width="114.5" height="43" fill="white"/>
+<text x="390" y="240" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">admisión</text>
+<text x="390" y="261" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">RAM disponible</text>
+<rect x="537.75" y="418" width="184.5" height="43" fill="white"/>
+<text x="630" y="435" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">despacho</text>
+<text x="630" y="456" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">registra primera respuesta</text>
+<rect x="146.5" y="408" width="87.0" height="22" fill="white"/>
+<text x="190" y="425" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">apropiación</text>
+<rect x="624.75" y="489" width="114.5" height="43" fill="white"/>
+<text x="682" y="506" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">IO / red /</text>
+<text x="682" y="527" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">wait bloqueante</text>
+<rect x="639.75" y="363" width="190.5" height="43" fill="white"/>
+<text x="735" y="380" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">red previa al despacho</text>
+<text x="735" y="401" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">sin instrucción ni respuesta</text>
+<rect x="691.5" y="200" width="197.0" height="43" fill="white"/>
+<text x="790" y="217" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">IO, red o permiso disponible</text>
+<text x="790" y="238" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">con instrucciones restantes</text>
+<rect x="327.5" y="663" width="125.0" height="43" fill="white"/>
+<text x="390" y="680" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">última instrucción</text>
+<text x="390" y="701" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">sin IO pendiente</text>
+<rect x="653.75" y="633" width="172.5" height="43" fill="white"/>
+<text x="740" y="650" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">IO completa y</text>
+<text x="740" y="671" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="15" fill="#183648">no quedan instrucciones</text>
+<text x="550" y="31" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="24" fill="#183648">UML de estados del proceso</text>
+<circle cx="500" cy="60" r="7" fill="#183648"/>
+<circle cx="500" cy="981" r="11" fill="white" stroke="#183648"/><circle cx="500" cy="981" r="7" fill="#183648"/>
+<rect x="45" y="95" width="295" height="110" rx="8" fill="#FFF4EC" stroke="#A34529"/>
+<text x="192" y="124" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="16" fill="#183648">Flechas rojas discontinuas:</text>
+<text x="192" y="145" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="16" fill="#183648">deadline al cierre del ciclo</text>
+<text x="192" y="166" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="16" fill="#183648">desde NEW, READY,</text>
+<text x="192" y="187" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="16" fill="#183648">RUNNING o BLOCKED.</text>
+<text x="550" y="1025" text-anchor="middle" font-family="Arial,DejaVu Sans,sans-serif" font-size="14" fill="#183648">El bloqueo conserva PC/MAR y RAM; solo una instrucción ejecutada avanza PC/MAR.</text>
+</svg>

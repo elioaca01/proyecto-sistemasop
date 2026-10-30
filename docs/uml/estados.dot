@@ -1,0 +1,24 @@
+// Generado por render_states.py: topología UML; SVG/PNG usan layout fijo.
+digraph ProcessStates {
+  rankdir=TB; node [shape=box,style=rounded];
+  Initial [shape=point]; Final [shape=doublecircle,label=""];
+  NEW [label="NEW\nSin reserva de RAM"];
+  READY [label="READY\nRAM asignada"];
+  RUNNING [label="RUNNING\nUna instrucción\npor ciclo CPU"];
+  BLOCKED [label="BLOCKED\nRAM y contexto\nconservados"];
+  TERMINATED [label="TERMINATED\nRazón y ciclo conservados\nRecursos liberados\npor el núcleo"];
+  Initial -> NEW [label="creación / llegada"];
+  NEW -> READY [label="admisión\nRAM disponible"];
+  READY -> RUNNING [label="despacho\nregistra primera respuesta"];
+  RUNNING -> READY [label="apropiación"];
+  RUNNING -> BLOCKED [label="IO / red /\nwait bloqueante"];
+  READY -> BLOCKED [label="red previa al despacho\nsin instrucción ni respuesta"];
+  BLOCKED -> READY [label="IO, red o permiso disponible\ncon instrucciones restantes"];
+  RUNNING -> TERMINATED [label="última instrucción\nsin IO pendiente"];
+  BLOCKED -> TERMINATED [label="IO completa y\nno quedan instrucciones"];
+  NEW -> TERMINATED [label="deadline",style=dashed,color="#A34529"];
+  READY -> TERMINATED [label="deadline",style=dashed,color="#A34529"];
+  RUNNING -> TERMINATED [label="deadline",style=dashed,color="#A34529"];
+  BLOCKED -> TERMINATED [label="deadline",style=dashed,color="#A34529"];
+  TERMINATED -> Final [label=""];
+}
