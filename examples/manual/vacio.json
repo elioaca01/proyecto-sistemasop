@@ -1,0 +1,21 @@
+{
+  "formatVersion": 1,
+  "cycleMillis": 500,
+  "networkLatency": 2,
+  "computers": [
+    {
+      "id": 1,
+      "ramCapacity": 64,
+      "policy": "FCFS",
+      "quantum": 2
+    },
+    {
+      "id": 2,
+      "ramCapacity": 64,
+      "policy": "FCFS",
+      "quantum": 2
+    }
+  ],
+  "buffers": [],
+  "processes": []
+}

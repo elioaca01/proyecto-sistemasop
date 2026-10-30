@@ -1,5 +1,7 @@
 # Preparar y comprobar la entrega
 
+Para confirmar el funcionamiento en la ventana real, sigue los [16 casos de prueba manuales](casos-prueba-manuales.md). Incluyen ocho escenarios adicionales en examples/manual/ y resultados concretos para comparar.
+
 El ZIP contiene exclusivamente los archivos guardados en el commit actual: fuentes, pom.xml, ejemplos, documentación, UML y ambos PDF. Excluye cachés, target y el historial .git. El repositorio GitHub conserva ese historial aparte.
 
 Desde una copia del repositorio con Git y Python3, guardar primero los cambios y ejecutar:

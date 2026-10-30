@@ -75,6 +75,8 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 
 ## Informe y entrega
 
+- [Casos para confirmar el funcionamiento en NetBeans](docs/entrega/casos-prueba-manuales.md): 16 pruebas con pasos, ocho escenarios adicionales y resultados esperados.
+
 - [Informe PDF](output/pdf/avilaos-informe.pdf): arquitectura, UML de clases/estados, fórmulas y comparaciones reproducibles de políticas y red.
 - [Fuentes y regeneración del informe](docs/informe/README.md); [fuentes UML](docs/uml/README.md).
 - [Preparar el ZIP y comprobar sus hashes](docs/entrega/README.md).

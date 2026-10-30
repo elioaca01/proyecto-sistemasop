@@ -1,0 +1,50 @@
+{
+  "formatVersion": 1,
+  "cycleMillis": 500,
+  "networkLatency": 2,
+  "computers": [
+    {
+      "id": 1,
+      "ramCapacity": 8,
+      "policy": "FCFS",
+      "quantum": 2
+    },
+    {
+      "id": 2,
+      "ramCapacity": 64,
+      "policy": "FCFS",
+      "quantum": 2
+    }
+  ],
+  "buffers": [],
+  "processes": [
+    {
+      "name": "A RAM",
+      "computerId": 1,
+      "type": "CPU_BOUND",
+      "instructionCount": 3,
+      "memoryRequired": 8,
+      "priority": 0,
+      "deadlineCycles": 100,
+      "cpuBurst": 0,
+      "ioCycles": 0,
+      "bufferId": 0,
+      "operationInterval": 0,
+      "targetItems": 0
+    },
+    {
+      "name": "B RAM",
+      "computerId": 1,
+      "type": "CPU_BOUND",
+      "instructionCount": 2,
+      "memoryRequired": 8,
+      "priority": 0,
+      "deadlineCycles": 100,
+      "cpuBurst": 0,
+      "ioCycles": 0,
+      "bufferId": 0,
+      "operationInterval": 0,
+      "targetItems": 0
+    }
+  ]
+}

@@ -11,6 +11,8 @@
 
 ## Prueba manual final en NetBeans
 
+Procedimiento con datos y resultados esperados: [16 casos manuales](casos-prueba-manuales.md). Los ocho ejemplos de examples/manual/ ya se validaron/ejecutaron mediante API; eso no marca las casillas de la ventana real.
+
 - [ ] Guardar escenario inicial con nombre sin extensión; comprobar .json y confirmación de sobrescritura. Usar un archivo de prueba.
 - [ ] Cargar ese guardado: pausa y ciclo0; repetir local12.
 - [ ] En una copia del JSON, borrar el final; cargarla estando pausado. Debe conservar ciclo/escenario y permitir otro Paso.
