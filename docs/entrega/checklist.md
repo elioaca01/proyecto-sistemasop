@@ -35,7 +35,8 @@ Procedimiento con datos y resultados esperados: [16 casos manuales](casos-prueba
 - [x] Renombrar las tres ramas con prefijo rechazado a feat/scenario-json, feat/performance-metrics y release/final-delivery, localmente y en GitHub; conservar commits.
 - [x] Registrar pendientes reales en [Issue #1: aceptación en NetBeans](https://github.com/elioaca01/proyecto-sistemasop/issues/1) e [Issue #2: acceso de correctores y envío](https://github.com/elioaca01/proyecto-sistemasop/issues/2). Ambos abiertos; no se inventaron errores ni Issues históricos.
 - [x] Integrar [PR #3](https://github.com/elioaca01/proyecto-sistemasop/pull/3), release/final-delivery → develop, con descripción/comentarios de validación y commit de fusión ea43398.
-- [x] Preparar [PR #4](https://github.com/elioaca01/proyecto-sistemasop/pull/4), develop → main, con descripción, comentario de validación y autorización del estudiante para completar la integración. Estado y commit de fusión: consultar el PR en GitHub; main es la rama de entrega. No se reconstruye una historia de PR ficticia.
+- [x] Integrar [PR #4](https://github.com/elioaca01/proyecto-sistemasop/pull/4), develop → main, con descripción/comentarios de validación y autorización del estudiante; commit de fusión b1114f3. Se conservó el historial real.
+- [x] Main es la rama predeterminada. Su archive b1114f3, sin target previo y con caché de dependencias externa, pasó clean package:25550 comprobaciones, BUILD SUCCESS y código0. Esto no marca la prueba de copia limpia en el IDE.
 - [x] Instalar ChatGPT Codex Connector en elioaca01 con acceso al repositorio seleccionado: get_repo ya responde correctamente y confirma visibilidad privada. Los Issues y el PR se crearon mediante la API.
 - [ ] Comprobar acceso de los correctores al repositorio y que README explica la ejecución.
 - [ ] Enviar PDF y enlace por el canal académico y agregar al spreadsheet antes del viernes30 a las07:00 de Venezuela. Lo realiza el estudiante.

@@ -5,7 +5,7 @@ El estudiante autorizó completar develop/main y preparar los casos de prueba co
 ## Integración
 
 - [PR #3](https://github.com/elioaca01/proyecto-sistemasop/pull/3), release/final-delivery → develop, fusionado como **ea43398615c9ad6f408b7838cdb006a26d71b722**.
-- [PR #4](https://github.com/elioaca01/proyecto-sistemasop/pull/4), develop → main, preparado con descripción, comentarios de validación y autorización del estudiante. El estado/commit final y la verificación posterior a la fusión se registran en la conversación del PR.
+- [PR #4](https://github.com/elioaca01/proyecto-sistemasop/pull/4), develop → main, fusionado como **b1114f3b5516664294c9ad867d8c4fc681cbd014**, con descripción y comentarios de validación. Ambos PR fueron autorizados por el estudiante.
 - Main es la rama destinada a la entrega; los Issues #1 y #2 siguen abiertos porque integrar código no equivale a aceptación manual ni envío académico.
 
 ## Guía y escenarios
@@ -23,3 +23,9 @@ Los ocho archivos se cargaron con JsonConfigurationStore y se ejecutaron con Sim
 La sonda fue temporal y no añadió dependencias, colecciones Java ni código al simulador. La suite existente conserva25550 comprobaciones. Clean package previo a integrar, JDK25/Maven: **25550**, **BUILD SUCCESS**, código0,6.431s. Se comprobó el diff y el informe actualizado de10páginas; las páginas sin cambios se compararon por píxeles con la versión anterior. El resumen de defensa de2páginas no se modificó.
 
 Los casos de ventana real permanecen sin marcar hasta que el estudiante los ejecute y registre el resultado. Una prueba por API o una compilación de terminal no se presenta como aceptación en NetBeans.
+
+## Comprobación posterior a fusionar main
+
+Se extrajo git archive de **b1114f3** a un directorio temporal nuevo: target no existía. JDK25 y Maven de NetBeans ejecutaron clean package con caché de dependencias externa explícita. Resultado: **25550 comprobaciones**, JAR generado, **BUILD SUCCESS**, código0,6.568s. No se dependió de target ni de archivos ignorados del workspace; esto tampoco afirma una descarga de Maven desde cero.
+
+La configuración de GitHub confirmó visibilidad privada y rama predeterminada **main**. Se conservaron las ramas de módulos. El registro de esta comprobación y la eliminación de la nota obsoleta del README son cambios documentales posteriores: no modifican Java, pruebas, pom.xml ni los escenarios verificados. El paquete identifica su revisión exacta en manifest.json.
