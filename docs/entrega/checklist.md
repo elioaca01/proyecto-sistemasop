@@ -31,11 +31,11 @@ Procedimiento con datos y resultados esperados: [16 casos manuales](casos-prueba
 - [x] El estudiante creó el repositorio privado con el nombre definitivo proyecto-sistemasop y proporcionó su URL SSH.
 - [x] GitHub conectado a elioaca01 y creación privada autorizada por el estudiante.
 - [x] Repositorio real: https://github.com/elioaca01/proyecto-sistemasop. Acceso SSH comprobado; consulta sin autenticación HTTP404, coherente con repositorio privado.
-- [x] Subir historial real y las 12 ramas, incluida release/final-delivery con la versión completa. Sin reescribir historia ni fusionar ramas.
+- [x] Subir historial real y las 12 ramas. Las integraciones posteriores se realizan mediante PR, conservando commits y ramas de origen.
 - [x] Renombrar las tres ramas con prefijo rechazado a feat/scenario-json, feat/performance-metrics y release/final-delivery, localmente y en GitHub; conservar commits.
 - [x] Registrar pendientes reales en [Issue #1: aceptación en NetBeans](https://github.com/elioaca01/proyecto-sistemasop/issues/1) e [Issue #2: acceso de correctores y envío](https://github.com/elioaca01/proyecto-sistemasop/issues/2). Ambos abiertos; no se inventaron errores ni Issues históricos.
-- [x] Crear [PR #3](https://github.com/elioaca01/proyecto-sistemasop/pull/3), release/final-delivery → develop, en borrador, con descripción y comentario de validación local: 25550 comprobaciones y BUILD SUCCESS.
-- [ ] Revisar y fusionar el PR #3 hacia develop; después crear y revisar el PR de develop hacia main. No reconstruir una historia de PR ficticia ni marcar la integración como realizada antes de fusionar.
+- [x] Integrar [PR #3](https://github.com/elioaca01/proyecto-sistemasop/pull/3), release/final-delivery → develop, con descripción/comentarios de validación y commit de fusión ea43398.
+- [x] Preparar [PR #4](https://github.com/elioaca01/proyecto-sistemasop/pull/4), develop → main, con descripción, comentario de validación y autorización del estudiante para completar la integración. Estado y commit de fusión: consultar el PR en GitHub; main es la rama de entrega. No se reconstruye una historia de PR ficticia.
 - [x] Instalar ChatGPT Codex Connector en elioaca01 con acceso al repositorio seleccionado: get_repo ya responde correctamente y confirma visibilidad privada. Los Issues y el PR se crearon mediante la API.
 - [ ] Comprobar acceso de los correctores al repositorio y que README explica la ejecución.
 - [ ] Enviar PDF y enlace por el canal académico y agregar al spreadsheet antes del viernes30 a las07:00 de Venezuela. Lo realiza el estudiante.

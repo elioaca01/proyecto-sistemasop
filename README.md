@@ -2,10 +2,10 @@
 
 Proyecto 1 de Sistemas Operativos: simulador de sistema operativo distribuido.
 
-Repositorio privado: [elioaca01/proyecto-sistemasop](https://github.com/elioaca01/proyecto-sistemasop). La versión completa está en **release/final-delivery**; las ramas originales de cada módulo conservan el historial. El [PR #3](https://github.com/elioaca01/proyecto-sistemasop/pull/3) propone integrarla en develop y está en borrador; la fusión y el posterior PR hacia main siguen pendientes. Para seleccionar explícitamente la versión completa:
+Repositorio privado: [elioaca01/proyecto-sistemasop](https://github.com/elioaca01/proyecto-sistemasop). La rama de entrega es **main**. La integración conserva el historial y está documentada en el [PR #3 hacia develop](https://github.com/elioaca01/proyecto-sistemasop/pull/3) y el [PR #4 hacia main](https://github.com/elioaca01/proyecto-sistemasop/pull/4); sus estados y commits se consultan en GitHub. Las ramas originales de cada módulo se conservan. Para seleccionar explícitamente la entrega:
 
 ```sh
-git clone --branch release/final-delivery git@github.com:elioaca01/proyecto-sistemasop.git
+git clone --branch main git@github.com:elioaca01/proyecto-sistemasop.git
 ```
 
 Requiere JDK 25 y Apache NetBeans. El desarrollo sigue el [diseño aprobado](docs/superpowers/specs/2026-10-18-avilaos-design.md) y la [hoja de ruta](docs/superpowers/plans/2026-10-19-avilaos-roadmap.md).

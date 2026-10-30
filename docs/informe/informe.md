@@ -2,7 +2,7 @@
 # ÁvilaOS
 ## Proyecto 1 - Sistemas Operativos
 **Autor:** Elio Colmenares. Desarrollo individual.
-**Fecha de esta versión:** 29 de octubre de 2026.
+**Fecha de esta versión:** 30 de octubre de 2026.
 **Entorno:** Java 25, Apache NetBeans, Maven y Swing. Gson 2.14.0 se limita a JSON streaming; el gráfico usa Java2D.
 
 ### Propósito
@@ -136,7 +136,7 @@ El estudiante aportó build de 25454 comprobaciones y capturas de la ventana rea
 - La primera construcción necesita acceso a Maven Central para plugins y Gson. No requiere la caché privada del desarrollador ni rutas de su Mac. El README contiene la alternativa con Maven y JDK 25 seleccionados.
 
 ### Lo que todavía requiere cierre
-Guardar/recargar/sobrescribir y rechazar JSON corrupto en ventana real, cerrar la ejecución actual, Debug y abrir una copia limpia en el IDE permanecen en el checklist. Repositorio privado: https://github.com/elioaca01/proyecto-sistemasop. Historial y 12 ramas publicados; la versión completa está en release/final-delivery. El 29 de octubre se registraron los Issues #1 (aceptación) y #2 (acceso/envío), y el PR #3 hacia develop con descripción y comentario de validación. El PR está en borrador: fusionar hacia develop/main, comprobar acceso de correctores y efectuar el envío académico siguen pendientes.
+Las pruebas manuales, Debug y la copia limpia en NetBeans siguen en el checklist y en la guía de16 casos, con ocho escenarios de apoyo. Repositorio privado: https://github.com/elioaca01/proyecto-sistemasop. Main es la rama de entrega. La integración se documenta en los PR #3 (release/final-delivery a develop) y #4 (develop a main), con comentarios de validación; sus estados y commits se consultan en GitHub. Los Issues #1 (aceptación) y #2 (acceso/envío) siguen abiertos. Integrar el código no confirma esas pruebas ni realiza el envío académico.
 
 ### Fuentes y artefactos
 Enunciado Proyecto 1, Sistemas Operativos 2627-1, suministrado por el estudiante; diseño aprobado del 18 de octubre; código Java en src/main/java; ejecutor AllTests y FinalAcceptanceTest; mediciones en docs/verification/data/final-comparisons.json; evidencia de módulos en docs/verification; guías en docs/defensa. El informe y el resumen se regeneran desde docs/informe/build_report.py.
