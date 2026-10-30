@@ -1,0 +1,78 @@
+{
+  "formatVersion": 1,
+  "cycleMillis": 500,
+  "networkLatency": 2,
+  "computers": [
+    {
+      "id": 1,
+      "ramCapacity": 64,
+      "policy": "PREEMPTIVE_PRIORITY",
+      "quantum": 2
+    },
+    {
+      "id": 2,
+      "ramCapacity": 64,
+      "policy": "PREEMPTIVE_PRIORITY",
+      "quantum": 2
+    }
+  ],
+  "buffers": [],
+  "processes": [
+    {
+      "name": "A",
+      "computerId": 1,
+      "type": "CPU_BOUND",
+      "instructionCount": 8,
+      "memoryRequired": 4,
+      "priority": 2,
+      "deadlineCycles": 9,
+      "cpuBurst": 0,
+      "ioCycles": 0,
+      "bufferId": 0,
+      "operationInterval": 0,
+      "targetItems": 0
+    },
+    {
+      "name": "B",
+      "computerId": 1,
+      "type": "CPU_BOUND",
+      "instructionCount": 2,
+      "memoryRequired": 4,
+      "priority": 0,
+      "deadlineCycles": 3,
+      "cpuBurst": 0,
+      "ioCycles": 0,
+      "bufferId": 0,
+      "operationInterval": 0,
+      "targetItems": 0
+    },
+    {
+      "name": "C",
+      "computerId": 1,
+      "type": "CPU_BOUND",
+      "instructionCount": 4,
+      "memoryRequired": 4,
+      "priority": 1,
+      "deadlineCycles": 7,
+      "cpuBurst": 0,
+      "ioCycles": 0,
+      "bufferId": 0,
+      "operationInterval": 0,
+      "targetItems": 0
+    },
+    {
+      "name": "D",
+      "computerId": 2,
+      "type": "CPU_BOUND",
+      "instructionCount": 6,
+      "memoryRequired": 4,
+      "priority": 1,
+      "deadlineCycles": 20,
+      "cpuBurst": 0,
+      "ioCycles": 0,
+      "bufferId": 0,
+      "operationInterval": 0,
+      "targetItems": 0
+    }
+  ]
+}

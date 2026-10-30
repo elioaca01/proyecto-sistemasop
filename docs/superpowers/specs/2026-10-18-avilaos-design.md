@@ -1,6 +1,6 @@
 # ÁvilaOS — diseño del Proyecto 1
 
-Estado: propuesta para revisión, anterior a la implementación.
+Estado: diseño aprobado por el estudiante el 19 de octubre de 2026, mediante la instrucción «hazlo» para preparar las tareas de implementación. La implementación del primer módulo comenzó el 19 de octubre; su arranque visual desde NetBeans fue confirmado por una captura del estudiante.
 
 ## 1. Objetivo y alcance
 
@@ -224,4 +224,12 @@ El informe final documentará clases/métodos principales, enums e interfaces, p
 
 El historial registrará cambios pequeños con verificaciones. Cada funcionalidad se integrará mediante PR. La entrega incluye informe PDF y enlace de GitHub; el estudiante realiza el envío académico y asiste a la defensa.
 
-Pendientes externos antes de la implementación: disponer de JDK compatible y NetBeans; identificar o crear el repositorio GitHub cuando esté disponible la cuenta/conexión correspondiente. Ninguno se declara resuelto por existir este diseño.
+Estado del entorno comprobado el 19 de octubre de 2026:
+
+- NetBeans instalado en `/Applications/Apache NetBeans.app`; el estudiante confirma que lo tiene abierto.
+- Temurin JDK y compilador 25.0.4.1 instalados en `/Library/Java/JavaVirtualMachines/temurin-25.jdk/Contents/Home`.
+- Maven 3.9.16 incluido en NetBeans, ejecutado correctamente con ese JDK mediante `mvn --version`.
+- La terminal conserva Java 17 como selección predeterminada. Las verificaciones del proyecto deben seleccionar explícitamente el JDK 25, sin cambiar la configuración global del estudiante. En NetBeans también se debe seleccionar JDK 25 como plataforma del proyecto.
+- Repositorio Git local creado con ramas `main` y `develop`; diseño inicial registrado en el commit `85694c0`.
+
+Pendiente externo: identificar o crear el repositorio GitHub cuando esté disponible la cuenta/conexión correspondiente. También falta configurar y verificar el proyecto real dentro de NetBeans; las comprobaciones de versiones no sustituyen una compilación ni una ejecución del simulador.

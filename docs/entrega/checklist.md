@@ -1,0 +1,46 @@
+# Checklist de entrega — ÁvilaOS
+
+## Comprobado
+
+- [x] Build del estudiante: 25454 comprobaciones y BUILD SUCCESS (25 de octubre).
+- [x] Arranque y escenario local en ventana real: ciclo12, completados2, CPUglobal50%, respuesta0.5.
+- [x] B1 local: producido/consumido1/1, ocupación0, semáforos1/0/1.
+- [x] El estudiante confirma espera promedio6 en Métricas → Buffers y esperas.
+- [x] Pruebas automáticas de parámetros, archivos inválidos, guardado seguro, reinicio, red, políticas, métricas y cierre; evidencia por módulo.
+- [x] Copia limpia por git archive de 774e580, sin target previo: clean package con JDK25, 25550 comprobaciones y BUILD SUCCESS. Esto verifica construcción por terminal.
+
+## Prueba manual final en NetBeans
+
+Procedimiento con datos y resultados esperados: [16 casos manuales](casos-prueba-manuales.md). Los ocho ejemplos de examples/manual/ ya se validaron/ejecutaron mediante API; eso no marca las casillas de la ventana real.
+
+- [ ] Guardar escenario inicial con nombre sin extensión; comprobar .json y confirmación de sobrescritura. Usar un archivo de prueba.
+- [ ] Cargar ese guardado: pausa y ciclo0; repetir local12.
+- [ ] En una copia del JSON, borrar el final; cargarla estando pausado. Debe conservar ciclo/escenario y permitir otro Paso.
+- [ ] Cargar remoto: computador2 PC1,1,1,2,3,4,5,6 tras ocho pasos; CPUglobal37.5%, producido1, sin episodios de semáforo.
+- [ ] Desplazar tabla para ver deadlines/Jain y cambiar tamaño de ventana; comprobar que los controles sigan accesibles.
+- [ ] Cerrar por ventana: comprobar que termine la ejecución de Maven. No confundir ocultar con cerrar.
+- [ ] Debug Project: poner breakpoint en Kernel.onTick y comprobar que detiene/reanuda.
+- [ ] Abrir una copia limpia del paquete en NetBeans, seleccionar JDK25, Clean and Build y Run. La caché/dependencias se descargan desde Maven si es la primera vez.
+
+## Documentos y repositorio
+
+- [x] Informe PDF de10páginas, dos UML y resumen de defensa de2páginas generados y revisados visualmente.
+- [x] Comparaciones reales de políticas/local-remoto medidas con cargas equivalentes y condiciones documentadas.
+- [x] Revisión independiente final sin hallazgos críticos/importantes; mejora menor de clasificación binaria de PDF registrada para después.
+- [x] Empaquetador probado y ZIP local con fuentes versionadas, PDF y manifest.json de hashes.
+- [x] El estudiante creó el repositorio privado con el nombre definitivo proyecto-sistemasop y proporcionó su URL SSH.
+- [x] GitHub conectado a elioaca01 y creación privada autorizada por el estudiante.
+- [x] Repositorio real: https://github.com/elioaca01/proyecto-sistemasop. Acceso SSH comprobado; consulta sin autenticación HTTP404, coherente con repositorio privado.
+- [x] Subir historial real y las 12 ramas. Las integraciones posteriores se realizan mediante PR, conservando commits y ramas de origen.
+- [x] Renombrar las tres ramas con prefijo rechazado a feat/scenario-json, feat/performance-metrics y release/final-delivery, localmente y en GitHub; conservar commits.
+- [x] Registrar pendientes reales en [Issue #1: aceptación en NetBeans](https://github.com/elioaca01/proyecto-sistemasop/issues/1) e [Issue #2: acceso de correctores y envío](https://github.com/elioaca01/proyecto-sistemasop/issues/2). Ambos abiertos; no se inventaron errores ni Issues históricos.
+- [x] Integrar [PR #3](https://github.com/elioaca01/proyecto-sistemasop/pull/3), release/final-delivery → develop, con descripción/comentarios de validación y commit de fusión ea43398.
+- [x] Preparar [PR #4](https://github.com/elioaca01/proyecto-sistemasop/pull/4), develop → main, con descripción, comentario de validación y autorización del estudiante para completar la integración. Estado y commit de fusión: consultar el PR en GitHub; main es la rama de entrega. No se reconstruye una historia de PR ficticia.
+- [x] Instalar ChatGPT Codex Connector en elioaca01 con acceso al repositorio seleccionado: get_repo ya responde correctamente y confirma visibilidad privada. Los Issues y el PR se crearon mediante la API.
+- [ ] Comprobar acceso de los correctores al repositorio y que README explica la ejecución.
+- [ ] Enviar PDF y enlace por el canal académico y agregar al spreadsheet antes del viernes30 a las07:00 de Venezuela. Lo realiza el estudiante.
+- [ ] Practicar defensa individual con el resumen y abrir las guías por módulo ante dudas.
+
+El estudiante autorizó preparar el repositorio privado indicado. El envío académico lo realiza el estudiante; el informe y el ZIP local no equivalen a ese envío.
+
+Auditoría del 29 de octubre: [estándares, GUI e informe](../verification/2026-10-29-development-standards.md). Recuento corregido: 12 ramas reales; origin/HEAD es una referencia simbólica, no una rama adicional.

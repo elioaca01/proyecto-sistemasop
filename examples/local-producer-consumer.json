@@ -1,0 +1,56 @@
+{
+  "formatVersion": 1,
+  "cycleMillis": 500,
+  "networkLatency": 2,
+  "computers": [
+    {
+      "id": 1,
+      "ramCapacity": 64,
+      "policy": "FCFS",
+      "quantum": 2
+    },
+    {
+      "id": 2,
+      "ramCapacity": 64,
+      "policy": "FCFS",
+      "quantum": 2
+    }
+  ],
+  "buffers": [
+    {
+      "id": 1,
+      "hostId": 1,
+      "capacity": 1
+    }
+  ],
+  "processes": [
+    {
+      "name": "Consumidor local",
+      "computerId": 1,
+      "type": "CONSUMER",
+      "instructionCount": 6,
+      "memoryRequired": 2,
+      "priority": 0,
+      "deadlineCycles": 100,
+      "cpuBurst": 0,
+      "ioCycles": 0,
+      "bufferId": 1,
+      "operationInterval": 1,
+      "targetItems": 1
+    },
+    {
+      "name": "Productor local",
+      "computerId": 1,
+      "type": "PRODUCER",
+      "instructionCount": 6,
+      "memoryRequired": 2,
+      "priority": 0,
+      "deadlineCycles": 100,
+      "cpuBurst": 0,
+      "ioCycles": 0,
+      "bufferId": 1,
+      "operationInterval": 1,
+      "targetItems": 1
+    }
+  ]
+}
