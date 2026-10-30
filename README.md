@@ -84,4 +84,4 @@ El deadline es relativo al ciclo de llegada. Llegar en ciclo 5 con plazo 1 permi
 
 Las conclusiones comparativas se limitan a las cargas y horizontes publicados en `docs/verification/data/final-comparisons.json`. La generación del informe usa herramientas Python separadas; no son necesarias para compilar ni ejecutar el simulador.
 
-Auditoría del 29 de octubre: [estándares de desarrollo, interfaz e informe](docs/verification/2026-10-29-development-standards.md). GitHub contiene 12 ramas con nombres funcionales; falta registrar Issues e integrar mediante Pull Requests comentados.
+Auditoría inicial del 29 de octubre: [estándares de desarrollo, interfaz e informe](docs/verification/2026-10-29-development-standards.md). Actualización del30: los Issues #1 y #2 registran los pendientes manuales/de envío; los PR #3 y #4 están fusionados en develop/main. Main es la rama predeterminada y su copia limpia pasó25550 comprobaciones. [Evidencia de integración](docs/verification/2026-10-30-main-integration.md).
